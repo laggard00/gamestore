@@ -1,10 +1,12 @@
-﻿using GameStore_DAL.Data;
+﻿using DAL.Models;
+using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,10 +22,12 @@ namespace GameStore_DAL.Repositories
             dbSet = context.Games;
         }
 
-        public Task AddAsync(GameEntity entity)
+        public async Task AddAsync(GameEntity entity)
         {
+            var b = context.Genres.Find(entity.GenreId);
+            entity.Genre = b;
             dbSet.Add(entity);
-            return Task.CompletedTask;
+            await context.SaveChangesAsync();
         }
 
         public void Delete(GameEntity entity)
@@ -48,18 +52,12 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<GameEntity>> GetAllAsync()
         {
-            return await dbSet.ToListAsync();
+            var a = dbSet.Include(x => x.GamePlatforms).ThenInclude(x => x.Platform).Include(x=> x.Genre);
+            return await a.ToListAsync();  
         }
-       // public async Task<IEnumerable<GameEntity>> GetAllWithDetailsAsync()
-       // {
-       //     return await dbSet
-       //                        .Include(c => c.Platforms)
-       //                                 .Include(c => c.Genre)
-       //                                            .ToListAsync();
-       //
-       //     
-       //
-       // }
+
+        
+
         public async Task<GameEntity> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
@@ -67,7 +65,10 @@ namespace GameStore_DAL.Repositories
 
         public void Update(GameEntity entity)
         {
+            var b = context.Genres.Find(entity.GenreId);
+            entity.Genre = b;
             dbSet.Update(entity);
+
 
         }
     }

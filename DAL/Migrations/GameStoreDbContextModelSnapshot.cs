@@ -18,6 +18,21 @@ namespace DAL.Migrations
                 .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("DAL.Models.GamePlatform", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatformId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "PlatformId");
+
+                    b.HasIndex("PlatformId");
+
+                    b.ToTable("GamePlatforms");
+                });
+
             modelBuilder.Entity("GameStore_DAL.Models.GameEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -34,6 +49,9 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -41,16 +59,79 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Games");
+                    b.HasIndex("GenreId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "simple descrption",
-                            GameAlias = "game alias",
-                            Name = "name"
-                        });
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("GenreName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.Platform", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlatformName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Platforms");
+                });
+
+            modelBuilder.Entity("DAL.Models.GamePlatform", b =>
+                {
+                    b.HasOne("GameStore_DAL.Models.GameEntity", "Game")
+                        .WithMany("GamePlatforms")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameStore_DAL.Models.Platform", "Platform")
+                        .WithMany("GamePlatforms")
+                        .HasForeignKey("PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Platform");
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.GameEntity", b =>
+                {
+                    b.HasOne("GameStore_DAL.Models.Genre", "Genre")
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genre");
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.GameEntity", b =>
+                {
+                    b.Navigation("GamePlatforms");
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.Platform", b =>
+                {
+                    b.Navigation("GamePlatforms");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameStore_DAL.Models
+namespace DAL.Models
 {
     public abstract class BaseEntity
     {
         [Key]
-        public int Id {  get; set; }
+        public int Id { get; set; }
     }
 }

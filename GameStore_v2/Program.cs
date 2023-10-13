@@ -1,3 +1,4 @@
+using BLL.AutoMapper;
 using BLL.Interfaces;
 using BLL.Services;
 using GameStore_DAL.Data;
@@ -8,14 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GameStoreDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 builder.Services.AddControllers();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IAdminGameService, AdminGameService>();
+builder.Services.AddScoped<IAdminGenreService, AdminGenreService>();
+builder.Services.AddScoped<IAdminPlatformService, AdminPlatformService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
