@@ -4,6 +4,7 @@ using BLL.Interfaces.IAdminINTERFACES;
 using BLL.Services;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,12 +21,14 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAdminGameService, AdminGameService>();
 builder.Services.AddScoped<IAdminGenreService, AdminGenreService>();
 builder.Services.AddScoped<IAdminPlatformService, AdminPlatformService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +43,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 app.UseAuthorization();
 

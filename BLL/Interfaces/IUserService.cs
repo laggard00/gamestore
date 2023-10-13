@@ -1,4 +1,6 @@
-﻿using BLL.DTO;
+﻿using AutoMapper;
+using BLL.DTO;
+using GameStore_DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,8 @@ namespace BLL.Interfaces
 {
     public interface IUserService :ICrud<GameDTO>
     {
+
+        Task<string> GetGameDescritpionByAlias(string alias);
+        
     }
 }

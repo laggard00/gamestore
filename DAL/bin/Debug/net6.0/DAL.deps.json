@@ -13,6 +13,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.0",
           "Microsoft.EntityFrameworkCore": "7.0.12",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.12",
+          "Microsoft.Extensions.Caching.Memory": "7.0.0",
           "Pomelo.EntityFrameworkCore.MySql": "7.0.0"
         },
         "runtime": {

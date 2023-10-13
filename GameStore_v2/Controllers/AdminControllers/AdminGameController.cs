@@ -2,8 +2,10 @@
 using BLL.Interfaces.IAdminINTERFACES;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Text;
 using System.Text.Json;
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace GameStore_v2.Controllers.AdminControllers
@@ -13,11 +15,13 @@ namespace GameStore_v2.Controllers.AdminControllers
     public class AdminGameController : Controller
     {
         private readonly IAdminGameService _service;
+        private readonly IMemoryCache _cache;
 
-
-        public AdminGameController(IAdminGameService cs)
+        private readonly string cacheKey = "GameCache";
+        public AdminGameController(IAdminGameService cs, IMemoryCache cache)
         {
             _service = cs;
+            _cache = cache;
         }
 
 
@@ -29,16 +33,28 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
+            
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
+            if (_cache.TryGetValue(cacheKey, out IEnumerable<GameDTO> result))
+            {
+                return Ok(result);
+            }
+            else 
+            {
+                result = await _service.GetAllAsync();
 
-            var customers = await _service.GetAllAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions().
+                                                        SetSlidingExpiration(TimeSpan.FromSeconds(45)).
+                                                        SetAbsoluteExpiration(TimeSpan.FromSeconds(600)).
+                                                        SetPriority(CacheItemPriority.Normal);
 
+                _cache.Set(cacheKey, result, cacheEntryOptions);
 
-            if (customers != null) { return Ok(customers); }
-
-
-            else { return StatusCode(500); }
+                return Ok(result);
+            }
+            
+          
 
 
         }

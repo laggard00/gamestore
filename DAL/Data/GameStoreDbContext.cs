@@ -28,15 +28,26 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<GameEntity>()
+                .HasIndex(x => x.Name)
+                .IsUnique(true);
+
+
+            modelBuilder.Entity<GameEntity>()
+                .HasIndex(x=> x.GameAlias)
+                .IsUnique(true);
+
 
             modelBuilder.Entity<GamePlatform>()
-      .HasKey(gp => new { gp.GameId, gp.PlatformId });
+                        .HasKey(gp => new { gp.GameId, gp.PlatformId });
+
+
 
             modelBuilder.Entity<GamePlatform>()
                 .HasOne(gp => gp.Game)
                 .WithMany(g => g.GamePlatforms)
                 .HasForeignKey(gp => gp.GameId);
+
 
             modelBuilder.Entity<GamePlatform>()
                 .HasOne(gp => gp.Platform)

@@ -23,7 +23,8 @@ namespace GameStore_DAL.Models
         
          [Required]
          [MaxLength(100)]
-         public string GameAlias {  get; set; }
+        
+        public string GameAlias {  get; set; }
         
         public int GenreId { get; set; }
 

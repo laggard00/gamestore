@@ -29,14 +29,16 @@ namespace BLL.Services
 
         }
 
-        public Task<IEnumerable<GameDTO>> GetAllAsync()
+        public async Task<IEnumerable<GameDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var a = await repository.GetAllAsync();
+            return a.Select(x => mapper.Map<GameDTO>(x));
         }
 
         public async Task<GameDTO> GetByIdAsync(int id)
         {
             var getById = await repository.GetByIdAsync(id);
+            
             return mapper.Map<GameDTO>(getById);
         }
 
@@ -54,6 +56,25 @@ namespace BLL.Services
         public Task DeleteAsync(int modelId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<string> GetGameDescritpionByAlias(string alias)
+        {
+            
+            var allGames = await repository.GetAllAsync();
+
+            var findByAlias = allGames.SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
+
+            if (findByAlias != null) 
+            { 
+                return findByAlias.Description; 
+            }
+
+            else
+            {
+                return "Alias Doesnt exist";
+            }
+            
         }
     }
 }
