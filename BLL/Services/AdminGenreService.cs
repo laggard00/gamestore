@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BLL.DTO;
-using BLL.Interfaces;
+using BLL.Interfaces.IAdminINTERFACES;
 using DAL.Interfaces;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;

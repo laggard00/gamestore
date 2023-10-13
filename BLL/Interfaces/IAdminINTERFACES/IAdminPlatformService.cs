@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.Interfaces
+namespace BLL.Interfaces.IAdminINTERFACES
 {
-    public interface IAdminGenreService :ICrud<GenreDTO>
+    public interface IAdminPlatformService : ICrud<PlatformDTO>
     {
     }
 }

@@ -1,5 +1,5 @@
 ﻿using BLL.DTO;
-using BLL.Interfaces;
+using BLL.Interfaces.IAdminINTERFACES;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -14,10 +14,15 @@ namespace GameStore_v2.Controllers.AdminControllers
     {
         private readonly IAdminGameService _service;
 
+
         public AdminGameController(IAdminGameService cs)
         {
             _service = cs;
         }
+
+
+
+
         /// <summary>
         /// Get all games, with their Details
         /// </summary>
@@ -26,15 +31,19 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
+
             var customers = await _service.GetAllAsync();
 
-            if (customers != null) { return Ok(customers); }
-            else { return StatusCode(500); }
 
-            throw new Exception();
+            if (customers != null) { return Ok(customers); }
+
+
+            else { return StatusCode(500); }
 
 
         }
+
+
         /// <summary>
         /// Get a game By Id,
         /// </summary>
@@ -43,10 +52,19 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GameDTO>> GetById(int id)
         {
+
             var ret = await _service.GetByIdAsync(id);
+
+
             if (ret != null) { return Ok(ret); }
+
+
             else { return StatusCode(404); }
         }
+
+
+
+
         /// <summary>
         /// Creates a new Game in Database!
         /// </summary>
@@ -58,7 +76,6 @@ namespace GameStore_v2.Controllers.AdminControllers
 
             try
             {
-
                 await _service.AddAsync(value);
 
                 return CreatedAtAction(nameof(GetById), new { id = value.Id }, value);
@@ -68,6 +85,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             {
                 return StatusCode(400, $"{ex.Message}");
             }
+
         }
 
         [HttpPut("{id}")]
@@ -78,9 +96,9 @@ namespace GameStore_v2.Controllers.AdminControllers
             try
             {
 
-
                 await _service.UpdateAsync(value);
-                return NoContent();
+
+                return CreatedAtAction(nameof(GetById), new { id = value.Id }, value);
             }
             catch (Exception ex)
             {
@@ -99,7 +117,6 @@ namespace GameStore_v2.Controllers.AdminControllers
         {
             try
             {
-
 
                 await _service.DeleteAsync(id);
 
@@ -120,7 +137,12 @@ namespace GameStore_v2.Controllers.AdminControllers
         {
             var gamesByGenre = await _service.GetGamesByGenre(genreId);
 
-            if (gamesByGenre != null) { return Ok(gamesByGenre); }
+            if (gamesByGenre != null) { 
+                                            return Ok(gamesByGenre);
+                                       
+            }
+
+
             else { return StatusCode(500); }
 
 
@@ -137,6 +159,8 @@ namespace GameStore_v2.Controllers.AdminControllers
             var gamesByGenre = await _service.GetGamesByPlatfrom(platformId);
 
             if (gamesByGenre != null) { return Ok(gamesByGenre); }
+
+
             else { return StatusCode(500); }
 
 
@@ -147,21 +171,25 @@ namespace GameStore_v2.Controllers.AdminControllers
         public async Task<ActionResult> DownloadGame(string gameAlias)
         {
             var game = await _service.GetGameByAlias(gameAlias);
+
+
             if (game == null)
             {
                 return NotFound($"Game with alias '{gameAlias}' not found.");
             }
 
             var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+
             var fileName = $"{game.Name}_{timestamp}.txt";
 
-            // Convert the game object to JSON
+            
             var jsonString = JsonSerializer.Serialize(game);
 
-            // Set the response content type to 'application/octet-stream' to force a browser download
+            
             var contentType = "application/octet-stream";
 
-            // Return the JSON as a file
+            
             return File(Encoding.UTF8.GetBytes(jsonString), contentType, fileName);
 
 

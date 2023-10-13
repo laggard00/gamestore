@@ -6,16 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.Interfaces
+namespace BLL.Interfaces.IAdminINTERFACES
 {
-    public interface IAdminGameService:ICrud<GameDTO>
+    public interface IAdminGameService : ICrud<GameDTO>
     {
         Task<IEnumerable<GameDTO>> GetGamesByGenre(int genreId);
 
         Task<IEnumerable<GameDTO>> GetGamesByPlatfrom(int platfromId);
 
         Task<GameDTO> GetGameByAlias(string alias);
-        
+
 
     }
 }

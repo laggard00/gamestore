@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    public interface IAdminPlatformService : ICrud<PlatformDTO>
+    public interface IUserService :ICrud<GameDTO>
     {
     }
 }
