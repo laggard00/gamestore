@@ -1,5 +1,6 @@
 using BLL.AutoMapper;
 using BLL.Interfaces;
+using BLL.Interfaces.IAdminINTERFACES;
 using BLL.Services;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAdminGameService, AdminGameService>();
 builder.Services.AddScoped<IAdminGenreService, AdminGenreService>();
 builder.Services.AddScoped<IAdminPlatformService, AdminPlatformService>();
+builder.Services.AddScoped<IUserService, UserService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

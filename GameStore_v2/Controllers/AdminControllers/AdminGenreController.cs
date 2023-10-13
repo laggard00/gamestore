@@ -1,5 +1,5 @@
 ﻿using BLL.DTO;
-using BLL.Interfaces;
+using BLL.Interfaces.IAdminINTERFACES;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore_v2.Controllers.AdminControllers
@@ -15,6 +15,8 @@ namespace GameStore_v2.Controllers.AdminControllers
         {
             _service = cs;
         }
+
+
         /// <summary>
         /// Get all genres
         /// </summary>
