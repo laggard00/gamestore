@@ -68,9 +68,11 @@ namespace BLL.Services
 
         public async Task<IEnumerable<GameDTO>> GetGamesByGenre(int genreId)
         {
-            var allGames = await repository.GetAllAsync();
-            var filteredByGenre = allGames.Where(x => x.GenreId == genreId).Select(x=> mapper.Map<GameDTO>(x));
-            return filteredByGenre;
+            var allGames = await repository.GetGamesByGenre(genreId);
+
+            var gamesMapped= allGames.Select(x=> mapper.Map<GameDTO>(x));
+
+            return gamesMapped;
 
         }
 

@@ -9,5 +9,7 @@ namespace GameStore_DAL.Interfaces
 {
     public interface IGamesRepository : IRepository<GameEntity>
     {
+
+        Task<IEnumerable<GameEntity>> GetGamesByGenre(int genreId);
     }
 }
