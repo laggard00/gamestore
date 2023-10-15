@@ -103,11 +103,13 @@ namespace GameStore_v2.Controllers.UserControllers
             {
 
                 if (id != value.Id) { return BadRequest(); }
+
                 try
                 {
 
 
                     await _service.UpdateAsync(value);
+
                     return CreatedAtAction(nameof(GetById), new { id = value.Id }, value);
                 }
                 catch (Exception ex)

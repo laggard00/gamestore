@@ -10,6 +10,7 @@ namespace GameStore_v2.Controllers.UserController
     [ApiController]
     public class UserGameController : Controller
     {
+
         private readonly IUserService _service;
 
         private readonly IMemoryCache _cache;
