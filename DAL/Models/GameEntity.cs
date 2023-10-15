@@ -20,12 +20,26 @@ namespace GameStore_DAL.Models
 
          [MaxLength(500)]
          public string Description { get; set; }
-        
+
+         private string _gameAlias;
+
          [Required]
          [MaxLength(100)]
+         public string GameAlias
+         {
+             get
+             {
+                 if (string.IsNullOrEmpty(_gameAlias))
+                 {
+                     _gameAlias = Name.Replace(" ", "-").ToLower();
+                 }
         
-        public string GameAlias {  get; set; }
-        
+                 return _gameAlias;
+             }
+             set => _gameAlias = value;
+         }
+
+
         public int GenreId { get; set; }
 
         

@@ -89,7 +89,10 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] GameDTO value)
         {
-
+            if (!ModelState.IsValid) 
+            { 
+                return BadRequest(ModelState);
+            }
             try
             {
                 await _service.AddAsync(value);
@@ -107,7 +110,10 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put([FromBody] GameDTO value, int id)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (id != value.Id) { return BadRequest(); }
             try
             {
