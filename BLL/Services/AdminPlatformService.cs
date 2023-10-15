@@ -15,10 +15,10 @@ namespace BLL.Services
 {
     public class AdminPlatformService :IAdminPlatformService
     {
-        public IUnitOfWork uow { get; set; }
+        private IUnitOfWork uow { get; set; }
 
-        public IPlatformRepository platformRepository { get; set; }
-        public IMapper mapper { get; set; }
+        private IPlatformRepository platformRepository { get; set; }
+        private IMapper mapper { get; set; }
 
         public AdminPlatformService(IUnitOfWork unitOfWork, IMapper _mapper)
         {

@@ -14,11 +14,11 @@ namespace BLL.Services
 {
     public class UserService :IUserService
     {
-        public IUnitOfWork uow { get; set; }
-        public IGamesRepository repository { get; set; }
-        public IGamePlatformRepository platform { get; set; }
+        private IUnitOfWork uow { get; set; }
+        private IGamesRepository repository { get; set; }
+        private IGamePlatformRepository platform { get; set; }
 
-        public IMapper mapper { get; set; }
+        private IMapper mapper { get; set; }
 
         public UserService(IUnitOfWork unitOfWork, IMapper _mapper)
         {

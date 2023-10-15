@@ -126,3 +126,8 @@ C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\FluentAssertions.dl
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.MvcApplicationPartsAssemblyInfo.cs

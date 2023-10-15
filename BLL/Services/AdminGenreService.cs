@@ -14,11 +14,11 @@ namespace BLL.Services
 {
     public class AdminGenreService : IAdminGenreService
     {
-        public IUnitOfWork uow { get; set; }
+        private IUnitOfWork uow { get; set; }
 
-        public IGenreRepository repository { get; set; }
+        private IGenreRepository repository { get; set; }
 
-        public IMapper mapper { get; set; }
+        private IMapper mapper { get; set; }
 
         public AdminGenreService(IUnitOfWork unitOfWork, IMapper _mapper)
         {

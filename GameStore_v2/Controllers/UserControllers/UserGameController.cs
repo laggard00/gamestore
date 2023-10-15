@@ -29,23 +29,23 @@ namespace GameStore_v2.Controllers.UserController
 
 
 
-        [HttpPost("/new")]
-        public async Task<ActionResult> Post([FromBody] GameDTO value)
-        {
-
-            try
-            {
-                await _service.AddAsync(value);
-
-                return NoContent();
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, $"{ex.Message}");
-            }
-
-        }
+       [HttpPost("new")]
+       public async Task<ActionResult> Post([FromBody] GameDTO value)
+       {
+       
+           try
+           {
+               await _service.AddAsync(value);
+       
+               return NoContent();
+       
+           }
+           catch (Exception ex)
+           {
+               return StatusCode(400, $"{ex.Message}");
+           }
+       
+       }
 
         [HttpGet("{gameAlias}")]
         public async Task<ActionResult<string>> GetDescritptionByAlias(string gameAlias)
