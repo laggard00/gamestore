@@ -104,7 +104,9 @@ namespace GameStore_v2.Controllers.UserController
            
             if (_cache.TryGetValue(cacheKey, out IEnumerable<GameDTO> result))
             {
+                HttpContext.Response.Headers["Games-Cache-Counter"] = result.Count().ToString();
                 return Ok(result);
+                
             }
             else
             {
@@ -117,6 +119,7 @@ namespace GameStore_v2.Controllers.UserController
 
                 _cache.Set(cacheKey, result, cacheEntryOptions);
 
+                HttpContext.Response.Headers["Games-Cache-Counter"] = result.Count().ToString();
                 return Ok(result);
             }
 
