@@ -1,0 +1,5 @@
+[15.10.2023. 13:14:12] Path: /api/admingames | Time elapsed: 3393ms
+[15.10.2023. 13:14:26] Path: /api/admingames/1 | Time elapsed: 216ms
+[15.10.2023. 13:14:45] Path: /api/admingames | Time elapsed: 5ms
+[15.10.2023. 13:14:46] Path: /api/admingames | Time elapsed: 4ms
+[15.10.2023. 13:14:47] Path: /api/admingames | Time elapsed: 1ms

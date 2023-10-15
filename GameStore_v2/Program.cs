@@ -4,6 +4,7 @@ using BLL.Interfaces.IAdminINTERFACES;
 using BLL.Services;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
+using GameStore_v2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -57,7 +58,9 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-
+app.UseMiddleware<GamesCountMiddleware>();
+app.UseIpLogger("ip_addresses.txt");
+app.UsePerformanceLogging("performance_log.txt");
 app.UseAuthorization();
 
 app.MapControllerRoute(
