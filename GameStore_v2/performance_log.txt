@@ -3,3 +3,4 @@
 [15.10.2023. 13:14:45] Path: /api/admingames | Time elapsed: 5ms
 [15.10.2023. 13:14:46] Path: /api/admingames | Time elapsed: 4ms
 [15.10.2023. 13:14:47] Path: /api/admingames | Time elapsed: 1ms
+[15.10.2023. 15:58:36] Path: /api/admingames | Time elapsed: 1512ms
