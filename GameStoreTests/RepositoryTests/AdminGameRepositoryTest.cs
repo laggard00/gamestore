@@ -124,7 +124,7 @@ namespace GameStoreTests.RepositoryTests
             //arrange
             var _context = await GetGameStoreDbContext();
 
-            var game = _context.Games.Count();
+            var game = _context.Games.First();
            
             
             var gamesRepository = new GamesRepository(_context);
@@ -132,12 +132,12 @@ namespace GameStoreTests.RepositoryTests
             //act
 
 
-            await gamesRepository.DeleteByIdAsync(1);
+            await gamesRepository.DeleteByIdAsync(game.Id);
             var game2 = _context.Games.Count();
 
             //assert
 
-            Assert.DoesNotContain(_context.Games.Find(1).Single().Id, _context.Games.Single(x=> x.Id==1).Id);
+            Assert.DoesNotContain(game, _context.Games);
 
         }
     }
