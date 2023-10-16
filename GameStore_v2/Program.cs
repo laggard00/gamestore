@@ -59,8 +59,12 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseMiddleware<GamesCountMiddleware>();
+
 app.UseIpLogger("ip_addresses.txt");
+app.UseGlobalExceptionMiddleware();
 app.UsePerformanceLogging("performance_log.txt");
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseAuthorization();
 
 app.MapControllerRoute(
