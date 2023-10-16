@@ -73,7 +73,7 @@ namespace GameStoreTests.AdminControllerTests
         }
 
         [Theory]
-        [InlineData("", "", 1)]
+        [InlineData("", null, 1)]
         [InlineData("sssss", "desc", 5)]
         public async void AdminGameController_POST_AddGame_ReturnsBadRequest_If_ModelNotValid(string name, string desc, int genreId)
         {
