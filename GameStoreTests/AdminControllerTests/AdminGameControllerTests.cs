@@ -6,6 +6,7 @@ using GameStore_v2.Controllers.AdminControllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,22 @@ using System.Threading.Tasks;
 
 namespace GameStoreTests.AdminControllerTests
 {
-    
+
     public class AdminGameControllerTests
     {
 
         private readonly IAdminGameService _service;
         private readonly IMemoryCache _cache;
-       
+
+
 
 
         public AdminGameControllerTests()
         {
-           _service = A.Fake<IAdminGameService>();
-           _cache = A.Fake<IMemoryCache>();
-           
+            _service = A.Fake<IAdminGameService>();
+            _cache = A.Fake<IMemoryCache>();
+
+
         }
 
         [Fact]
@@ -42,7 +45,7 @@ namespace GameStoreTests.AdminControllerTests
 
             //act
 
-           var result = await controller.Get();
+            var result = await controller.Get();
 
 
             //assert
@@ -60,7 +63,7 @@ namespace GameStoreTests.AdminControllerTests
             var games = A.Fake<ICollection<GameDTO>>();
             var gamesList = A.Fake<List<GameDTO>>();
             var controller = new AdminGameController(_service, _cache);
-            
+
 
             //act
 
@@ -72,24 +75,53 @@ namespace GameStoreTests.AdminControllerTests
             result.Should().BeOfType(typeof(CreatedAtActionResult));
         }
 
-        [Theory]
-        [InlineData("", null, 1)]
-        [InlineData("sssss", "desc", 5)]
-        public async void AdminGameController_POST_AddGame_ReturnsBadRequest_If_ModelNotValid(string name, string desc, int genreId)
+        [Fact]
+        public async Task Post_InvalidModel_ReturnsBadRequest()
         {
-            var game = new GameDTO { Id = 2, Name = name, Description = desc, GenreId = genreId };
+            // Arrange
             var controller = new AdminGameController(_service, _cache);
-            controller.ModelState.GetValidationState("GameDTO");
-            
+            controller.ModelState.AddModelError("Error", "Invalid game model.");
+            var game = new GameDTO { Id = 2, };
 
-            //act
+            // Act
             var result = await controller.Post(game);
 
-            //assert
-            result.Should().NotBeNull();
+            // Assert
             result.Should().BeOfType(typeof(BadRequestObjectResult));
-            
         }
 
+        [Fact]
+        public async Task AdminGameController_GetById_ReturnsOk()
+        {
+            // Arrange
+            var controller = new AdminGameController(_service, _cache);
+            
+            var game = new GameDTO { Id = 2, };
+
+            // Act
+            var result = await controller.GetById(game.Id);
+
+            // Assert
+            result.Should().BeOfType(typeof(ActionResult<GameDTO>));
+        }
+
+        [Fact]
+        public async Task AdminGameController_Delete_ReturnsNoContent()
+        {
+            // Arrange
+            var controller = new AdminGameController(_service, _cache);
+
+            var game = new GameDTO { Id = 2, };
+
+            // Act
+            var result = await controller.Delete(game.Id);
+
+            // Assert
+            result.Should().BeOfType(typeof(NoContentResult));
+        }
+
+
     }
+
+    
 }
