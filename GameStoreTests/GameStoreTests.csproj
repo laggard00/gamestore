@@ -31,4 +31,8 @@
     <ProjectReference Include="..\GameStore_v2\GameStore_v2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServiceTests\" />
+  </ItemGroup>
+
 </Project>

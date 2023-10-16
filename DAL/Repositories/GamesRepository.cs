@@ -44,8 +44,8 @@ namespace GameStore_DAL.Repositories
             var find = dbSet.Find(id);
             if (find != null)
             {
-                dbSet.RemoveRange(find);
-               var a = dbSet.Count();
+                dbSet.Remove(find);
+                
                 
             }
              return Task.CompletedTask;
@@ -76,6 +76,7 @@ namespace GameStore_DAL.Repositories
             var b = context.Genres.Find(entity.GenreId);
             entity.Genre = b;
             dbSet.Update(entity);
+            
 
 
         }
