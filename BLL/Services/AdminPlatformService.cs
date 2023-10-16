@@ -43,14 +43,14 @@ namespace BLL.Services
 
         public async Task AddAsync(PlatformDTO model)
         {
-            await platformRepository.AddAsync(mapper.Map<Platform>(model));
+            await platformRepository.AddAsync(mapper.Map<PlatformEntity>(model));
 
             await uow.SaveAsync();
         }
 
         public async Task UpdateAsync(PlatformDTO model)
         {
-            platformRepository.Update(mapper.Map<Platform>(model));
+            platformRepository.Update(mapper.Map<PlatformEntity>(model));
 
             await uow.SaveAsync();
         }

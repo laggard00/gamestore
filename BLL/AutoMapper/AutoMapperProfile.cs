@@ -39,19 +39,19 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GenreId))
                     .ForMember(dest => dest.PlatformId, opt => opt.MapFrom(src => src.GamePlatforms.Select(x => x.PlatformId)));
 
-            CreateMap<Genre, GenreDTO>()
+            CreateMap<GenreEntity, GenreDTO>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GenreName));
 
-            CreateMap<GenreDTO, Genre>()
+            CreateMap<GenreDTO, GenreEntity>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                    .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Name));
 
-            CreateMap<Platform, PlatformDTO>()
+            CreateMap<PlatformEntity, PlatformDTO>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.PlatformName));
 
-            CreateMap<PlatformDTO, Platform>()
+            CreateMap<PlatformDTO, PlatformEntity>()
                   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                   .ForMember(dest => dest.PlatformName, opt => opt.MapFrom(src => src.Name));
 

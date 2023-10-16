@@ -59,8 +59,8 @@ namespace GameStore_DAL.Data
         }
 
         public DbSet<GameEntity> Games { get; set; }
-        public DbSet<Genre> Genres { get; set; }
-        public DbSet<Platform> Platforms { get; set; }
+        public DbSet<GenreEntity> Genres { get; set; }
+        public DbSet<PlatformEntity> Platforms { get; set; }
 
         public DbSet<GamePlatform> GamePlatforms { get; set; }
     }

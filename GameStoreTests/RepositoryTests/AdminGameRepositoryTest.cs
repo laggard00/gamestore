@@ -1,9 +1,11 @@
-﻿using DAL.Models;
+﻿using Bogus;
+using DAL.Models;
 using FluentAssertions;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using GameStore_DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,19 @@ namespace GameStoreTests.RepositoryTests
             
 
             var _context = new GameStoreDbContext(options);
-
+            var data = new Faker<GameEntity>();
             _context.Database.EnsureCreated();
 
-            if (await _context.Games.CountAsync() <= 0) 
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    
-                    _context.Games.Add(new GameStore_DAL.Models.GameEntity { Id = 1+i, Name = "testy", Description = "testtt", GenreId = 1, GameAlias=""});
-                    
-                    await _context.SaveChangesAsync();
-                }
-            }
+           if (await _context.Games.CountAsync() <= 0) 
+           {
+               for (int i = 0; i < 10; i++)
+               {
+                   
+                   _context.Games.Add(new Faker<GameEntity>());
+                   
+                   
+               }
+           }
             return _context;
         }
 

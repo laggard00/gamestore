@@ -43,7 +43,7 @@ namespace GameStore_DAL.Models
         public int GenreId { get; set; }
 
         
-        public Genre? Genre { get; set; }
+        public GenreEntity? Genre { get; set; }
 
 
 

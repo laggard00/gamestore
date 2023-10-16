@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "MCFI6XtgJFSvUESAscSnQ5ZQ8EWh01AEzQ+/6baijVlfpX2IbW+pP8euFQDQM6Y6nIRj/tzNIRh6sreo29PCCg==",
+  "dgSpecHash": "geXCyx4m12veK/9HSUWb8SlxH9Av/amjjxcWCKypLrls0B4pUJlMVgK7+jymeMs38HHxS2zOUz8SM4RefTWfHA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\GameStoreTests\\GameStoreTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\ivan_ceskic\\.nuget\\packages\\bogus\\34.0.2\\bogus.34.0.2.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\castle.core\\4.3.1\\castle.core.4.3.1.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\fakeiteasy\\7.4.0\\fakeiteasy.7.4.0.nupkg.sha512",

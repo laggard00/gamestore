@@ -15,7 +15,7 @@ namespace DAL.Repositories
     public class PlatformRepository : IPlatformRepository
     {
         protected readonly GameStoreDbContext context;
-        private readonly DbSet<Platform> dbSet;
+        private readonly DbSet<PlatformEntity> dbSet;
        
         public PlatformRepository(GameStoreDbContext context)
         {
@@ -23,13 +23,13 @@ namespace DAL.Repositories
             dbSet = context.Platforms;
             
         }
-        public async Task AddAsync(Platform entity)
+        public async Task AddAsync(PlatformEntity entity)
         {
             dbSet.Add(entity);
             await context.SaveChangesAsync();
         }
 
-        public void Delete(Platform entity)
+        public void Delete(PlatformEntity entity)
         {
             if (dbSet.Contains(entity))
             {
@@ -49,19 +49,19 @@ namespace DAL.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<Platform>> GetAllAsync()
+        public async Task<IEnumerable<PlatformEntity>> GetAllAsync()
         {
             var a = dbSet.Include(x => x.GamePlatforms).ThenInclude(x => x.Game);
             
              return await a.ToListAsync();
         }
 
-        public async Task<Platform> GetByIdAsync(int id)
+        public async Task<PlatformEntity> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
         }
 
-        public void Update(Platform entity)
+        public void Update(PlatformEntity entity)
         {
             dbSet.Update(entity);
         }

@@ -15,7 +15,7 @@ namespace DAL.Models
         
         public int PlatformId { get; set; }
 
-        public Platform Platform { get; set; }
+        public PlatformEntity Platform { get; set; }
         
         
     }

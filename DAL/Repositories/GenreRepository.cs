@@ -13,19 +13,19 @@ namespace DAL.Repositories
     public class GenreRepository : IGenreRepository
     {
         protected readonly GameStoreDbContext context;
-        private readonly DbSet<Genre> dbSet;
+        private readonly DbSet<GenreEntity> dbSet;
         public GenreRepository(GameStoreDbContext context)
         {
             this.context = context;
             dbSet = context.Genres;
         }
-        public async Task AddAsync(Genre entity)
+        public async Task AddAsync(GenreEntity entity)
         {
             dbSet.Add(entity);
             await context.SaveChangesAsync();
         }
 
-        public void Delete(Genre entity)
+        public void Delete(GenreEntity entity)
         {
             if (dbSet.Contains(entity))
             {
@@ -45,18 +45,18 @@ namespace DAL.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<Genre>> GetAllAsync()
+        public async Task<IEnumerable<GenreEntity>> GetAllAsync()
         {
            
             return await dbSet.ToListAsync();
         }
 
-        public async Task<Genre> GetByIdAsync(int id)
+        public async Task<GenreEntity> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
         }
 
-        public void Update(Genre entity)
+        public void Update(GenreEntity entity)
         {
             dbSet.Update(entity);
         }

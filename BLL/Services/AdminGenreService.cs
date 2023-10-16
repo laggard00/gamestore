@@ -55,7 +55,7 @@ namespace BLL.Services
 
         public async Task AddAsync(GenreDTO model)
         {
-            await repository.AddAsync(mapper.Map<Genre>(model));
+            await repository.AddAsync(mapper.Map<GenreEntity>(model));
 
             await uow.SaveAsync();
         }
@@ -63,7 +63,7 @@ namespace BLL.Services
         public async Task UpdateAsync(GenreDTO model)
         {
 
-           repository.Update(mapper.Map<Genre>(model));
+           repository.Update(mapper.Map<GenreEntity>(model));
 
            await uow.SaveAsync();
 

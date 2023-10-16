@@ -140,3 +140,4 @@ C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\BLL.pdb
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\GameStore_v2.pdb
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\DAL.pdb
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\Bogus.dll

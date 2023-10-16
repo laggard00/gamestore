@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameStore_DAL.Models
 {
-    public class Genre:BaseEntity
+    public class GenreEntity:BaseEntity
     {
         
         [Required]
