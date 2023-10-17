@@ -88,26 +88,65 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("new")]
         public async Task<ActionResult> Post([FromBody] GameDTO value)
         {
-            if (!ModelState.IsValid) 
+            if (value == null)
             {
-                
+                return BadRequest("The request body must not be null.");
+            }
+            
+            if (ModelState.IsValid)
+            {
+            
+            
+                // If alias is not provided, generate it from the game name
+            
+                if (string.IsNullOrEmpty(value.GameAlias))
+                {
+                    value.GameAlias = value.Name.Replace(' ', '-').ToLower();
+                }
+            
+            
+                var existingGame = await _service.GetGameByAlias(value.GameAlias);
+                if (existingGame != null)
+                {
+                    return Conflict("This game with this alias already exists!");
+                }
+            
+            
+                try
+                {
+                    await _service.AddAsync(value);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception here
+                    return StatusCode(500, "An error occurred while saving the game.");
+                }
+            }
+            
+            else
+            {
                 return BadRequest(ModelState);
             }
-            try
-            {
-                await _service.AddAsync(value);
+            
 
-                return CreatedAtAction(nameof(GetById), new { id = value.Id }, value);
 
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(404, $"{ex.Message}");
-            }
+        }
 
+        [HttpGet("{gameAlias}")]
+        public async Task<ActionResult<GameDTO>> GetGameByAlias(string gameAlias)
+        {
+
+            var ret = await _service.GetGameByAlias(gameAlias);
+
+
+            if (ret != null) { return Ok(ret); }
+
+
+            else { return StatusCode(404); }
         }
 
         [HttpPut("{id}")]

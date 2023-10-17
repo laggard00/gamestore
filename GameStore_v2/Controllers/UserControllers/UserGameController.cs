@@ -23,45 +23,69 @@ namespace GameStore_v2.Controllers.UserController
         {
             _service = cs;
             _cache = cache;
-            
+
         }
 
 
 
 
-       [HttpPost("new")]
-       public async Task<ActionResult> Post([FromBody] GameDTO value)
-       {
-           if (!ModelState.IsValid)
-           {
-               return BadRequest(ModelState);
-           }
+        [HttpPost("new")]
+        public async Task<ActionResult> Post([FromBody] GameDTO value)
+        {
+            if (value == null)
+            {
+                return BadRequest("The request body must not be null.");
+            }
 
-            try
-           {
-               await _service.AddAsync(value);
-       
-               return NoContent();
-       
-           }
-           catch (Exception ex)
-           {
-               return StatusCode(404, $"{ex.Message}");
-           }
-       
-       }
+            if (ModelState.IsValid)
+            {
+
+               
+                // If alias is not provided, generate it from the game name
+
+                if (string.IsNullOrEmpty(value.GameAlias))
+                {
+                    value.GameAlias = value.Name.Replace(' ', '-').ToLower();
+                }
+
+
+                var existingGame = await _service.GetGameByAlias(value.GameAlias);
+                if (existingGame != null)
+                {
+                    return Conflict("This game with this alias already exists!");
+                }
+
+
+                try
+                {
+                    await _service.AddAsync(value);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception here
+                    return StatusCode(500, "An error occurred while saving the game.");
+                }
+            }
+
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
+        }
 
         [HttpGet("{gameAlias}")]
-        public async Task<ActionResult<string>> GetDescritptionByAlias(string gameAlias)
+        public async Task<ActionResult<GameDTO>> GetGameByAlias(string gameAlias)
         {
-            
-            var ret = await _service.GetGameDescritpionByAlias(gameAlias);
+
+            var ret = await _service.GetGameByAlias(gameAlias);
 
 
             if (ret != null) { return Ok(ret); }
 
 
-            else { return StatusCode(404); }
+            else { return StatusCode(404) ; }
         }
 
 
@@ -109,12 +133,12 @@ namespace GameStore_v2.Controllers.UserController
 
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
-           
+
             if (_cache.TryGetValue(cacheKey, out IEnumerable<GameDTO> result))
             {
                 HttpContext.Response.Headers["Games-Cache-Counter"] = result.Count().ToString();
                 return Ok(result);
-                
+
             }
             else
             {
@@ -133,6 +157,19 @@ namespace GameStore_v2.Controllers.UserController
 
 
 
+
+        }
+
+
+
+        [HttpGet("id/{id}")]
+
+        public async Task<ActionResult<IEnumerable<GameDTO>>> GetById(int id)
+        {
+
+            var result = await _service.GetByIdAsync(id);
+
+            return Ok(result);
 
         }
     }

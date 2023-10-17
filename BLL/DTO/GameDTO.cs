@@ -9,7 +9,6 @@ namespace BLL.DTO
 {
     public class GameDTO
     {
-        
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
@@ -19,11 +18,13 @@ namespace BLL.DTO
         [Required(ErrorMessage = "Description is required.")]
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Description { get; set; }
-        public string GameAlias { get; set;
-        }
+        
+        public string? GameAlias { get; set; }
+        
         [Required(ErrorMessage = "GenreId is required.")]
         
         public int GenreId { get; set; }
+
         public List<int> PlatformId { get; set; }
     }
 }

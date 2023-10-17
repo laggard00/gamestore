@@ -4,6 +4,7 @@ using BLL.Interfaces;
 using DAL.Interfaces;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,22 +59,19 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public async Task<string> GetGameDescritpionByAlias(string alias)
+        public async Task<GameDTO> GetGameByAlias(string alias)
         {
             
             var allGames = await repository.GetAllAsync();
 
+
             var findByAlias = allGames.SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
 
-            if (findByAlias != null) 
-            { 
-                return findByAlias.Description; 
-            }
+            
+            return mapper.Map<GameDTO>(findByAlias); 
+           
 
-            else
-            {
-                return "Alias Doesnt exist";
-            }
+            
             
         }
     }

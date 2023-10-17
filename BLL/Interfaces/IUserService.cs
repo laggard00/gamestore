@@ -12,7 +12,7 @@ namespace BLL.Interfaces
     public interface IUserService :ICrud<GameDTO>
     {
 
-        Task<string> GetGameDescritpionByAlias(string alias);
+        Task<GameDTO> GetGameByAlias(string alias);
         
     }
 }
