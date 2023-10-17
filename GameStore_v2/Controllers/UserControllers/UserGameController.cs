@@ -46,7 +46,7 @@ namespace GameStore_v2.Controllers.UserController
            }
            catch (Exception ex)
            {
-               return StatusCode(400, $"{ex.Message}");
+               return StatusCode(404, $"{ex.Message}");
            }
        
        }
@@ -101,7 +101,7 @@ namespace GameStore_v2.Controllers.UserController
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $" {ex.Message}");
+                return StatusCode(404, $" {ex.Message}");
             }
         }
 

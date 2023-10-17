@@ -43,16 +43,18 @@ namespace GameStore_v2.Controllers.AdminControllers
             else 
             {
                 result = await _service.GetAllAsync();
-
+            
                 var cacheEntryOptions = new MemoryCacheEntryOptions().
                                                         SetSlidingExpiration(TimeSpan.FromSeconds(45)).
                                                         SetAbsoluteExpiration(TimeSpan.FromSeconds(600)).
                                                         SetPriority(CacheItemPriority.Normal);
-
+            
                 _cache.Set(cacheKey, result, cacheEntryOptions);
-
+            
                 return Ok(result);
             }
+
+            
             
           
 
@@ -90,7 +92,8 @@ namespace GameStore_v2.Controllers.AdminControllers
         public async Task<ActionResult> Post([FromBody] GameDTO value)
         {
             if (!ModelState.IsValid) 
-            { 
+            {
+                
                 return BadRequest(ModelState);
             }
             try
@@ -102,7 +105,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, $"{ex.Message}");
+                return StatusCode(404, $"{ex.Message}");
             }
 
         }
@@ -146,7 +149,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $" {ex.Message}");
+                return StatusCode(404, $" {ex.Message}");
             }
         }
         /// <summary>
@@ -165,7 +168,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
 
 
-            else { return StatusCode(500); }
+            else { return StatusCode(404); }
 
 
 

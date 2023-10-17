@@ -77,7 +77,7 @@ namespace GameStore_v2.Controllers.UserControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, $"{ex.Message}");
+                return StatusCode(404, $"{ex.Message}");
             }
         }
         [HttpDelete("{id}")]
@@ -93,7 +93,7 @@ namespace GameStore_v2.Controllers.UserControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $" {ex.Message}");
+                return StatusCode(404, $" {ex.Message}");
             }
         }
         [HttpPut("{id}")]

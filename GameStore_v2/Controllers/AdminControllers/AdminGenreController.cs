@@ -28,7 +28,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             var genres = await _service.GetAllAsync();
 
             if (genres != null) { return Ok(genres); }
-            else { return StatusCode(500); }
+            else { return StatusCode(404); }
 
             throw new Exception();
 
@@ -56,7 +56,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(400, $"{ex.Message}");
+                return StatusCode(404, $"{ex.Message}");
             }
         }
         [HttpDelete("{id}")]
@@ -72,7 +72,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $" {ex.Message}");
+                return StatusCode(404, $" {ex.Message}");
             }
         }
         [HttpPut("{id}")]
