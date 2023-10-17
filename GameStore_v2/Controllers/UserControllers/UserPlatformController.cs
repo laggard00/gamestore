@@ -27,6 +27,7 @@ namespace GameStore_v2.Controllers.UserControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlatformDTO>>> Get()
         {
+
             if (_cache.TryGetValue(cacheKey, out IEnumerable<PlatformDTO> result))
                 {
                     return Ok(result);
@@ -67,6 +68,11 @@ namespace GameStore_v2.Controllers.UserControllers
         public async Task<ActionResult> Post([FromBody] PlatformDTO value)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
 
@@ -100,7 +106,16 @@ namespace GameStore_v2.Controllers.UserControllers
         public async Task<ActionResult> Put([FromBody] PlatformDTO value, int id)
         {
 
-            if (id != value.Id) { return BadRequest(); }
+            if (id != value.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
 

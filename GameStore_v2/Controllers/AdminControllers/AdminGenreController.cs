@@ -46,6 +46,12 @@ namespace GameStore_v2.Controllers.AdminControllers
         public async Task<ActionResult> Post([FromBody] GenreDTO value)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
             try
             {
 
@@ -79,7 +85,16 @@ namespace GameStore_v2.Controllers.AdminControllers
         public async Task<ActionResult> Put([FromBody] GenreDTO value, int id)
         {
 
-            if (id != value.Id) { return BadRequest(); }
+            if (id != value.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
 
