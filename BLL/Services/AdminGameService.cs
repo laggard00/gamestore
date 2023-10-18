@@ -88,8 +88,8 @@ namespace BLL.Services
 
         public async Task<GameDTO> GetGameByAlias(string alias)
         {
-            var allGames = await repository.GetAllAsync();
-            var findByAlias = allGames.SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
+            var findByAlias = await repository.GetGameByAlias(alias);
+            
             return mapper.Map<GameDTO>(findByAlias);
         }
     }

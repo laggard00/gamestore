@@ -64,6 +64,13 @@ namespace GameStore_DAL.Repositories
             return await dbSet.FindAsync(id);
         }
 
+        public async Task<GameEntity> GetGameByAlias(string alias)
+        {
+            var gameByAlias = dbSet.SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
+
+            return gameByAlias;
+        }
+
         public async Task<IEnumerable<GameEntity>> GetGamesByGenre(int genreId)
         {
            var gamesByGenre=  dbSet.Where(x => x.GenreId == genreId);

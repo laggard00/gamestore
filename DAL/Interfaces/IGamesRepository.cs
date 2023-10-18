@@ -11,5 +11,6 @@ namespace GameStore_DAL.Interfaces
     {
 
         Task<IEnumerable<GameEntity>> GetGamesByGenre(int genreId);
+        Task<GameEntity> GetGameByAlias(string alias);
     }
 }

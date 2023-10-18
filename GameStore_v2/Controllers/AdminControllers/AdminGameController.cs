@@ -67,7 +67,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<ActionResult<GameDTO>> GetById(int id)
         {
 
@@ -100,18 +100,18 @@ namespace GameStore_v2.Controllers.AdminControllers
             {
             
             
-                // If alias is not provided, generate it from the game name
-            
-                if (string.IsNullOrEmpty(value.GameAlias))
-                {
-                    value.GameAlias = value.Name.Replace(' ', '-').ToLower();
-                }
+                 // If alias is not provided, generate it from the game name
+                 
+                 if (string.IsNullOrEmpty(value.GameAlias))
+                 {
+                     value.GameAlias = value.Name.Replace(' ', '-').ToLower();
+                 }
             
             
                 var existingGame = await _service.GetGameByAlias(value.GameAlias);
                 if (existingGame != null)
                 {
-                    return Conflict("This game with this alias already exists!");
+                    return Conflict("Game with this alias already exists!");
                 }
             
             
