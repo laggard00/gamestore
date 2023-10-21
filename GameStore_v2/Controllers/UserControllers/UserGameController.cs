@@ -3,6 +3,8 @@ using BLL.Interfaces;
 using BLL.Interfaces.IAdminINTERFACES;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.Text;
+using System.Text.Json;
 
 namespace GameStore_v2.Controllers.UserController
 {
@@ -170,6 +172,34 @@ namespace GameStore_v2.Controllers.UserController
             var result = await _service.GetByIdAsync(id);
 
             return Ok(result);
+
+        }
+
+        [HttpGet("{gameAlias}/download")]
+        public async Task<ActionResult> DownloadGame(string gameAlias)
+        {
+            var game = await _service.GetGameByAlias(gameAlias);
+
+
+            if (game == null)
+            {
+                return NotFound($"Game with alias '{gameAlias}' not found.");
+            }
+
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+
+            var fileName = $"{game.Name}_{timestamp}.txt";
+
+
+            var contentType = "application/octet-stream";
+
+
+            return File(Encoding.UTF8.GetBytes(string.Empty), contentType, fileName);
+
+
+
+
 
         }
     }

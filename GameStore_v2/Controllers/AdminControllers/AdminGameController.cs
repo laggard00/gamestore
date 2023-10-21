@@ -248,13 +248,10 @@ namespace GameStore_v2.Controllers.AdminControllers
             var fileName = $"{game.Name}_{timestamp}.txt";
 
             
-            var jsonString = JsonSerializer.Serialize(game);
-
-            
             var contentType = "application/octet-stream";
 
             
-            return File(Encoding.UTF8.GetBytes(jsonString), contentType, fileName);
+            return File(Encoding.UTF8.GetBytes(string.Empty), contentType, fileName);;
 
 
 
