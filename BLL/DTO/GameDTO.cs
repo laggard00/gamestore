@@ -23,7 +23,7 @@ namespace BLL.DTO
         
         [Required(ErrorMessage = "GenreId is required.")]
         
-        public int GenreId { get; set; }
+        public List<int> GenreId { get; set; }
 
         public List<int> PlatformId { get; set; }
     }

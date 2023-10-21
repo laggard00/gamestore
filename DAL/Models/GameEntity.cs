@@ -40,27 +40,10 @@ namespace GameStore_DAL.Models
          }
 
 
-        public int GenreId { get; set; }
-
-        
-        public GenreEntity? Genre { get; set; }
-
-
+        public ICollection<GameGenre> GameGenres { get; set; }
 
         public ICollection<GamePlatform>? GamePlatforms { get; set; }
-       //
-       // private static string ReplaceSpacesWithDashes(string input)
-       // {
-       //     return input.Trim().Replace(" ", "-").ToLower();
-       // }
-       // public GameEntity(int id, string name, string description, string gameAlias)
-       // {
-       //     Id = id;
-       //     Name = name;
-       //     Description = description;
-       //     if (string.IsNullOrEmpty(gameAlias)) { this.GameAlias = ReplaceSpacesWithDashes(name); }
-       //     else { this.GameAlias = gameAlias; }
-       // }
+     
 
     }
 

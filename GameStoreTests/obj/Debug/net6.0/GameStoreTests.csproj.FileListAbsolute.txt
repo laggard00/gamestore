@@ -141,3 +141,6 @@ C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\GameStore_v2.pdb
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\DAL.pdb
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
 C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\Bogus.dll
+C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\LazyCache.dll
+C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\LazyCache.AspNetCore.dll
+C:\Users\ivan_ceskic\gamestore\GameStoreTests\bin\Debug\net6.0\Moq.dll

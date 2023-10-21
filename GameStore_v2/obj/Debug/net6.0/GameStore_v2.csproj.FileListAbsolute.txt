@@ -96,8 +96,6 @@ C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.Assemb
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.AssemblyInfo.cs
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.csproj.CoreCompileInputs.cache
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.RazorAssemblyInfo.cache
-C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.RazorAssemblyInfo.cs
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets\msbuild.GameStore_v2.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets\msbuild.build.GameStore_v2.props
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.GameStore_v2.props
@@ -105,9 +103,7 @@ C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets\msb
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets.pack.json
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\staticwebassets.development.json
-C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\scopedcss\bundle\GameStore_v2.styles.css
-C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\scopedcss\projectbundle\GameStore_v2.bundle.scp.css
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.csproj.CopyComplete
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\refint\GameStore_v2.dll
@@ -131,3 +127,5 @@ C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetC
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\LazyCache.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\LazyCache.AspNetCore.dll

@@ -1,19 +1,28 @@
-﻿using BLL.DTO;
+﻿using AutoMapper;
+using BLL.DTO;
 using BLL.Interfaces.IAdminINTERFACES;
+using GameStore_DAL.Data;
+using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore_v2.Controllers.AdminControllers
 {
-    [Route("api/admingenre/")]
+    [Route("api/admin/genre")]
     [ApiController]
     public class AdminGenreController : Controller
     {
 
         private readonly IAdminGenreService _service;
 
-        public AdminGenreController(IAdminGenreService cs)
+        
+
+        private readonly IMapper mapper;
+
+        public AdminGenreController(IAdminGenreService cs, GameStoreDbContext _context, IMapper maps)
         {
             _service = cs;
+            
+            mapper = maps;
         }
 
 
@@ -23,27 +32,35 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenreDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<GenreEntity>>> Get()
         {
+
+            
             var genres = await _service.GetAllAsync();
-
-            if (genres != null) { return Ok(genres); }
-            else { return StatusCode(404); }
-
-            throw new Exception();
+            
+            if (genres != null) 
+            {
+                return Ok(genres);
+            }
+            else 
+            {
+                return StatusCode(404); 
+            }
+            
+            
 
 
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<GenreDTO>> GetById(int id)
+        public async Task<ActionResult<GenreEntity>> GetById(int id)
         {
             var ret = await _service.GetByIdAsync(id);
             if (ret != null) { return Ok(ret); }
             else { return StatusCode(404); }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Post([FromBody] GenreDTO value)
+        [HttpPost("new")]
+        public async Task<ActionResult> Post([FromBody] GenreEntity value)
         {
 
             if (!ModelState.IsValid)
@@ -65,14 +82,14 @@ namespace GameStore_v2.Controllers.AdminControllers
                 return StatusCode(404, $"{ex.Message}");
             }
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("remove")]
+        public async Task<ActionResult> Delete([FromBody] GenreEntity value)
         {
             try
             {
 
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(value.Id);
 
                 return NoContent();
             }
@@ -81,14 +98,11 @@ namespace GameStore_v2.Controllers.AdminControllers
                 return StatusCode(404, $" {ex.Message}");
             }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put([FromBody] GenreDTO value, int id)
+        [HttpPost("update")]
+        public async Task<ActionResult> Update([FromBody] GenreEntity value)
         {
 
-            if (id != value.Id)
-            {
-                return BadRequest();
-            }
+            
 
             if (!ModelState.IsValid)
             {

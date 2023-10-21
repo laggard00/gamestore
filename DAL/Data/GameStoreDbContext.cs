@@ -54,6 +54,18 @@ namespace GameStore_DAL.Data
                 .WithMany(p => p.GamePlatforms)
                 .HasForeignKey(gp => gp.PlatformId);
 
+            modelBuilder.Entity<GameGenre>()
+            .HasKey(gg => new { gg.GameId, gg.GenreId });
+
+            modelBuilder.Entity<GameGenre>()
+                .HasOne(gg => gg.Games)
+                .WithMany(g => g.GameGenres)
+                .HasForeignKey(gg => gg.GameId);
+
+            modelBuilder.Entity<GameGenre>()
+                .HasOne(gg => gg.Genre)
+                .WithMany(g => g.GameGenres)
+                .HasForeignKey(gg => gg.GenreId);
 
 
         }
@@ -63,5 +75,6 @@ namespace GameStore_DAL.Data
         public DbSet<PlatformEntity> Platforms { get; set; }
 
         public DbSet<GamePlatform> GamePlatforms { get; set; }
+        public DbSet<GameGenre> GameGenre{ get; set; }
     }
 }

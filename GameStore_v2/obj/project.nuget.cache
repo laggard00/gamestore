@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9eIagcdEimEjZtFIMP51xRpC0wO50Cum3GbABr8WTJCxNTYlK7pwXymhbkDoy36Gn+tt1yrIxxP+wGhlr4WOeg==",
+  "dgSpecHash": "zytQFw0I1X2livBoNGmZMe8jK4N4GXN3087rCullXas53WPyzBS5QUyCo1moAaDoTBobF+/6oTbJbWhWVHsVbQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\GameStore_v2.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,8 @@
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\fakeiteasy\\7.4.0\\fakeiteasy.7.4.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\fluentassertions\\6.12.0\\fluentassertions.6.12.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\ivan_ceskic\\.nuget\\packages\\lazycache\\2.4.0\\lazycache.2.4.0.nupkg.sha512",
+    "C:\\Users\\ivan_ceskic\\.nuget\\packages\\lazycache.aspnetcore\\2.4.0\\lazycache.aspnetcore.2.4.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.0\\microsoft.aspnetcore.jsonpatch.6.0.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.0\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.0.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
