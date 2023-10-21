@@ -3,6 +3,7 @@ using BLL.Interfaces.IAdminINTERFACES;
 using FakeItEasy;
 using FluentAssertions;
 using GameStore_v2.Controllers.AdminControllers;
+using LazyCache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,7 +22,7 @@ namespace GameStoreTests.AdminControllerTests
     {
 
         private readonly IAdminGameService _service;
-        private readonly IMemoryCache _cache;
+        private readonly IAppCache _cache;
 
 
 
@@ -29,7 +30,7 @@ namespace GameStoreTests.AdminControllerTests
         public AdminGameControllerTests()
         {
             _service = A.Fake<IAdminGameService>();
-            _cache = A.Fake<IMemoryCache>();
+            _cache = A.Fake<IAppCache>();
 
 
         }
@@ -114,7 +115,7 @@ namespace GameStoreTests.AdminControllerTests
             var game = new GameDTO { Id = 2, };
 
             // Act
-            var result = await controller.Delete(game.Id);
+            var result = await controller.Remove(game);
 
             // Assert
             result.Should().BeOfType(typeof(NoContentResult));

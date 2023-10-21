@@ -6,6 +6,7 @@ using FluentAssertions;
 using FluentAssertions.Common;
 using GameStore_v2.Controllers.AdminControllers;
 using GameStore_v2.Controllers.UserController;
+using LazyCache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -19,12 +20,12 @@ namespace GameStoreTests.UserControllerTests
     public class UserGameControllerTest
     {
         private readonly IUserService _service;
-        private readonly IMemoryCache _cache;
+        private readonly IAppCache _cache;
         
         public UserGameControllerTest()
         {
             _service = A.Fake<IUserService>();
-            _cache = A.Fake<IMemoryCache>();
+            _cache = A.Fake<IAppCache>();
 
 
         }
@@ -91,7 +92,7 @@ namespace GameStoreTests.UserControllerTests
             var game = new GameDTO { Id = 2, };
 
             // Act
-            var result = await controller.Delete(game.Id);
+            var result = await controller.Remove(game);
 
             // Assert
             result.Should().BeOfType(typeof(NoContentResult));
