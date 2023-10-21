@@ -89,15 +89,15 @@ namespace GameStore_v2.Controllers.UserController
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put([FromBody] GameDTO value, int id)
+        [HttpPost("update")]
+        public async Task<ActionResult> Put([FromBody] GameDTO value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != value.Id) { return BadRequest(); }
+            
             try
             {
 

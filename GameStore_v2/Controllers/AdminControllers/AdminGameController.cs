@@ -149,14 +149,14 @@ namespace GameStore_v2.Controllers.AdminControllers
             else { return StatusCode(404); }
         }
 
-        [HttpPut("games/{id}")]
-        public async Task<ActionResult> Put([FromBody] GameDTO value, int id)
+        [HttpPost("games/update")]
+        public async Task<ActionResult> Update([FromBody] GameDTO value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (id != value.Id) { return BadRequest(); }
+          
             try
             {
 
