@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace GameStore_v2.Controllers.AdminControllers
 {
-    [Route("api/admingames/")]
+    [Route("api/admin")]
     [ApiController]
     public class AdminGameController : Controller
     {
@@ -32,7 +32,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        [HttpGet]
+        [HttpGet("games")]
             
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
@@ -67,7 +67,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("id/{id}")]
+        [HttpGet("games/id/{id}")]
         public async Task<ActionResult<GameDTO>> GetById(int id)
         {
 
@@ -88,7 +88,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [HttpPost("new")]
+        [HttpPost("games/new")]
         public async Task<ActionResult> Post([FromBody] GameDTO value)
         {
             if (value == null)
@@ -136,7 +136,7 @@ namespace GameStore_v2.Controllers.AdminControllers
 
         }
 
-        [HttpGet("{gameAlias}")]
+        [HttpGet("games/{gameAlias}")]
         public async Task<ActionResult<GameDTO>> GetGameByAlias(string gameAlias)
         {
 
@@ -149,7 +149,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             else { return StatusCode(404); }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("games/{id}")]
         public async Task<ActionResult> Put([FromBody] GameDTO value, int id)
         {
             if (!ModelState.IsValid)
@@ -176,7 +176,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("games/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -196,7 +196,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="genreId"></param>
         /// <returns></returns>
-        [HttpGet("bygenre/{genreId}")]
+        [HttpGet("games/bygenre/{genreId}")]
         public async Task<ActionResult<IEnumerable<GameDTO>>> GetGamesByGenre(int genreId)
         {
             var gamesByGenre = await _service.GetGamesByGenre(genreId);
@@ -217,7 +217,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="platformId"></param>
         /// <returns></returns>
-        [HttpGet("byplatform/{platformId}")]
+        [HttpGet("games/byplatform/{platformId}")]
         public async Task<ActionResult<IEnumerable<GameDTO>>> GetGamesByPlatform(int platformId)
         {
             var gamesByGenre = await _service.GetGamesByPlatfrom(platformId);
@@ -231,7 +231,7 @@ namespace GameStore_v2.Controllers.AdminControllers
 
         }
 
-        [HttpGet("{gameAlias}/download")]
+        [HttpGet("games/{gameAlias}/download")]
         public async Task<ActionResult> DownloadGame(string gameAlias)
         {
             var game = await _service.GetGameByAlias(gameAlias);

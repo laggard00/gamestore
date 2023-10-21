@@ -133,11 +133,11 @@ namespace GameStore_v2.Controllers.UserController
 
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
-
+            
             if (_cache.TryGetValue(cacheKey, out IEnumerable<GameDTO> result))
             {
                 HttpContext.Response.Headers["Games-Cache-Counter"] = result.Count().ToString();
-                return Ok(result);
+                return Ok(new { result, a= result.Count().ToString() });
 
             }
             else
