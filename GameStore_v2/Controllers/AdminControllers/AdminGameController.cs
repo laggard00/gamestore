@@ -176,13 +176,13 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("games/{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("games/remove")]
+        public async Task<ActionResult> Remove([FromBody] GameDTO value)
         {
             try
             {
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(value.Id);
 
                 return NoContent();
             }
