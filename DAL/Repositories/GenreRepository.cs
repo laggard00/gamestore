@@ -48,7 +48,7 @@ namespace DAL.Repositories
         public async Task<IEnumerable<GenreEntity>> GetAllAsync()
         {
 
-            return await dbSet.Include(x => x.SubGenre).ToListAsync();
+            return await dbSet.ToListAsync();
         }
 
         public async Task<GenreEntity> GetByIdAsync(int id)

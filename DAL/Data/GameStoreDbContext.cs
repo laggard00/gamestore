@@ -28,6 +28,13 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<GenreEntity>()
+                        .HasOne(genre => genre.ParentGenre)
+                        .WithMany(parent => parent.SubGenre)
+                        .HasForeignKey(genre => genre.ParentGenreId);
+                        
+
+
             modelBuilder.Entity<GameEntity>()
                 .HasIndex(x => x.Name)
                 .IsUnique(true);
