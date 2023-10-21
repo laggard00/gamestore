@@ -1,6 +1,7 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces.IAdminINTERFACES;
 using GameStore_DAL.Models;
+using LazyCache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text;
@@ -15,13 +16,15 @@ namespace GameStore_v2.Controllers.AdminControllers
     public class AdminGameController : Controller
     {
         private readonly IAdminGameService _service;
-        private readonly IMemoryCache _cache;
+        
+        private readonly IAppCache _appCache;
 
-        private readonly string cacheKey = "GameCache";
-        public AdminGameController(IAdminGameService cs, IMemoryCache cache)
+        
+        public AdminGameController(IAdminGameService cs, IAppCache appCache)
         {
             _service = cs;
-            _cache = cache;
+            
+            _appCache = appCache;
         }
 
 
@@ -36,29 +39,18 @@ namespace GameStore_v2.Controllers.AdminControllers
             
         public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
-            if (_cache.TryGetValue(cacheKey, out IEnumerable<GameDTO> result))
+            try
             {
-                return Ok(result);
+                var result = await _appCache.GetOrAdd("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
+
+                return Ok(new { result, gamesInCache = result.Count() });
             }
-            else 
+            catch (Exception ex) 
             {
-                result = await _service.GetAllAsync();
-            
-                var cacheEntryOptions = new MemoryCacheEntryOptions().
-                                                        SetSlidingExpiration(TimeSpan.FromSeconds(45)).
-                                                        SetAbsoluteExpiration(TimeSpan.FromSeconds(600)).
-                                                        SetPriority(CacheItemPriority.Normal);
-            
-                _cache.Set(cacheKey, result, cacheEntryOptions);
-            
-                return Ok(result);
+                return BadRequest(ex.Message);
             }
 
-            
-            
-          
-
-
+         
         }
 
 

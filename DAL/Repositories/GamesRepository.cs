@@ -1,4 +1,6 @@
-﻿using DAL.Models;
+﻿using Castle.Core.Internal;
+using DAL.Exceptions;
+using DAL.Models;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
@@ -54,6 +56,9 @@ namespace GameStore_DAL.Repositories
         public async Task<IEnumerable<GameEntity>> GetAllAsync()
         {
             var a = dbSet.Include(x => x.GamePlatforms).ThenInclude(x => x.Platform).Include(x=> x.Genre);
+
+            if (a.IsNullOrEmpty()) { throw new DatabaseEmptyException("Database is empty"); }
+
             return await a.ToListAsync();  
         }
 
