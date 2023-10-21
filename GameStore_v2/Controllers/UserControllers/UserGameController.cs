@@ -90,7 +90,7 @@ namespace GameStore_v2.Controllers.UserController
 
 
         [HttpPost("update")]
-        public async Task<ActionResult> Put([FromBody] GameDTO value)
+        public async Task<ActionResult> Update([FromBody] GameDTO value)
         {
             if (!ModelState.IsValid)
             {
