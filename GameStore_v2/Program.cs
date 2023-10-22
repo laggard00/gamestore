@@ -62,11 +62,11 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
-app.UseMiddleware<GamesCountMiddleware>();
 
-app.UseIpLogger("logs/ip_addresses.txt");
+
+app.UseIpLogger(builder.Configuration.GetValue<string>("Logging:IpPath"));
 app.UseGlobalExceptionMiddleware();
-app.UsePerformanceLogging("logs/performance-.txt");
+app.UsePerformanceLogging(builder.Configuration.GetValue<string>("Logging:PerformancePath"));
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseAuthorization();
