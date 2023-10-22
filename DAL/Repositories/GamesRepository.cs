@@ -2,6 +2,7 @@
 using DAL.Exceptions;
 using DAL.Migrations;
 using DAL.Models;
+using FluentAssertions.Execution;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
@@ -121,9 +122,28 @@ namespace GameStore_DAL.Repositories
             context.GameGenre.AddRange(entity.GameGenres);
 
 
+            //stackoverflow answer
+            var oldobj = context.Games.Where(x => x.Id == entity.Id).SingleOrDefault();
+
             
-            dbSet.Update(entity);
-           
+            var UpdatedObj = (GameEntity) CheckUpdateObject(oldobj, entity);
+
+            dbSet.Entry(oldobj).CurrentValues.SetValues(UpdatedObj);
+
+
+        }
+
+        public static object CheckUpdateObject(object originalObj, object updateObj)
+        {
+            foreach (var property in updateObj.GetType().GetProperties())
+            {
+                if (property.GetValue(updateObj, null) == null)
+                {
+                    property.SetValue(updateObj, originalObj.GetType().GetProperty(property.Name)
+                    .GetValue(originalObj, null));
+                }
+            }
+            return updateObj;
         }
     }
 }
