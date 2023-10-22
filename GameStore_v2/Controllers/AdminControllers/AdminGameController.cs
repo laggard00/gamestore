@@ -47,7 +47,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             try
             {
                 
-                var result = await _appCache.GetOrAdd("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
+                var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
            
                 return Ok(new { result, gamesInCache = result.Count() });
             }
