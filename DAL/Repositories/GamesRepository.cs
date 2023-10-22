@@ -1,5 +1,6 @@
 ﻿using Castle.Core.Internal;
 using DAL.Exceptions;
+using DAL.Migrations;
 using DAL.Models;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
@@ -106,11 +107,23 @@ namespace GameStore_DAL.Repositories
 
         public void Update(GameEntity entity)
         {
+            context.GamePlatforms.Where(x => x.GameId == entity.Id)
+                                 .ForEachAsync(x => context.GamePlatforms
+                                 .Remove(x));
+            
+            context.GamePlatforms.AddRange(entity.GamePlatforms);
+
+
+            context.GameGenre.Where(x => x.GameId == entity.Id)
+                             .ForEachAsync(x => context.GameGenre
+                             .Remove(x));
+
+            context.GameGenre.AddRange(entity.GameGenres);
+
+
             
             dbSet.Update(entity);
-            
-
-
+           
         }
     }
 }

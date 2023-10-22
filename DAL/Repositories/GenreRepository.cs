@@ -58,6 +58,7 @@ namespace DAL.Repositories
 
         public void Update(GenreEntity entity)
         {
+           
             dbSet.Update(entity);
         }
     }
