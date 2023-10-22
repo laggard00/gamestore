@@ -41,13 +41,14 @@ namespace BLL.AutoMapper
             CreateMap<GenreEntity, GenreDTO>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GenreName))
-                   .ForMember(dest => dest.ParentGenreId, opt => opt.Ignore());
+                   .ForMember(dest => dest.ParentGenreId, opt => opt.MapFrom(src=> src.ParentGenreId));
 
 
 
             CreateMap<GenreDTO, GenreEntity>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                    .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Name))
+                   .ForMember(dest=> dest.ParentGenreId, opt=> opt.MapFrom(src=>src.ParentGenreId))
                    .ForMember(dest => dest.SubGenre, opt => opt.Ignore())
                    .ForMember(dest => dest.GameGenres, opt => opt.Ignore());
             

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces.IAdminINTERFACES
 {
-    public interface IAdminGenreService : ICrud<GenreEntity>
+    public interface IAdminGenreService : ICrud<GenreDTO>
     {
     }
 }

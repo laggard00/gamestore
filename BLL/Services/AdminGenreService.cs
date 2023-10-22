@@ -33,38 +33,38 @@ namespace BLL.Services
 
 
 
-        public async Task<IEnumerable<GenreEntity>> GetAllAsync()
+        public async Task<IEnumerable<GenreDTO>> GetAllAsync()
         {
             var get = await repository.GetAllAsync();
 
-            return get;
+            return get.Select(x=> mapper.Map<GenreDTO>(x)).ToList();
 
         }
 
 
 
 
-        public async Task<GenreEntity> GetByIdAsync(int id)
+        public async Task<GenreDTO> GetByIdAsync(int id)
         {
             var get = await repository.GetByIdAsync(id);
 
-            return get;
+            return mapper.Map<GenreDTO>(get);
 
         }
 
 
 
-        public async Task AddAsync(GenreEntity model)
+        public async Task AddAsync(GenreDTO model)
         {
-            await repository.AddAsync(model);
+            await repository.AddAsync(mapper.Map<GenreEntity>(model));
 
             await uow.SaveAsync();
         }
 
-        public async Task UpdateAsync(GenreEntity model)
+        public async Task UpdateAsync(GenreDTO model)
         {
 
-           repository.Update(model);
+           repository.Update(mapper.Map<GenreEntity>(model));
 
            await uow.SaveAsync();
 

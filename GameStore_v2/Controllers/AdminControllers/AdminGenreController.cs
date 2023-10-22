@@ -16,13 +16,13 @@ namespace GameStore_v2.Controllers.AdminControllers
 
         
 
-        private readonly IMapper mapper;
+        
 
-        public AdminGenreController(IAdminGenreService cs, GameStoreDbContext _context, IMapper maps)
+        public AdminGenreController(IAdminGenreService cs )
         {
             _service = cs;
             
-            mapper = maps;
+            
         }
 
 
@@ -32,7 +32,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenreEntity>>> Get()
+        public async Task<ActionResult<IEnumerable<GenreDTO>>> Get()
         {
 
             
@@ -52,15 +52,27 @@ namespace GameStore_v2.Controllers.AdminControllers
 
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<GenreEntity>> GetById(int id)
+        public async Task<ActionResult<GenreDTO>> GetById(int id)
         {
-            var ret = await _service.GetByIdAsync(id);
-            if (ret != null) { return Ok(ret); }
-            else { return StatusCode(404); }
+            try
+            {
+                var ret = await _service.GetByIdAsync(id);
+
+                if (ret != null)
+                {
+                    return Ok(ret);
+                }
+
+                else
+                {
+                    return StatusCode(404);
+                }
+            }
+            catch(Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPost("new")]
-        public async Task<ActionResult> Post([FromBody] GenreEntity value)
+        public async Task<ActionResult> Post([FromBody] GenreDTO value)
         {
 
             if (!ModelState.IsValid)
@@ -83,7 +95,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
         }
         [HttpDelete("remove")]
-        public async Task<ActionResult> Delete([FromBody] GenreEntity value)
+        public async Task<ActionResult> Delete([FromBody] GenreDTO value)
         {
             try
             {
@@ -99,7 +111,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
         }
         [HttpPost("update")]
-        public async Task<ActionResult> Update([FromBody] GenreEntity value)
+        public async Task<ActionResult> Update([FromBody] GenreDTO value)
         {
 
             

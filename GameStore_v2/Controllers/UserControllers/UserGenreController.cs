@@ -18,15 +18,12 @@ namespace GameStore_v2.Controllers.UserControllers
         /// </summary>
         private readonly IAdminGenreService _service;
 
-        private readonly IMemoryCache _cache;
+      
 
-        private readonly string cacheKey = "GenreCache";
-
-
-        public UserGenreController(IAdminGenreService cs, IMemoryCache cache)
+        public UserGenreController(IAdminGenreService cs)
         {
             _service = cs;
-            _cache = cache;
+            
         }
 
 
@@ -36,7 +33,7 @@ namespace GameStore_v2.Controllers.UserControllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenreEntity>>> Get()
+        public async Task<ActionResult<IEnumerable<GenreDTO>>> Get()
         {
 
 
@@ -58,7 +55,7 @@ namespace GameStore_v2.Controllers.UserControllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GenreEntity>> GetById(int id)
+        public async Task<ActionResult<GenreDTO>> GetById(int id)
         {
             var ret = await _service.GetByIdAsync(id);
             if (ret != null) { return Ok(ret); }
@@ -67,7 +64,7 @@ namespace GameStore_v2.Controllers.UserControllers
 
 
         [HttpPost("new")]
-        public async Task<ActionResult> Post([FromBody] GenreEntity value)
+        public async Task<ActionResult> Post([FromBody] GenreDTO value)
         {
 
             if (!ModelState.IsValid)
@@ -90,7 +87,7 @@ namespace GameStore_v2.Controllers.UserControllers
             }
         }
         [HttpDelete("remove")]
-        public async Task<ActionResult> Delete([FromBody] GenreEntity value)
+        public async Task<ActionResult> Delete([FromBody] GenreDTO value)
         {
             try
             {
@@ -106,7 +103,7 @@ namespace GameStore_v2.Controllers.UserControllers
             }
         }
         [HttpPost("update")]
-        public async Task<ActionResult> Update([FromBody] GenreEntity value)
+        public async Task<ActionResult> Update([FromBody] GenreDTO value)
         {
 
 
