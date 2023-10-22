@@ -32,7 +32,7 @@ namespace GameStore_v2.Middleware
                 catch (Exception ex)
                 {
 
-                    _logger.Information( $"{DateTime.UtcNow}:" +
+                    _logger.Error( $"{DateTime.UtcNow}:" +
                                          $"{Environment.NewLine}" +
                                          $"{Environment.NewLine}" +
                                          $"{ex}" +
