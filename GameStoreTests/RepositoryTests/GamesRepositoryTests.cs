@@ -33,7 +33,7 @@ namespace GameStoreTests.RepositoryTests
                 {
                     _context.Platforms.Add(new PlatformEntity { Id = i + 1, PlatformName = $"{i}name" });
                     _context.Genres.Add(new GenreEntity { Id = i + 1, GenreName = $"{i}name" });
-                    _context.Games.Add(new GameEntity { Id = i + 1, Name = $"{i}name", Description = $"{i}desc", GameAlias = $"{i}alias", GenreId = 1 });
+                    _context.Games.Add(new GameEntity { Id = i + 1, Name = $"{i}name", Description = $"{i}desc", GameAlias = $"{i}alias"});
 
 
 
@@ -105,7 +105,7 @@ namespace GameStoreTests.RepositoryTests
         {
             //arrange
             var gameId = 222;
-            var game = new GameEntity { Id = 222, Name = "s", Description = "desc", GameAlias = "alias", GenreId = 1 };
+            var game = new GameEntity { Id = 222, Name = "s", Description = "desc", GameAlias = "alias"};
             var _context = await GetGameStoreDbContext();
             var gamesRepository = new GamesRepository(_context);
 

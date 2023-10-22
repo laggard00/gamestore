@@ -26,8 +26,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task AddAsync(GameEntity entity)
         {
-            var b = context.Genres.Find(entity.GenreId);
-            entity.Genre = b;
+           
             dbSet.Add(entity);
             await context.SaveChangesAsync();
         }
@@ -55,38 +54,59 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<GameEntity>> GetAllAsync()
         {
-            var a = dbSet.Include(x => x.GamePlatforms).ThenInclude(x => x.Platform).Include(x=> x.Genre);
+            var a = await dbSet.Include(x => x.GameGenres).Include(x=> x.GamePlatforms).ToListAsync();
 
             if (a.IsNullOrEmpty()) { throw new DatabaseEmptyException("Database is empty"); }
 
-            return await a.ToListAsync();  
+            return a;  
         }
 
-        
+
 
         public async Task<GameEntity> GetByIdAsync(int id)
         {
-            return await dbSet.FindAsync(id);
+            var b = dbSet.Include(x=>x.GamePlatforms).Include(x=>x.GameGenres).SingleOrDefault(x=> x.Id == id);
+
+            return b;
         }
 
         public async Task<GameEntity> GetGameByAlias(string alias)
         {
-            var gameByAlias = dbSet.SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
+            var gameByAlias = dbSet.Include(x=> x.GameGenres).Include(x=>x.GamePlatforms).SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
 
             return gameByAlias;
         }
 
         public async Task<IEnumerable<GameEntity>> GetGamesByGenre(int genreId)
         {
-           var gamesByGenre=  dbSet.Where(x => x.GenreId == genreId);
+            var games = context.GameGenre
+                               .Where(x => x.GenreId == genreId)
+                               .Include(x => x.Games)
+                               .ThenInclude(g => g.GameGenres)
+                               .ThenInclude(gg => gg.Genre)
+                               .Include(x => x.Games)
+                               .ThenInclude(g => g.GamePlatforms)
+                               .Select(x => x.Games)
+                               .ToList();
 
-           return await gamesByGenre.ToListAsync();
+
+
+
+            if (games.Any()) 
+            {
+                return games;
+            }
+            else
+            {
+                throw new DatabaseEmptyException("No such games");
+            }
+           
+            
         }
 
         public void Update(GameEntity entity)
         {
-            var b = context.Genres.Find(entity.GenreId);
-            entity.Genre = b;
+            
             dbSet.Update(entity);
             
 

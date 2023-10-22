@@ -26,9 +26,8 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.GameAlias, opt => opt.MapFrom(src => src.GameAlias))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                     .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GenreId))
-
-                     .ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.PlatformId.Select(platformId => new GamePlatform { PlatformId = platformId }))) ;
+                    .ForMember(dest=> dest.GameGenres, opt => opt.MapFrom(src => src.GenreId.Select(genreId => new GameGenre { GenreId = genreId, GameId=src.Id })))
+                    .ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.PlatformId.Select(platformId => new GamePlatform { PlatformId = platformId, GameId = src.Id }))) ;
 
 
             CreateMap<GameEntity, GameDTO>()
@@ -36,16 +35,24 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.GameAlias, opt => opt.MapFrom(src => src.GameAlias))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                    .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GenreId))
+                    .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GameGenres.Select(x=> x.GenreId)))
                     .ForMember(dest => dest.PlatformId, opt => opt.MapFrom(src => src.GamePlatforms.Select(x => x.PlatformId)));
 
             CreateMap<GenreEntity, GenreDTO>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GenreName));
+                   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GenreName))
+                   .ForMember(dest => dest.ParentGenreId, opt => opt.MapFrom(src=> src.ParentGenreId));
+
+
 
             CreateMap<GenreDTO, GenreEntity>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                   .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Name));
+                   .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Name))
+                   .ForMember(dest=> dest.ParentGenreId, opt=> opt.MapFrom(src=>src.ParentGenreId))
+                   .ForMember(dest => dest.SubGenre, opt => opt.Ignore())
+                   .ForMember(dest => dest.GameGenres, opt => opt.Ignore());
+            
+                   
 
             CreateMap<PlatformEntity, PlatformDTO>()
                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

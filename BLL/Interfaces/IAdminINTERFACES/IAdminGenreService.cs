@@ -1,4 +1,5 @@
 ﻿using BLL.DTO;
+using GameStore_DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

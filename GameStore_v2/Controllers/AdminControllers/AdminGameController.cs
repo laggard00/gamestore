@@ -1,8 +1,10 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces.IAdminINTERFACES;
+using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using LazyCache;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text;
 using System.Text.Json;
@@ -20,10 +22,12 @@ namespace GameStore_v2.Controllers.AdminControllers
         private readonly IAppCache _appCache;
 
         
+
+        
         public AdminGameController(IAdminGameService cs, IAppCache appCache)
         {
             _service = cs;
-            
+           
             _appCache = appCache;
         }
 
@@ -37,12 +41,13 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <exception cref="Exception"></exception>
         [HttpGet("games")]
             
-        public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<GameEntity>>> Get()
         {
+            
             try
             {
                 var result = await _appCache.GetOrAdd("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
-
+           
                 return Ok(new { result, gamesInCache = result.Count() });
             }
             catch (Exception ex) 
@@ -191,15 +196,18 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpGet("games/bygenre/{genreId}")]
         public async Task<ActionResult<IEnumerable<GameDTO>>> GetGamesByGenre(int genreId)
         {
-            var gamesByGenre = await _service.GetGamesByGenre(genreId);
+            try
+            {
+                var gamesByGenre = await _service.GetGamesByGenre(genreId);
 
-            if (gamesByGenre != null) { 
-                                            return Ok(gamesByGenre);
-                                       
+                return Ok(gamesByGenre);
+
             }
-
-
-            else { return StatusCode(404); }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
 
 
 

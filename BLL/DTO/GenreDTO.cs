@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameStore_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace BLL.DTO
         [Required(ErrorMessage = "Genre Name is required.")]
         [StringLength(100, ErrorMessage = "Name cannot be longer than 100 characters.")]
         public string Name { get; set; }
+        public int? ParentGenreId { get; set; }
         
     }
 }

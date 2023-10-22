@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0j2XbU8c1F9UtvGjpgAjUneX/TSK3mWgWaNZtK33Hi4=",
+  "Hash": "Qke+dGw9Ak4w3pnOpSp8HDXdrLg7QVeOP90CAugDSAQ=",
   "Source": "GameStore_v2",
   "BasePath": "_content/GameStore_v2",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\bundle\\GameStore_v2.styles.css",
-      "SourceId": "GameStore_v2",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/GameStore_v2",
-      "RelativePath": "GameStore_v2.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\bundle\\GameStore_v2.styles.css"
-    },
-    {
-      "Identity": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\GameStore_v2.bundle.scp.css",
-      "SourceId": "GameStore_v2",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/GameStore_v2",
-      "RelativePath": "GameStore_v2.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\GameStore_v2.bundle.scp.css"
-    },
     {
       "Identity": "C:\\Users\\ivan_ceskic\\gamestore\\GameStore_v2\\wwwroot\\css\\site.css",
       "SourceId": "GameStore_v2",

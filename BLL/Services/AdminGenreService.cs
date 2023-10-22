@@ -36,7 +36,8 @@ namespace BLL.Services
         public async Task<IEnumerable<GenreDTO>> GetAllAsync()
         {
             var get = await repository.GetAllAsync();
-            return get.Select(x => mapper.Map<GenreDTO>(x));
+
+            return get.Select(x=> mapper.Map<GenreDTO>(x)).ToList();
 
         }
 

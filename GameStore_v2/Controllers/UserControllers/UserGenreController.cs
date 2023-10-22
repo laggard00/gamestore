@@ -1,5 +1,6 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces.IAdminINTERFACES;
+using GameStore_DAL.Models;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace GameStore_v2.Controllers.UserControllers
 {
 
-    [Route("api/genres/")]
+    [Route("api/genres")]
     [ApiController]
     public class UserGenreController : Controller
     {
@@ -17,15 +18,12 @@ namespace GameStore_v2.Controllers.UserControllers
         /// </summary>
         private readonly IAdminGenreService _service;
 
-        private readonly IMemoryCache _cache;
+      
 
-        private readonly string cacheKey = "GenreCache";
-
-
-        public UserGenreController(IAdminGenreService cs, IMemoryCache cache)
+        public UserGenreController(IAdminGenreService cs)
         {
             _service = cs;
-            _cache = cache;
+            
         }
 
 
@@ -37,26 +35,25 @@ namespace GameStore_v2.Controllers.UserControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenreDTO>>> Get()
         {
-            if (_cache.TryGetValue(cacheKey, out IEnumerable<GenreDTO> result))
+
+
+            var genres = await _service.GetAllAsync();
+
+            if (genres != null)
             {
-                return Ok(result);
+                return Ok(genres);
             }
             else
             {
-                result = await _service.GetAllAsync();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions().
-                                                        SetSlidingExpiration(TimeSpan.FromSeconds(45)).
-                                                        SetAbsoluteExpiration(TimeSpan.FromSeconds(600)).
-                                                        SetPriority(CacheItemPriority.Normal);
-
-                _cache.Set(cacheKey, result, cacheEntryOptions);
-
-                return Ok(result);
+                return StatusCode(404);
             }
 
 
+
+
         }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<GenreDTO>> GetById(int id)
         {
@@ -65,7 +62,8 @@ namespace GameStore_v2.Controllers.UserControllers
             else { return StatusCode(404); }
         }
 
-        [HttpPost("/new")]
+
+        [HttpPost("new")]
         public async Task<ActionResult> Post([FromBody] GenreDTO value)
         {
 
@@ -88,14 +86,14 @@ namespace GameStore_v2.Controllers.UserControllers
                 return StatusCode(404, $"{ex.Message}");
             }
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("remove")]
+        public async Task<ActionResult> Delete([FromBody] GenreDTO value)
         {
             try
             {
 
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(value.Id);
 
                 return NoContent();
             }
@@ -104,27 +102,22 @@ namespace GameStore_v2.Controllers.UserControllers
                 return StatusCode(404, $" {ex.Message}");
             }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put([FromBody] GenreDTO value, int id)
+        [HttpPost("update")]
+        public async Task<ActionResult> Update([FromBody] GenreDTO value)
         {
 
-            if (id != value.Id)
-            {
-                return BadRequest();
-            }
+
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-
             try
             {
 
 
                 await _service.UpdateAsync(value);
-
                 return CreatedAtAction(nameof(GetById), new { id = value.Id }, value);
             }
             catch (Exception ex)
