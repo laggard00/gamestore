@@ -49,14 +49,16 @@ namespace BLL.Services
             await uow.SaveAsync();
         }
 
-        public Task UpdateAsync(GameDTO model)
+        public async Task UpdateAsync(GameDTO model)
         {
-            throw new NotImplementedException();
+            repository.Update(mapper.Map<GameEntity>(model));
+            await uow.SaveAsync();
         }
 
-        public Task DeleteAsync(int modelId)
+        public async Task DeleteAsync(int modelId)
         {
-            throw new NotImplementedException();
+            await repository.DeleteByIdAsync(modelId);
+            await uow.SaveAsync();
         }
 
         public async Task<GameDTO> GetGameByAlias(string alias)
