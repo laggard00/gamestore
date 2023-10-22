@@ -26,6 +26,7 @@ namespace DAL.Repositories
         public async Task AddAsync(PlatformEntity entity)
         {
             dbSet.Add(entity);
+            
             await context.SaveChangesAsync();
         }
 

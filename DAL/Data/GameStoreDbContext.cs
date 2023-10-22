@@ -28,6 +28,7 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PlatformEntity>().Ignore(x => x.Type);
             modelBuilder.Entity<GenreEntity>()
                         .HasOne(genre => genre.ParentGenre)
                         .WithMany(parent => parent.SubGenre)
