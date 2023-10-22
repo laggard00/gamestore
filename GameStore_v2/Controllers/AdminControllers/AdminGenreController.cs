@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore_v2.Controllers.AdminControllers
 {
-    [Route("api/admin/genre")]
+    [Route("api/admin/genres")]
     [ApiController]
     public class AdminGenreController : Controller
     {
