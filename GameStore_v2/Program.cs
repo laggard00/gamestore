@@ -8,6 +8,7 @@ using GameStore_v2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddLazyCache();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,9 +64,9 @@ app.UseSwaggerUI(c =>
 
 app.UseMiddleware<GamesCountMiddleware>();
 
-app.UseIpLogger("ip_addresses.txt");
+app.UseIpLogger("logs/ip_addresses.txt");
 app.UseGlobalExceptionMiddleware();
-app.UsePerformanceLogging("performance_log.txt");
+app.UsePerformanceLogging("logs/performance-.txt");
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseAuthorization();

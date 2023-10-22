@@ -46,6 +46,7 @@ namespace GameStore_v2.Controllers.AdminControllers
             
             try
             {
+                
                 var result = await _appCache.GetOrAdd("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
            
                 return Ok(new { result, gamesInCache = result.Count() });
@@ -67,14 +68,22 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpGet("games/id/{id}")]
         public async Task<ActionResult<GameDTO>> GetById(int id)
         {
+            try
+            {
 
-            var ret = await _service.GetByIdAsync(id);
+                var ret = await _service.GetByIdAsync(id);
 
 
-            if (ret != null) { return Ok(ret); }
+                if (ret != null) { return Ok(ret); }
 
 
-            else { return StatusCode(404); }
+                else { return StatusCode(404); }
+
+            }
+            catch(Exception ex) 
+            {
+               return BadRequest(ex.Message); 
+            }
         }
 
 

@@ -155,7 +155,6 @@ namespace GameStore_v2.Controllers.UserController
 
         public async Task<ActionResult<IEnumerable<GameDTO>>> GetById(int id)
         {
-
             var result = await _service.GetByIdAsync(id);
 
             return Ok(result);
