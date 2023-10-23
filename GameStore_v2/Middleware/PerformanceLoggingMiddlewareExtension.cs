@@ -2,9 +2,9 @@
 {
     public static class PerformanceLoggingMiddlewareExtensions
     {
-        public static IApplicationBuilder UsePerformanceLogging(this IApplicationBuilder builder, string filePath)
+        public static IApplicationBuilder UsePerformanceLogging(this IApplicationBuilder builder, string filePath, bool enable)
         {
-            return builder.UseMiddleware<PerformanceLoggingMiddleware>(filePath);
+            return builder.UseMiddleware<PerformanceLoggingMiddleware>(filePath, enable);
         }
     }
 }

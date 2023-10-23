@@ -9,30 +9,37 @@ namespace GameStore_v2.Middleware
         
         private readonly Serilog.ILogger _logger;
 
-        public PerformanceLoggingMiddleware(RequestDelegate next, string filePath)
+        private readonly bool _enabled;
+
+        public PerformanceLoggingMiddleware(RequestDelegate next, string filePath, bool enablecustomlogger)
         {
+            _enabled = enablecustomlogger; 
             _next = next;
-            
-            _logger = new LoggerConfiguration()
+            if (enablecustomlogger)
+            {
+                _logger = new LoggerConfiguration()
                         .WriteTo.Async(a => a.Sink(new CustomPeriodicBatchingSink(filePath, 10, TimeSpan.FromSeconds(60))))
                         .CreateLogger();
+            }
 
 
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            
-            Stopwatch stopwatch = new();
+            if (_enabled)
+            {
+                Stopwatch stopwatch = new();
 
-            stopwatch.Start();
+                stopwatch.Start();
 
-            await _next(context);
+                await _next(context);
 
-            stopwatch.Stop();
+                stopwatch.Stop();
 
-            _logger.Information($"[{DateTime.UtcNow}] Path: {context.Request.Path} | Time elapsed: {stopwatch.ElapsedMilliseconds}ms{Environment.NewLine} ");
-            
+                _logger.Information($"[{DateTime.UtcNow}] Path: {context.Request.Path} | Time elapsed: {stopwatch.ElapsedMilliseconds}ms{Environment.NewLine} ");
+            }
+            else { await _next(context); }
             
         }
     }

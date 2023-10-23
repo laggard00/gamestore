@@ -67,10 +67,10 @@ app.UseSwaggerUI(c =>
 });
 
 
-
-app.UseIpLogger(builder.Configuration.GetValue<string>("Logging:IpPath"));
+bool.TryParse(builder.Configuration["Serilog:EnableCustomLogger"], out bool enableCustomLogger);
+app.UseIpLogger(builder.Configuration.GetValue<string>("Logging:IpPath"),enableCustomLogger);
 app.UseGlobalExceptionMiddleware();
-app.UsePerformanceLogging(builder.Configuration.GetValue<string>("Logging:PerformancePath"));
+app.UsePerformanceLogging(builder.Configuration.GetValue<string>("Logging:PerformancePath"),enableCustomLogger);
 
 
 app.UseAuthorization();
