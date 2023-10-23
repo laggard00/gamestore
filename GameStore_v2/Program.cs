@@ -38,6 +38,10 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
 builder.Services.AddLazyCache();
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", (build) =>
+{
+    build.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+}));
 
 
 var app = builder.Build();
@@ -49,7 +53,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseCors("corspolicy");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -68,7 +72,7 @@ app.UseIpLogger(builder.Configuration.GetValue<string>("Logging:IpPath"));
 app.UseGlobalExceptionMiddleware();
 app.UsePerformanceLogging(builder.Configuration.GetValue<string>("Logging:PerformancePath"));
 
-app.UseMiddleware<GlobalExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

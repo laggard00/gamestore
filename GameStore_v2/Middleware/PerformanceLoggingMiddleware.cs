@@ -13,7 +13,9 @@ namespace GameStore_v2.Middleware
         {
             _next = next;
             
-            _logger = new LoggerConfiguration().WriteTo.File(filePath, rollingInterval: RollingInterval.Month).CreateLogger();
+            _logger = new LoggerConfiguration()
+                        .WriteTo.Async(a => a.Sink(new CustomPeriodicBatchingSink(filePath, 10, TimeSpan.FromSeconds(60))))
+                        .CreateLogger();
 
 
         }
