@@ -9,6 +9,7 @@ namespace BLL.DTO
 {
     public class PlatformDTO
     {
+        [Range(1,4, ErrorMessage ="platforms of those types don't exist")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Platform Name is required.")]

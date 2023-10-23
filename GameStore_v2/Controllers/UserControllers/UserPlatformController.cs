@@ -10,15 +10,14 @@ namespace GameStore_v2.Controllers.UserControllers
     public class UserPlatformController : Controller
     {
         private readonly IAdminPlatformService _service;
-        private readonly IMemoryCache _cache;
+        
 
-        private readonly string cacheKey = "PlatformCache";
-
-        public UserPlatformController(IAdminPlatformService cs, IMemoryCache cache)
+        public UserPlatformController(IAdminPlatformService cs)
         {
             _service = cs;
-            _cache = cache;
+            
         }
+
         /// <summary>
         /// Get all platforms
         /// </summary>
@@ -27,24 +26,12 @@ namespace GameStore_v2.Controllers.UserControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlatformDTO>>> Get()
         {
+            var genres = await _service.GetAllAsync();
 
-            if (_cache.TryGetValue(cacheKey, out IEnumerable<PlatformDTO> result))
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    result = await _service.GetAllAsync();
+            if (genres != null) { return Ok(genres); }
+            else { return StatusCode(404); }
 
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().
-                                                            SetSlidingExpiration(TimeSpan.FromSeconds(45)).
-                                                            SetAbsoluteExpiration(TimeSpan.FromSeconds(600)).
-                                                            SetPriority(CacheItemPriority.Normal);
-
-                    _cache.Set(cacheKey, result, cacheEntryOptions);
-
-                    return Ok(result);
-                }
+            throw new Exception();
 
 
         }
@@ -52,26 +39,18 @@ namespace GameStore_v2.Controllers.UserControllers
         public async Task<ActionResult<PlatformDTO>> GetById(int id)
         {
             var ret = await _service.GetByIdAsync(id);
-
-            if (ret != null) 
-            { 
-                return Ok(ret); 
-            }
-
-            else 
-            { 
-                return StatusCode(404);
-            }
+            if (ret != null) { return Ok(ret); }
+            else { return StatusCode(404); }
         }
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PlatformDTO value)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
 
             try
             {
@@ -83,17 +62,21 @@ namespace GameStore_v2.Controllers.UserControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"{ex.Message}");
+                return StatusCode(500, $"{ex.Message}");
             }
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<ActionResult> Delete([FromBody] PlatformDTO value)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
 
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(value.Id);
 
                 return NoContent();
             }
@@ -102,14 +85,11 @@ namespace GameStore_v2.Controllers.UserControllers
                 return StatusCode(404, $" {ex.Message}");
             }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put([FromBody] PlatformDTO value, int id)
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] PlatformDTO value)
         {
 
-            if (id != value.Id)
-            {
-                return BadRequest();
-            }
+
 
             if (!ModelState.IsValid)
             {

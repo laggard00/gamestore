@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore_v2.Controllers.AdminControllers
 {
-    [Route("api/adminplatform/")]
+    [Route("api/admin/platforms")]
     [ApiController]
     public class AdminPlatformController : Controller
     {
@@ -58,17 +58,21 @@ namespace GameStore_v2.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, $"{ex.Message}");
+                return StatusCode(500, $"{ex.Message}");
             }
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<ActionResult> Delete([FromBody] PlatformDTO value)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
 
 
-                await _service.DeleteAsync(id);
+                await _service.DeleteAsync(value.Id);
 
                 return NoContent();
             }
@@ -77,14 +81,11 @@ namespace GameStore_v2.Controllers.AdminControllers
                 return StatusCode(404, $" {ex.Message}");
             }
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put([FromBody] PlatformDTO value, int id)
+        [HttpPut]
+        public async Task<ActionResult> Put([FromBody] PlatformDTO value)
         {
 
-            if (id != value.Id)
-            { 
-                return BadRequest();
-            }
+            
 
             if (!ModelState.IsValid)
             {

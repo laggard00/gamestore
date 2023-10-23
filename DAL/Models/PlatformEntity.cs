@@ -3,16 +3,27 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameStore_DAL.Models
 {
-    public class PlatformEntity : BaseEntity 
+    public class PlatformEntity : BaseEntity
+
+
 
     {
-        [Required]
-        public string PlatformName { get; set; }
 
-
+        public PlatformType Type { get { return (PlatformType)Id; } set { Id = (int)value; } }
         public ICollection<GamePlatform> GamePlatforms { get; set; }
 
 
 
+
+
+
+
+    }
+    public enum PlatformType
+    {
+        Mobile=1,
+        Browser=2,
+        Desktop=3,
+        Console=4
     }
 }
