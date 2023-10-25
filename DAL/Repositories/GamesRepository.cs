@@ -56,7 +56,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<GameEntity>> GetAllAsync()
         {
-            var a = await dbSet.Include(x => x.GameGenres).Include(x=> x.GamePlatforms).ToListAsync();
+            var a = await dbSet.Include(x => x.GameGenres).ThenInclude(x=> x.Genre).Include(x=> x.GamePlatforms).ThenInclude(x=> x.Platform).ToListAsync();
 
             if (a.IsNullOrEmpty()) { throw new DatabaseEmptyException("Database is empty"); }
 

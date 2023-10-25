@@ -28,6 +28,8 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PublisherEntity>().HasKey(e => e.Id);
+                        
 
             modelBuilder.Entity<PlatformEntity>().Ignore(x => x.Type);
 
@@ -83,6 +85,8 @@ namespace GameStore_DAL.Data
         public DbSet<GameEntity> Games { get; set; }
         public DbSet<GenreEntity> Genres { get; set; }
         public DbSet<PlatformEntity> Platforms { get; set; }
+
+        public DbSet<PublisherEntity> Publishers { get; set; }
 
         public DbSet<GamePlatform> GamePlatforms { get; set; }
         public DbSet<GameGenre> GameGenre{ get; set; }

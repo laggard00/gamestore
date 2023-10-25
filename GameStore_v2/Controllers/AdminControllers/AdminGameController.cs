@@ -40,8 +40,8 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet("games")]
-            
-        public async Task<ActionResult<IEnumerable<GameEntity>>> Get()
+            ///you changed this recently carefull
+        public async Task<ActionResult<IEnumerable<GameDTO>>> Get()
         {
             
             try

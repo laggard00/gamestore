@@ -38,8 +38,15 @@ namespace GameStore_DAL.Models
              }
              set => _gameAlias = value;
          }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Price { get; set; }
 
+        public byte Discount { get; set; }
 
+        public short UnitInStock { get; set; }
+ 
+        
+       
         public ICollection<GameGenre> GameGenres { get; set; }
 
         public ICollection<GamePlatform>? GamePlatforms { get; set; }

@@ -24,6 +24,8 @@ namespace GameStore_DAL.Data
 
         public IGamePlatformRepository GamePlatformRepository => new GamePlatformRepository(context);
 
+        public IPublisherRepository PublisherRepository => new PublisherRepository(context);
+
         public async Task SaveAsync()
         {
             await context.SaveChangesAsync();

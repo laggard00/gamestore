@@ -15,6 +15,8 @@ namespace GameStore_DAL.Interfaces
 
         IGamePlatformRepository GamePlatformRepository { get; }
 
+        IPublisherRepository PublisherRepository { get; }
+
         Task SaveAsync();
     }
 }
