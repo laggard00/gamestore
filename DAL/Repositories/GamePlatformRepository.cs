@@ -22,7 +22,7 @@ namespace DAL.Repositories
             dbSet = context.GamePlatforms;
         }
 
-        public async Task<List<GamePlatform>> GetGamePlatformByPlatfromId(int platformId)
+        public async Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId)
         {
             var a = dbSet.Where(x => x.PlatformId == platformId).Include(x => x.Game);
             return await a.ToListAsync();

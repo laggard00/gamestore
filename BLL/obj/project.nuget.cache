@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gx0G4ZXEak+/gt8LuXcNGXRJ+Zk/yPeyesUeu/d9sZdqY7tdOnwEolKf1eZ1zrDlyWdW8WrVIz/Q8IuwQT0j6g==",
+  "dgSpecHash": "7kpiyVm1/aX9mpGIjSNRP+EavV16jjrBvnXtDeebsqaOUaKLWXaenozBi2WD33ivSKuJ/ybjVQNvcYbNHGZiiw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\BLL.csproj",
+  "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\GameStore.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -1,0 +1,14 @@
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.csproj.AssemblyReference.cache
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.AssemblyInfoInputs.cache
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.AssemblyInfo.cs
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.csproj.CoreCompileInputs.cache
+C:\Users\ivan_ceskic\gamestore\DAL\bin\Debug\net6.0\GameStore.DAL.deps.json
+C:\Users\ivan_ceskic\gamestore\DAL\bin\Debug\net6.0\GameStore.DAL.runtimeconfig.json
+C:\Users\ivan_ceskic\gamestore\DAL\bin\Debug\net6.0\GameStore.DAL.dll
+C:\Users\ivan_ceskic\gamestore\DAL\bin\Debug\net6.0\GameStore.DAL.pdb
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.dll
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\refint\GameStore.DAL.dll
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.pdb
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\GameStore.DAL.genruntimeconfig.cache
+C:\Users\ivan_ceskic\gamestore\DAL\obj\Debug\net6.0\ref\GameStore.DAL.dll

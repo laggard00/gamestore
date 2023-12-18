@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore_v2", "GameStore_v2.csproj", "{5A390462-05FC-46A7-9CDB-CD6141C97197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore.WEB", "GameStore.WEB.csproj", "{5A390462-05FC-46A7-9CDB-CD6141C97197}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "..\DAL\DAL.csproj", "{9C15C495-34B6-4D50-893B-CDB08A4F6696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore.DAL", "..\DAL\GameStore.DAL.csproj", "{9C15C495-34B6-4D50-893B-CDB08A4F6696}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "..\BLL\BLL.csproj", "{89535D08-0D6D-4600-BCDC-15355637384E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore.BLL", "..\BLL\GameStore.BLL.csproj", "{89535D08-0D6D-4600-BCDC-15355637384E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

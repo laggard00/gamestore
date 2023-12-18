@@ -11,6 +11,6 @@ namespace DAL.Interfaces
     public interface IGamePlatformRepository 
     {
 
-        Task<List<GamePlatform>> GetGamePlatformByPlatfromId(int platformId);
+        Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId);
     }
 }

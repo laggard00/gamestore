@@ -77,9 +77,9 @@ namespace BLL.Services
 
         }
 
-        public async Task<IEnumerable<GameDTO>> GetGamesByPlatfrom(int platfromId)
+        public async Task<IEnumerable<GameDTO>> GetGamesByPlatform(int platformId)
         {
-            var allGames = await platform.GetGamePlatformByPlatfromId(platfromId);
+            var allGames = await platform.GetGamePlatformByPlatformId(platformId);
             var selectingJustGames = allGames.Select(x => x.Game);
             
 

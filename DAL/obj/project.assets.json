@@ -6863,9 +6863,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\DAL.csproj",
-      "projectName": "DAL",
-      "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\GameStore.DAL.csproj",
+      "projectName": "GameStore.DAL",
+      "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\GameStore.DAL.csproj",
       "packagesPath": "C:\\Users\\ivan_ceskic\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\obj\\",
       "projectStyle": "PackageReference",

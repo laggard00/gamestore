@@ -12,7 +12,7 @@ namespace BLL.Interfaces.IAdminINTERFACES
     {
         Task<IEnumerable<GameDTO>> GetGamesByGenre(int genreId);
 
-        Task<IEnumerable<GameDTO>> GetGamesByPlatfrom(int platfromId);
+        Task<IEnumerable<GameDTO>> GetGamesByPlatform(int platformId);
 
         Task<GameDTO> GetGameByAlias(string alias);
 

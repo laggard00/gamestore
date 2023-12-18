@@ -1998,7 +1998,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "DAL/1.0.0": {
+      "GameStore.DAL/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -2015,10 +2015,10 @@
           "Swashbuckle.AspNetCore.SwaggerUI": "6.5.0"
         },
         "compile": {
-          "bin/placeholder/DAL.dll": {}
+          "bin/placeholder/GameStore.DAL.dll": {}
         },
         "runtime": {
-          "bin/placeholder/DAL.dll": {}
+          "bin/placeholder/GameStore.DAL.dll": {}
         }
       }
     }
@@ -6505,19 +6505,19 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "DAL/1.0.0": {
+    "GameStore.DAL/1.0.0": {
       "type": "project",
-      "path": "../DAL/DAL.csproj",
-      "msbuildProject": "../DAL/DAL.csproj"
+      "path": "../DAL/GameStore.DAL.csproj",
+      "msbuildProject": "../DAL/GameStore.DAL.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
-      "DAL >= 1.0.0",
       "FakeItEasy >= 7.4.0",
       "FluentAssertions >= 6.12.0",
+      "GameStore.DAL >= 1.0.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 6.0.0",
       "Microsoft.Extensions.Caching.Memory >= 7.0.0",
       "Swashbuckle.AspNetCore.Swagger >= 6.5.0",
@@ -6532,9 +6532,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\BLL.csproj",
-      "projectName": "BLL",
-      "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\BLL.csproj",
+      "projectUniqueName": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\GameStore.BLL.csproj",
+      "projectName": "GameStore.BLL",
+      "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\GameStore.BLL.csproj",
       "packagesPath": "C:\\Users\\ivan_ceskic\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\ivan_ceskic\\gamestore\\BLL\\obj\\",
       "projectStyle": "PackageReference",
@@ -6558,8 +6558,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\DAL.csproj"
+            "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\GameStore.DAL.csproj": {
+              "projectPath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\GameStore.DAL.csproj"
             }
           }
         }

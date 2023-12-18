@@ -129,3 +129,8 @@ C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Swashbuckle.AspNetC
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\obj\Debug\net6.0\GameStore_v2.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\LazyCache.dll
 C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\LazyCache.AspNetCore.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Serilog.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Serilog.Sinks.Async.dll
+C:\Users\ivan_ceskic\gamestore\GameStore_v2\bin\Debug\net6.0\Serilog.Sinks.PeriodicBatching.dll

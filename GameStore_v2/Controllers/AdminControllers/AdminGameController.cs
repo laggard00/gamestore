@@ -1,7 +1,6 @@
-﻿using BLL.DTO;
+﻿
+using BLL.DTO;
 using BLL.Interfaces.IAdminINTERFACES;
-using GameStore_DAL.Data;
-using GameStore_DAL.Models;
 using LazyCache;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -229,7 +228,7 @@ namespace GameStore_v2.Controllers.AdminControllers
         [HttpGet("games/byplatform/{platformId}")]
         public async Task<ActionResult<IEnumerable<GameDTO>>> GetGamesByPlatform(int platformId)
         {
-            var gamesByGenre = await _service.GetGamesByPlatfrom(platformId);
+            var gamesByGenre = await _service.GetGamesByPlatform(platformId);
 
             if (gamesByGenre != null) { return Ok(gamesByGenre); }
 

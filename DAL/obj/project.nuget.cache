@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "to2AuMTjG1b3J4lkZmydG0DTjFWZmbD4G1UR6qSmIGsqzIX7V2fUSVDNxOWPOIrZuAQBAgD9hHXgbINrvfOrOA==",
+  "dgSpecHash": "gmhBhPohLgisXrAilZ11TbGxbOfvIp/K8n7Hd65Pk57gaLasFxWel2omsPo70v/iaeo4IY1Xr/c2c/w96VFH7g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\DAL.csproj",
+  "projectFilePath": "C:\\Users\\ivan_ceskic\\gamestore\\DAL\\GameStore.DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\ivan_ceskic\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
