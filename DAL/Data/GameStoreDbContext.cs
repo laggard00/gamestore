@@ -28,8 +28,11 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PublisherEntity>().HasKey(e => e.Id);
-                        
+            modelBuilder.Entity<GameEntity>()
+           .HasOne(p => p.Publisher)
+           .WithMany(b => b.Games)
+           .HasForeignKey(p => p.PublisherId);
+
 
             modelBuilder.Entity<PlatformEntity>().Ignore(x => x.Type);
 

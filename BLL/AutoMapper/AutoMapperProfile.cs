@@ -26,7 +26,8 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.GameAlias, opt => opt.MapFrom(src => src.GameAlias))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                   // .ForMember(dest => dest.Publisher, opt => opt.MapFrom(src => src.Publisher))
+                    .ForMember(dest => dest.PublisherId, opt => opt.MapFrom(src => src.Publisher.Id))
+                    .ForMember(dest => dest.Publisher, opt => opt.Ignore())
                     //.ForMember(dest => dest.GameGenres, opt => opt.MapFrom(src => src.GenreId.Select(genreId => new GameGenre { GenreId = genreId, GameId = src.Id })))
                     //.ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.PlatformId.Select(platformId => new GamePlatform { PlatformId = platformId, GameId = src.Id })))
                     .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount))
@@ -34,8 +35,8 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
                     .ForMember(dest => dest.GameGenres, opt => opt.MapFrom(src => src.Genres.Select(x => new GameGenre { GenreId = x.Id, GameId = src.Id })))
                     .ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.Platforms.Select(x => new GamePlatform { PlatformId = x.Id, GameId = src.Id })));
-                   
 
+            
 
 
             CreateMap<GameEntity, GameDTO>()
@@ -46,7 +47,7 @@ namespace BLL.AutoMapper
                     //.ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GameGenres.Select(x => x.GenreId)))
                     //.ForMember(dest => dest.PlatformId, opt => opt.MapFrom(src => src.GamePlatforms.Select(x => x.PlatformId)))
                     //
-                   // .ForMember(dest=>dest.Publisher, opt=> opt.MapFrom(src=> src.Publisher))
+                    .ForMember(dest=>dest.Publisher, opt=> opt.MapFrom(src=> src.Publisher))
                     .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount))
                     .ForMember(dest => dest.UnitInStock, opt => opt.MapFrom(src => src.UnitInStock))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
@@ -55,20 +56,32 @@ namespace BLL.AutoMapper
             // .ForMember(dest => dest.GenreNames, opt => opt.MapFrom(src=> src.GameGenres.Select(x=> x.Genre.GenreName))).
             // ForMember(dest => dest.PlatformNames, opt => opt.MapFrom(src=> src.GamePlatforms.Select(x=> x.Platform.Type.ToString())));
 
+            CreateMap<PublisherEntity, PublisherBasicDTO>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
+                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName));
+                    
+
+            CreateMap<PublisherBasicDTO, PublisherEntity>()
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
+                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
+                    .ForMember(dest => dest.HomePage, opt => opt.Ignore())
+                    .ForMember(dest => dest.Descritpion, opt => opt.Ignore())
+                    .ForMember(dest => dest.Games, opt => opt.Ignore());
+
 
             CreateMap<PublisherEntity, PublisherDTO>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
                     .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
                     .ForMember(dest => dest.HomePage, opt => opt.MapFrom(x => x.HomePage))
-                    .ForMember(dest => dest.Descritpion, opt => opt.MapFrom(x => x.Descritpion));
-                    // .ForMember(dest => dest.Games, opt => opt.MapFrom(x=> x.Games));
+                    .ForMember(dest => dest.Description, opt => opt.MapFrom(x => x.Descritpion))
+                    .ForMember(dest => dest.Games, opt => opt.MapFrom(x=> x.Games));
 
             CreateMap<PublisherDTO, PublisherEntity>()
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
                     .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
                     .ForMember(dest => dest.HomePage, opt => opt.MapFrom(x => x.HomePage))
-                    .ForMember(dest => dest.Descritpion, opt => opt.MapFrom(x => x.Descritpion));
-                   // .ForMember(dest => dest.Games, opt => opt.MapFrom(x => x.Games));
+                    .ForMember(dest => dest.Descritpion, opt => opt.MapFrom(x => x.Description))
+                     .ForMember(dest => dest.Games, opt => opt.Ignore());
 
 
 

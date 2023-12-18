@@ -26,6 +26,8 @@ namespace BLL.DTO
 
         public List<GenreDTO> Genres { get; set; }
         public List<PlatformDTO> Platforms { get; set; }
+
+        public PublisherBasicDTO Publisher { get; set; }
        //  public List<int> GenreId { get; set; }
        // 
        // 

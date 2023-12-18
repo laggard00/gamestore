@@ -21,6 +21,7 @@ namespace DAL.Models
         
         public string HomePage { get; set; }
 
+        public ICollection<GameEntity>? Games { get; set; }
         
         
     }

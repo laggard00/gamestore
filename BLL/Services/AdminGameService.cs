@@ -50,7 +50,8 @@ namespace BLL.Services
 
         public async Task AddAsync(GameDTO model)
         {
-            await repository.AddAsync(mapper.Map<GameEntity>(model));
+            var maped = mapper.Map<GameEntity>(model);
+            await repository.AddAsync(maped);
             await uow.SaveAsync();
         }
 

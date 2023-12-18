@@ -6,12 +6,13 @@ using FluentAssertions.Common;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Security.AccessControl;
 
 namespace GameStore_v2.Controllers.AdminControllers
 {
-    [Route("admin/publisher")]
+    [Route("api/admin/publisher")]
     [ApiController]
     public class AdminPublisherController : Controller
     {
@@ -65,6 +66,19 @@ namespace GameStore_v2.Controllers.AdminControllers
                
             }
             catch(Exception ex) { return BadRequest("error happended while getting publisher by name"); }
+        }
+
+        [HttpGet("getBasicPublisherDTO")]
+        public async Task<ActionResult<PublisherDTO>> GetPublisherBasicDTO()
+        {
+            try
+            {
+                var publisher = await dbContext.Publishers.ToListAsync();
+                var publisherMapped = publisher.Select(x => mapper.Map<PublisherBasicDTO>(x));
+                return Ok(publisherMapped);
+
+            }
+            catch (Exception ex) { return BadRequest("error happended while getting publisher by name"); }
         }
 
     }

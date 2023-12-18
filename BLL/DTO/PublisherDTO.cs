@@ -14,11 +14,11 @@ namespace BLL.DTO
         [Required(ErrorMessage ="Company Name is required property")]
         public string CompanyName { get; set; }
         [Required(ErrorMessage = "Description is required property")]
-        public string Descritpion { get; set; }
+        public string Description { get; set; }
         [Required(ErrorMessage = "Home page is required property")]
         public string HomePage { get; set; }
 
-        public List<GameDTO> Games { get; set; }
+        public List<GameDTO>? Games { get; set; }
 
         
         

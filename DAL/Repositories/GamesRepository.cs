@@ -28,9 +28,15 @@ namespace GameStore_DAL.Repositories
 
         public async Task AddAsync(GameEntity entity)
         {
-           
+            var b = context.Games.First();
+            b.Publisher= entity.Publisher;
+
+            var c = b.Publisher;
+            
+            
+            
             dbSet.Add(entity);
-            await context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Delete(GameEntity entity)
@@ -56,7 +62,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<GameEntity>> GetAllAsync()
         {
-            var a = await dbSet.Include(x => x.GameGenres).ThenInclude(x=> x.Genre).Include(x=> x.GamePlatforms).ThenInclude(x=> x.Platform).ToListAsync();
+            var a = await dbSet.Include(x => x.GameGenres).ThenInclude(x=> x.Genre).Include(x=> x.GamePlatforms).ThenInclude(x=> x.Platform).Include(x=> x.Publisher).ToListAsync();
 
             if (a.IsNullOrEmpty()) { throw new DatabaseEmptyException("Database is empty"); }
 
@@ -67,7 +73,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task<GameEntity> GetByIdAsync(int id)
         {
-            var b = dbSet.Include(x=>x.GamePlatforms).Include(x=>x.GameGenres).SingleOrDefault(x=> x.Id == id);
+            var b = dbSet.Include(x => x.GameGenres).ThenInclude(x => x.Genre).Include(x => x.GamePlatforms).ThenInclude(x => x.Platform).Include(x => x.Publisher).SingleOrDefault(x=> x.Id == id);
 
             return b;
         }

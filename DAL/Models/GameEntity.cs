@@ -44,9 +44,11 @@ namespace GameStore_DAL.Models
         public byte Discount { get; set; }
 
         public short UnitInStock { get; set; }
- 
-        
-       
+
+        public int PublisherId { get; set; } 
+        [ForeignKey("PublisherId")]
+        public  PublisherEntity Publisher { get; set; }
+
         public ICollection<GameGenre> GameGenres { get; set; }
 
         public ICollection<GamePlatform>? GamePlatforms { get; set; }
