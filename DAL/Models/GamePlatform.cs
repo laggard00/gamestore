@@ -10,12 +10,11 @@ namespace DAL.Models
 {
     public class GamePlatform
     {
-        public int GameId { get; set; }
-        public GameEntity Game { get; set; }
+        public Guid GameId { get; set; }
         
-        public int PlatformId { get; set; }
+        public Guid PlatformId { get; set; }
 
-        public PlatformEntity Platform { get; set; }
+        
         
         
     }

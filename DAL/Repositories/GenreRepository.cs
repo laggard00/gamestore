@@ -1,4 +1,4 @@
-﻿using DAL.Interfaces;
+﻿
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class GenreRepository : IGenreRepository
+    public class GenreRepository 
     {
         protected readonly GameStoreDbContext context;
         private readonly DbSet<GenreEntity> dbSet;
@@ -22,7 +22,7 @@ namespace DAL.Repositories
         public async Task AddAsync(GenreEntity entity)
         {
             dbSet.Add(entity);
-            await context.SaveChangesAsync();
+            
         }
 
         public void Delete(GenreEntity entity)
@@ -34,7 +34,7 @@ namespace DAL.Repositories
             }
         }
 
-        public Task DeleteByIdAsync(int id)
+        public Task DeleteByIdAsync(Guid id)
         {
             var find = dbSet.Find(id);
             if (find != null)
@@ -47,19 +47,36 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<GenreEntity>> GetAllAsync()
         {
-
             return await dbSet.ToListAsync();
         }
-
-        public async Task<GenreEntity> GetByIdAsync(int id)
+        public async Task<IEnumerable<GenreEntity>> GetAllByParentGenreAsync(Guid parentId)
         {
-            return dbSet.Include(x=> x.SubGenre).SingleOrDefault(x=> x.Id==id);
+            return await dbSet.Where(x => x.ParentGenreId == parentId).ToListAsync();
+        }
+        public async Task<bool> CheckIfGenreGuidsExist(IEnumerable<Guid> Guids) 
+        {
+            foreach (var id in Guids)
+            {
+                var exists = await context.Genres.AnyAsync(genre => genre.Id == id);
+
+                if (!exists)
+                    return false;
+            }
+            return true;
+        }
+        public async Task<GenreEntity> GetByIdAsync(Guid id)
+        {
+            return dbSet.Where(x => x.Id == id).FirstOrDefault();
         }
 
         public void Update(GenreEntity entity)
         {
-           
             dbSet.Update(entity);
+        }
+
+        public async Task<IEnumerable<GenreEntity>> GetAllByGenreGuids(IEnumerable<Guid> GenreGuids)
+        {
+            return await dbSet.Where(x => GenreGuids.Contains(x.Id)).ToListAsync();
         }
     }
 }

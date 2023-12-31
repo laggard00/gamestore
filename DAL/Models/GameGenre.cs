@@ -9,10 +9,9 @@ namespace DAL.Models
 {
     public class GameGenre
     {
-        public int GameId { get; set; }
-        public GameEntity Games { get; set; }
+        public Guid GameId { get; set; }
 
-        public int GenreId { get; set; }
-        public GenreEntity Genre { get; set; }
+        public Guid GenreId { get; set; }
+        
     }
 }

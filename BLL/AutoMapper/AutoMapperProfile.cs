@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using System.Linq.Expressions;
-using BLL.DTO;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using DAL.Models;
 using GameStore_DAL.Data;
+using GameStore.BLL.DTO;
+using GameStore.DAL.Models;
 
 namespace BLL.AutoMapper
 {
@@ -21,93 +22,53 @@ namespace BLL.AutoMapper
 
 
 
-            CreateMap<GameDTO, GameEntity>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                    .ForMember(dest => dest.GameAlias, opt => opt.MapFrom(src => src.GameAlias))
-                    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                    .ForMember(dest => dest.PublisherId, opt => opt.MapFrom(src => src.Publisher.Id))
-                    .ForMember(dest => dest.Publisher, opt => opt.Ignore())
-                    //.ForMember(dest => dest.GameGenres, opt => opt.MapFrom(src => src.GenreId.Select(genreId => new GameGenre { GenreId = genreId, GameId = src.Id })))
-                    //.ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.PlatformId.Select(platformId => new GamePlatform { PlatformId = platformId, GameId = src.Id })))
-                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount))
-                    .ForMember(dest => dest.UnitInStock, opt => opt.MapFrom(src => src.UnitInStock))
-                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                    .ForMember(dest => dest.GameGenres, opt => opt.MapFrom(src => src.Genres.Select(x => new GameGenre { GenreId = x.Id, GameId = src.Id })))
-                    .ForMember(dest => dest.GamePlatforms, opt => opt.MapFrom(src => src.Platforms.Select(x => new GamePlatform { PlatformId = x.Id, GameId = src.Id })));
-
-            
-
-
-            CreateMap<GameEntity, GameDTO>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                    .ForMember(dest => dest.GameAlias, opt => opt.MapFrom(src => src.GameAlias))
-                    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                    //.ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.GameGenres.Select(x => x.GenreId)))
-                    //.ForMember(dest => dest.PlatformId, opt => opt.MapFrom(src => src.GamePlatforms.Select(x => x.PlatformId)))
-                    //
-                    .ForMember(dest=>dest.Publisher, opt=> opt.MapFrom(src=> src.Publisher))
-                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount))
-                    .ForMember(dest => dest.UnitInStock, opt => opt.MapFrom(src => src.UnitInStock))
-                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                    .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.GameGenres.Select(x => x.Genre)))
-                    .ForMember(dest => dest.Platforms, opt => opt.MapFrom(src => src.GamePlatforms.Select(x => x.Platform)));
-            // .ForMember(dest => dest.GenreNames, opt => opt.MapFrom(src=> src.GameGenres.Select(x=> x.Genre.GenreName))).
-            // ForMember(dest => dest.PlatformNames, opt => opt.MapFrom(src=> src.GamePlatforms.Select(x=> x.Platform.Type.ToString())));
-
-            CreateMap<PublisherEntity, PublisherBasicDTO>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
-                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName));
-                    
-
-            CreateMap<PublisherBasicDTO, PublisherEntity>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
-                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
-                    .ForMember(dest => dest.HomePage, opt => opt.Ignore())
-                    .ForMember(dest => dest.Descritpion, opt => opt.Ignore())
-                    .ForMember(dest => dest.Games, opt => opt.Ignore());
-
-
-            CreateMap<PublisherEntity, PublisherDTO>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
-                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
-                    .ForMember(dest => dest.HomePage, opt => opt.MapFrom(x => x.HomePage))
-                    .ForMember(dest => dest.Description, opt => opt.MapFrom(x => x.Descritpion))
-                    .ForMember(dest => dest.Games, opt => opt.MapFrom(x=> x.Games));
-
-            CreateMap<PublisherDTO, PublisherEntity>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(x => x.Id))
-                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(x => x.CompanyName))
-                    .ForMember(dest => dest.HomePage, opt => opt.MapFrom(x => x.HomePage))
-                    .ForMember(dest => dest.Descritpion, opt => opt.MapFrom(x => x.Description))
-                     .ForMember(dest => dest.Games, opt => opt.Ignore());
-
-
-
-            CreateMap<GenreEntity, GenreDTO>()
-                   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GenreName))
-                   .ForMember(dest => dest.ParentGenreId, opt => opt.MapFrom(src=> src.ParentGenreId));
-
-
+            CreateMap<POST_GameDTO, Game>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Game.Name))
+                    .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Game.Key))
+                    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Game.Description))
+                    .ForMember(dest => dest.UnitInStock, opt => opt.MapFrom(src => src.Game.unitInStock))
+                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Game.price))
+                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Game.discount))
+                    .ForMember(dest => dest.PublisherId, opt => opt.MapFrom(src => src.Publisher));
 
             CreateMap<GenreDTO, GenreEntity>()
-                   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                   .ForMember(dest => dest.GenreName, opt => opt.MapFrom(src => src.Name))
-                   .ForMember(dest=> dest.ParentGenreId, opt=> opt.MapFrom(src=>src.ParentGenreId))
-                   .ForMember(dest => dest.SubGenre, opt => opt.Ignore())
-                   .ForMember(dest => dest.GameGenres, opt => opt.Ignore());
-            
-                   
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name))
+                    .ForMember(dest => dest.ParentGenreId, opt => opt.MapFrom(src => src.parentGenreId));
 
-            CreateMap<PlatformEntity, PlatformDTO>()
-                   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Type.ToString()));
+            CreateMap<PlatformDTO, Platform>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.type));
 
-            CreateMap<PlatformDTO, PlatformEntity>()
-                  .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                  .ForMember(dest => dest.Type, opt => opt.MapFrom(src => (PlatformType)src.Id));
+            CreateMap<PublisherDTO, Publisher>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.HomePage, opt => opt.MapFrom(src => src.homePage))
+                    .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.companyName))
+                    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.description));
+
+            CreateMap<GenreEntity, GET_Genre>()
+                    .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<Order,OrderDTO>()
+                    .ForMember(dest=> dest.date, opt=> opt.MapFrom(src=>src.Date))
+                    .ForMember(dest=> dest.id,opt=>opt.MapFrom(src=>src.Id))
+                    .ForMember(dest=>dest.customerId, opt=>opt.MapFrom(src=> src.CustomerId));
+
+            CreateMap<OrderGame, OrderGameDTO>()
+                    .ForMember(dest => dest.productId, opt => opt.MapFrom(src => src.ProductId))
+                    .ForMember(dest => dest.price, opt => opt.MapFrom(src => src.Price))
+                    .ForMember(dest => dest.quantity, opt => opt.MapFrom(src => src.Quantity))
+                    .ForMember(dest => dest.discount, opt => opt.MapFrom(src => src.Discount));
+
+            CreateMap<Comment, GET_Comment>()
+                    .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
+                    .ForMember(dest => dest.body, opt => opt.MapFrom(src => src.Body))
+                    .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.childComments, opt => opt.MapFrom(src => src.Children));
+
+                    
 
         }
        

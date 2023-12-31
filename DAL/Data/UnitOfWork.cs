@@ -5,26 +5,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameStore_DAL.Repositories;
-using DAL.Interfaces;
 using DAL.Repositories;
+using GameStore.DAL.Repositories;
 
 namespace GameStore_DAL.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly GameStoreDbContext context;
-        public UnitOfWork(GameStoreDbContext context)
+        public GamesRepository GamesRepository { get; }
+
+        public GenreRepository GenreRepository{ get; }
+        public PlatformRepository PlatformRepository{ get; }
+
+        public GamePlatformRepository GamePlatformRepository{ get; }
+        public GameGenreRepository GameGenreRepository { get; }
+        public PublisherRepository PublisherRepository{ get; }
+        public OrderCartRepository OrderCartRepository{ get; }
+        public CommentRepository CommentRepository{ get; }
+
+
+        public UnitOfWork(GameStoreDbContext context, GamesRepository gamesRepository,
+                          GenreRepository genreRepository, PlatformRepository platformRepository,
+                          GamePlatformRepository gamePlatformRepository, PublisherRepository publisherRepository,GameGenreRepository gameGenre,OrderCartRepository ocrepository,CommentRepository cmRepository)
         {
             this.context = context;
+            GamesRepository = gamesRepository;
+            GenreRepository = genreRepository;
+            PlatformRepository = platformRepository;
+            GamePlatformRepository = gamePlatformRepository;
+            PublisherRepository = publisherRepository;
+            GameGenreRepository = gameGenre;
+            OrderCartRepository = ocrepository;
+            CommentRepository = cmRepository;
         }
-        public IGamesRepository GamesRepository => new GamesRepository(context);
-
-        public IGenreRepository GenreRepository => new GenreRepository(context);
-        public IPlatformRepository PlatformRepository => new PlatformRepository(context);
-
-        public IGamePlatformRepository GamePlatformRepository => new GamePlatformRepository(context);
-
-        public IPublisherRepository PublisherRepository => new PublisherRepository(context);
+        
 
         public async Task SaveAsync()
         {

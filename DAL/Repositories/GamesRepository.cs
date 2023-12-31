@@ -16,30 +16,23 @@ using System.Threading.Tasks;
 
 namespace GameStore_DAL.Repositories
 {
-    public class GamesRepository : IGamesRepository
+    public class GamesRepository 
     {
         protected readonly GameStoreDbContext context;
-        private readonly DbSet<GameEntity> dbSet;
+        private readonly DbSet<Game> dbSet;
         public GamesRepository(GameStoreDbContext context)
         {
             this.context = context;
             dbSet = context.Games;
         }
 
-        public async Task AddAsync(GameEntity entity)
+        public async Task<Game> AddAsync(Game entity)
         {
-            var b = context.Games.First();
-            b.Publisher= entity.Publisher;
-
-            var c = b.Publisher;
-            
-            
-            
-            dbSet.Add(entity);
-            context.SaveChanges();
+            var addedEntity = await context.Set<Game>().AddAsync(entity);
+            return addedEntity.Entity;
         }
 
-        public void Delete(GameEntity entity)
+        public void Delete(Game entity)
         {
             if (dbSet.Contains(entity))
             {
@@ -48,94 +41,55 @@ namespace GameStore_DAL.Repositories
             }
         }
 
-        public Task DeleteByIdAsync(int id)
+        public Task DeleteByKeyAsync(string key)
         {
-            var find = dbSet.Find(id);
-            if (find != null)
-            {
-                dbSet.Remove(find);
-                
-                
-            }
-             return Task.CompletedTask;
+            context.Remove(dbSet.Where(x => x.Key == key));
+            return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<GameEntity>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync()
         {
-            var a = await dbSet.Include(x => x.GameGenres).ThenInclude(x=> x.Genre).Include(x=> x.GamePlatforms).ThenInclude(x=> x.Platform).Include(x=> x.Publisher).ToListAsync();
+            return dbSet;
+        }
+        public async Task<IEnumerable<Game>> GetAllByGameGuids(IEnumerable<Guid> GameGuids) 
+        {
+            return await dbSet.Where(x => GameGuids.Contains(x.Id)).ToListAsync();
+        }
+        
 
-            if (a.IsNullOrEmpty()) { throw new DatabaseEmptyException("Database is empty"); }
 
-            return a;  
+        public async Task<Game> GetByIdAsync(Guid id)
+        {
+            var gameById = dbSet.Where(x => x.Id == id).FirstOrDefault();
+            return gameById;
         }
 
-
-
-        public async Task<GameEntity> GetByIdAsync(int id)
+        public async Task<Game> GetGameByAlias(string alias)
         {
-            var b = dbSet.Include(x => x.GameGenres).ThenInclude(x => x.Genre).Include(x => x.GamePlatforms).ThenInclude(x => x.Platform).Include(x => x.Publisher).SingleOrDefault(x=> x.Id == id);
-
-            return b;
-        }
-
-        public async Task<GameEntity> GetGameByAlias(string alias)
-        {
-            var gameByAlias = dbSet.Include(x=> x.GameGenres).Include(x=>x.GamePlatforms).SingleOrDefault(x => x.GameAlias.ToLower() == alias.ToLower());
+            var gameByAlias = dbSet.Where(x => x.Key == alias).SingleOrDefault();
 
             return gameByAlias;
         }
 
-        public async Task<IEnumerable<GameEntity>> GetGamesByGenre(int genreId)
+        
+
+        public async Task Update(Game entity)
         {
-            var games = context.GameGenre
-                               .Where(x => x.GenreId == genreId)
-                               .Include(x => x.Games)
-                               .ThenInclude(g => g.GameGenres)
-                               .ThenInclude(gg => gg.Genre)
-                               .Include(x => x.Games)
-                               .ThenInclude(g => g.GamePlatforms)
-                               .Select(x => x.Games)
-                               .ToList();
 
-
-
-
-            if (games.Any()) 
+            var gameEntity = await dbSet.FindAsync(entity.Id);
+            if (gameEntity == null)
             {
-                return games;
+                throw new Exception("Game not found");
             }
-            else
-            {
-                throw new DatabaseEmptyException("No such games");
-            }
-           
-            
-        }
+            gameEntity.Name = entity.Name;
+            gameEntity.Description = entity.Description;
+            gameEntity.Key = entity.Key;
+            gameEntity.Price = entity.Price;
+            gameEntity.UnitInStock = entity.UnitInStock;
+            gameEntity.Discount = entity.Discount;
+            gameEntity.PublisherId = entity.PublisherId;
 
-        public void Update(GameEntity entity)
-        {
-            context.GamePlatforms.Where(x => x.GameId == entity.Id)
-                                 .ForEachAsync(x => context.GamePlatforms
-                                 .Remove(x));
-            
-            context.GamePlatforms.AddRange(entity.GamePlatforms);
-
-
-            context.GameGenre.Where(x => x.GameId == entity.Id)
-                             .ForEachAsync(x => context.GameGenre
-                             .Remove(x));
-
-            context.GameGenre.AddRange(entity.GameGenres);
-
-
-            //stackoverflow answer
-            var oldobj = context.Games.Where(x => x.Id == entity.Id).SingleOrDefault();
-
-            
-            var UpdatedObj = (GameEntity) CheckUpdateObject(oldobj, entity);
-
-            dbSet.Entry(oldobj).CurrentValues.SetValues(UpdatedObj);
-
+            context.Entry(gameEntity).State = EntityState.Modified;
 
         }
 
@@ -150,6 +104,11 @@ namespace GameStore_DAL.Repositories
                 }
             }
             return updateObj;
+        }
+
+        public async Task<IEnumerable<Game>> GetAllGamesWithSamePublisher(Guid id)
+        {
+            return dbSet.Where(x => x.PublisherId == id).ToList();
         }
     }
 }

@@ -1,9 +1,12 @@
 using BLL.AutoMapper;
-using BLL.Interfaces;
-using BLL.Interfaces.IAdminINTERFACES;
 using BLL.Services;
+using DAL.Repositories;
+using FluentAssertions.Common;
+using GameStore.BLL.Services;
+using GameStore.DAL.Repositories;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
+using GameStore_DAL.Repositories;
 using GameStore_v2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +30,19 @@ builder.Services.AddControllersWithViews()
 );
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IAdminGameService, AdminGameService>();
-builder.Services.AddScoped<IAdminGenreService, AdminGenreService>();
-builder.Services.AddScoped<IAdminPlatformService, AdminPlatformService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<GamesRepository>();
+builder.Services.AddScoped<GenreRepository>();
+builder.Services.AddScoped<GameGenreRepository>();
+builder.Services.AddScoped<PlatformRepository>();
+builder.Services.AddScoped<GamePlatformRepository>();
+builder.Services.AddScoped<PublisherRepository>();
+builder.Services.AddScoped<OrderCartRepository>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<GenreService>();
+builder.Services.AddScoped<PlatformService>();
+builder.Services.AddScoped<PublisherService>();
+builder.Services.AddScoped<OrderCartService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -40,7 +51,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddLazyCache();
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", (build) =>
 {
-    build.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+    build.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
 }));
 
 

@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Models;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,70 +29,43 @@ namespace GameStore_DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GameEntity>()
-           .HasOne(p => p.Publisher)
-           .WithMany(b => b.Games)
-           .HasForeignKey(p => p.PublisherId);
+            modelBuilder.Entity<Game>(x => x.HasIndex(y => y.Name).IsUnique());
 
+            modelBuilder.Entity<GenreEntity>(x=> x.HasIndex(y=>y.Name).IsUnique());
 
-            modelBuilder.Entity<PlatformEntity>().Ignore(x => x.Type);
+            modelBuilder.Entity<Platform>(x => x.HasIndex(y => y.Type).IsUnique());
 
-            modelBuilder.Entity<GenreEntity>()
-                        .HasOne(genre => genre.ParentGenre)
-                        .WithMany(parent => parent.SubGenre)
-                        .HasForeignKey(genre => genre.ParentGenreId);
-                        
+            modelBuilder.Entity<GameGenre>(x => x.HasKey(y => new { y.GenreId, y.GameId }));
+         
+            
+            modelBuilder.Entity<GamePlatform>(x => x.HasKey(y => new { y.PlatformId, y.GameId }));
+            
 
+            modelBuilder.Entity<Publisher>(x => x.HasIndex(y => y.CompanyName).IsUnique());
 
-            modelBuilder.Entity<GameEntity>()
-                .HasIndex(x => x.Name)
-                .IsUnique(true);
+            modelBuilder.Entity<OrderGame>(x => x.HasKey(y => new { y.OrderId, y.ProductId }));
 
+            modelBuilder.Entity<PaymentMethods>(x => x.HasNoKey());
 
-            modelBuilder.Entity<GameEntity>()
-                .HasIndex(x=> x.GameAlias)
-                .IsUnique(true);
-
-
-            modelBuilder.Entity<GamePlatform>()
-                        .HasKey(gp => new { gp.GameId, gp.PlatformId });
-
-
-
-            modelBuilder.Entity<GamePlatform>()
-                .HasOne(gp => gp.Game)
-                .WithMany(g => g.GamePlatforms)
-                .HasForeignKey(gp => gp.GameId);
-
-
-            modelBuilder.Entity<GamePlatform>()
-                .HasOne(gp => gp.Platform)
-                .WithMany(p => p.GamePlatforms)
-                .HasForeignKey(gp => gp.PlatformId);
-
-            modelBuilder.Entity<GameGenre>()
-            .HasKey(gg => new { gg.GameId, gg.GenreId });
-
-            modelBuilder.Entity<GameGenre>()
-                .HasOne(gg => gg.Games)
-                .WithMany(g => g.GameGenres)
-                .HasForeignKey(gg => gg.GameId);
-
-            modelBuilder.Entity<GameGenre>()
-                .HasOne(gg => gg.Genre)
-                .WithMany(g => g.GameGenres)
-                .HasForeignKey(gg => gg.GenreId);
-
+            modelBuilder.Entity<Comment>().HasOne(p => p.ParentComment)
+                                          .WithMany(p => p.Children)
+                                          .HasForeignKey(p => p.ParentCommentId);
 
         }
 
-        public DbSet<GameEntity> Games { get; set; }
+        public DbSet<Game> Games { get; set; }
         public DbSet<GenreEntity> Genres { get; set; }
-        public DbSet<PlatformEntity> Platforms { get; set; }
+        public DbSet<Platform> Platforms { get; set; }
 
-        public DbSet<PublisherEntity> Publishers { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
 
         public DbSet<GamePlatform> GamePlatforms { get; set; }
         public DbSet<GameGenre> GameGenre{ get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderGame> OrderGames { get; set; }
+        public DbSet<PaymentMethods> PaymentMethods { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
     }
 }

@@ -1,7 +1,7 @@
-﻿using DAL.Interfaces;
+﻿
 using DAL.Models;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
+
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class PlatformRepository : IPlatformRepository
+    public class PlatformRepository
     {
         protected readonly GameStoreDbContext context;
-        private readonly DbSet<PlatformEntity> dbSet;
+        private readonly DbSet<Platform> dbSet;
        
         public PlatformRepository(GameStoreDbContext context)
         {
@@ -23,13 +23,13 @@ namespace DAL.Repositories
             dbSet = context.Platforms;
             
         }
-        public async Task AddAsync(PlatformEntity entity)
+        public async Task AddAsync(Platform entity)
         {
             dbSet.Add(entity);
             await context.SaveChangesAsync();
         }
 
-        public void Delete(PlatformEntity entity)
+        public void Delete(Platform entity)
         {
             if (dbSet.Contains(entity))
             {
@@ -38,7 +38,7 @@ namespace DAL.Repositories
             }
         }
 
-        public Task DeleteByIdAsync(int id)
+        public Task DeleteByIdAsync(Guid id)
         {
             var find = dbSet.Find(id);
             if (find != null)
@@ -48,22 +48,35 @@ namespace DAL.Repositories
             }
             return Task.CompletedTask;
         }
-
-        public async Task<IEnumerable<PlatformEntity>> GetAllAsync()
+        public async Task<bool> CheckIfPlatformGuidsExist(IEnumerable<Guid> Guids)
         {
-            var a = dbSet.Include(x => x.GamePlatforms).ThenInclude(x => x.Game);
-            
-             return await a.ToListAsync();
+            foreach (var id in Guids)
+            {
+                var exists = await context.Platforms.AnyAsync(genre => genre.Id == id);
+
+                if (!exists)
+                    return false;
+            }
+            return true;
+        }
+        public async Task<IEnumerable<Platform>> GetAllAsync()
+        {
+            return await dbSet.ToListAsync(); 
         }
 
-        public async Task<PlatformEntity> GetByIdAsync(int id)
+        public async Task<Platform> GetByIdAsync(Guid id)
         {
             return await dbSet.FindAsync(id);
         }
 
-        public void Update(PlatformEntity entity)
+        public void Update(Platform entity)
         {
             dbSet.Update(entity);
+        }
+
+        public async Task<IEnumerable<Platform>> GetAllByPlatformGuids(IEnumerable<Guid> platformGuids)
+        {
+            return await dbSet.Where(x => platformGuids.Contains(x.Id)).ToListAsync();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using DAL.Interfaces;
+﻿
 using DAL.Models;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class GamePlatformRepository : IGamePlatformRepository
+    public class GamePlatformRepository 
     {
 
         protected readonly GameStoreDbContext context;
@@ -22,10 +23,38 @@ namespace DAL.Repositories
             dbSet = context.GamePlatforms;
         }
 
-        public async Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId)
+       // public async Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId)
+       // {
+       //     var gamesByPlatformId= dbSet.Where(x => x.PlatformId == platformId).Include(x => x.Game);
+       //     return await gamesByPlatformId.ToListAsync();
+       // }
+
+        public async Task AddGamePlatform(Guid GameId, Guid PlatformId)
         {
-            var a = dbSet.Where(x => x.PlatformId == platformId).Include(x => x.Game);
-            return await a.ToListAsync();
+            await dbSet.AddAsync(new GamePlatform { GameId = GameId, PlatformId = PlatformId });
+        }
+
+        public async Task<IEnumerable<Guid>> GetGameGuidsByPlatformId(Guid platformId) 
+        {
+            return  await dbSet.Where(x => x.PlatformId == platformId).Select(x => x.GameId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Guid>> GetPlatformGuidsByGameGuidId(Guid gameId)
+        {
+            return await dbSet.Where(x => x.GameId == gameId).Select(x => x.PlatformId).ToListAsync(); 
+        }
+
+        public async Task Update(Guid gameGuid, List<Guid> platformGuids)
+        {
+            foreach (var item in dbSet.Where(x => x.GameId == gameGuid))
+            {
+                context.Remove(item);
+            }
+            foreach (var item in platformGuids)
+            {
+                dbSet.Add(new GamePlatform { GameId = gameGuid, PlatformId = item });
+            }
+
         }
     }
 }
