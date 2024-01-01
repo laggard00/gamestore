@@ -49,10 +49,10 @@ namespace GameStore.WEB.Controllers.Controllers
         {
             return Ok(new List<string>() { "1 hour", "1 day", "1 week", "1 month", "pernament" });
         }
-        [HttpPost("comments/ban")]
-        public async Task<ActionResult> BanUser([FromBody] POST_Ban banRequest)
-        {
-            service.BanUser(banRequest.user, banRequest.duration);
-        }
+       // [HttpPost("comments/ban")]
+       // public async Task<ActionResult> BanUser([FromBody] POST_Ban banRequest)
+       // {
+       //     service.BanUser(banRequest.user, banRequest.duration);
+       // }
     }
 }

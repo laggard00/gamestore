@@ -2,6 +2,7 @@
 using DAL.Exceptions;
 using DAL.Repositories;
 using GameStore.BLL.DTO;
+using GameStore.DAL.Filters;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
@@ -37,9 +38,9 @@ namespace BLL.Services
             return getById; 
         }
 
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync(GameFilter filters)
         {
-            return await repository.GetAllAsync();
+            return await repository.GetAllAsync(filters);
             
         }
 

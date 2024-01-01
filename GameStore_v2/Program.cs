@@ -37,12 +37,14 @@ builder.Services.AddScoped<PlatformRepository>();
 builder.Services.AddScoped<GamePlatformRepository>();
 builder.Services.AddScoped<PublisherRepository>();
 builder.Services.AddScoped<OrderCartRepository>();
+builder.Services.AddScoped<CommentRepository>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<GameService>();
 builder.Services.AddScoped<GenreService>();
 builder.Services.AddScoped<PlatformService>();
 builder.Services.AddScoped<PublisherService>();
 builder.Services.AddScoped<OrderCartService>();
+builder.Services.AddScoped<CommentService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSwaggerGen(c =>
 {

@@ -2,6 +2,7 @@
 
 using BLL.Services;
 using GameStore.BLL.DTO;
+using GameStore.DAL.Filters;
 using GameStore_DAL.Models;
 using LazyCache;
 using Microsoft.AspNetCore.Mvc;
@@ -42,14 +43,15 @@ namespace GameStore_v2.Controllers.AdminControllers
         /// <exception cref="Exception"></exception>
         [HttpGet("games")]
             ///you changed this recently carefull
-        public async Task<ActionResult<IEnumerable<Game>>> Get()
+        public async Task<ActionResult<IEnumerable<Game>>> Get([FromQuery] GameFilter filters)
         {
             
             try
             {
-                var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(), DateTime.Now.AddMinutes(1));
+                var result = await _service.GetAllAsync(filters);
+               // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
 
-                return Ok(result);
+                return Ok(new { games = result, totalPages = 5, currentPage = 69 });
             }
             catch (Exception ex) 
             {
