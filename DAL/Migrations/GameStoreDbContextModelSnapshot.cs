@@ -69,6 +69,33 @@ namespace GameStore.DAL.Migrations
                     b.ToTable("Publishers");
                 });
 
+            modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("ParentCommentId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("GameStore.DAL.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -206,6 +233,20 @@ namespace GameStore.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Platforms");
+                });
+
+            modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>
+                {
+                    b.HasOne("GameStore.DAL.Models.Comment", "ParentComment")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.Navigation("ParentComment");
+                });
+
+            modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

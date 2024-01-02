@@ -19,35 +19,30 @@ namespace BLL.Services
     public class GameService
     {
         private IUnitOfWork uow { get; set; }
-        private GamesRepository repository { get; set; }
-        private GamePlatformRepository platform { get; set; }
-
         private IMapper mapper { get; set; }
 
         public GameService(IUnitOfWork unitOfWork, IMapper _mapper)
         {
             uow = unitOfWork;
             mapper = _mapper;
-            repository = unitOfWork.GamesRepository;
-            platform = unitOfWork.GamePlatformRepository;
             
         }
         public async Task<Game> GetByIdAsync(Guid id)
         {
-            var getById = await repository.GetByIdAsync(id);
+            var getById = await uow.GamesRepository.GetByIdAsync(id);
             return getById; 
         }
 
         public async Task<IEnumerable<Game>> GetAllAsync(GameFilter filters)
         {
-            return await repository.GetAllAsync(filters);
+            return await uow.GamesRepository.GetAllAsync(filters);
             
         }
 
         public async Task AddAsync(POST_GameDTO model)
         {
              var gameId = await uow.GamesRepository.AddAsync(mapper.Map<Game>(model));
-             foreach (var item in model.Platform)
+             foreach (var item in model.Platforms)
              {
                  await uow.GamePlatformRepository.AddGamePlatform(gameId.Id, item);
              }
@@ -72,7 +67,7 @@ namespace BLL.Services
 
         public async Task DeleteAsync(string key)
         {
-            await repository.DeleteByKeyAsync(key);
+            await uow.GamesRepository.DeleteByKeyAsync(key);
             await uow.SaveAsync();
         }
 
@@ -85,15 +80,15 @@ namespace BLL.Services
 
         public async Task<IEnumerable<Game>> GetGamesByPlatform(Guid platformId)
         {
-            var allGamesGuid = await platform.GetGameGuidsByPlatformId(platformId);
-            var Games = await repository.GetAllByGameGuids(allGamesGuid);
+            var allGamesGuid = await uow.GamePlatformRepository.GetGameGuidsByPlatformId(platformId);
+            var Games = await uow.GamesRepository.GetAllByGameGuids(allGamesGuid);
             return Games;
 
         }
 
         public async Task<Game> GetGameByAlias(string alias)
         {
-            var findByAlias = await repository.GetGameByAlias(alias);
+            var findByAlias = await uow.GamesRepository.GetGameByAlias(alias);
             return findByAlias;
         }
     }

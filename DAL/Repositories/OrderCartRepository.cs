@@ -1,4 +1,5 @@
 ﻿using GameStore.DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,12 @@ using System.Xml;
 
 namespace GameStore.DAL.Repositories
 {
-    public class OrderCartRepository
+    public class OrderCartRepository : IOrderCartRepository
     {
         protected readonly GameStoreDbContext context;
         public OrderCartRepository(GameStoreDbContext _context)
         {
-            context=_context;
+            context = _context;
         }
 
         public void AddGameToTheCartOrIncreaseQuantity(Guid cartId, Game game)
@@ -30,16 +31,16 @@ namespace GameStore.DAL.Repositories
 
                 }
             }
-            else 
+            else
             {
-                if(game.UnitInStock > 0) { gameInTheCart.Quantity++; }
+                if (game.UnitInStock > 0) { gameInTheCart.Quantity++; }
             }
 
         }
 
         public Order CreateNewCartForUser(Guid userId)
         {
-            var userCart = new Order { Id = new Guid(), CustomerId = userId, Date=DateTime.Now, Status=Order.Statuses.Open.ToString() };
+            var userCart = new Order { CustomerId = userId, Date = DateTime.Now, Status = Order.Statuses.Open.ToString() };
             context.Set<Order>().Add(userCart);
             return userCart;
         }
@@ -56,11 +57,10 @@ namespace GameStore.DAL.Repositories
             return context.PaymentMethods.ToList();
         }
 
-        public Guid GetCurrentUsersOpenCartId(Guid userId)
+        public Guid? GetCurrentUsersOpenCartId(Guid userId)
         {
-            return context.Orders.Where(x => x.CustomerId == userId && x.Status == Order.Statuses.Open.ToString()).SingleOrDefault().Id;
-            
-           
+            var user = context.Orders.SingleOrDefault(x => x.CustomerId == userId && x.Status == Order.Statuses.Open.ToString());
+            return user != null ? user.Id : null;
         }
 
         public Order GetOrderById(Guid id)
@@ -70,7 +70,7 @@ namespace GameStore.DAL.Repositories
 
         public IEnumerable<OrderGame> GetOrderDetails(Guid guid)
         {
-            return context.OrderGames.Where(x=>x.OrderId== guid);
+            return context.OrderGames.Where(x => x.OrderId == guid);
         }
 
         public IEnumerable<Order> GetPaidAndCancelledOrdes()

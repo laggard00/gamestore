@@ -10,8 +10,8 @@ namespace GameStore.BLL.DTO
     public class POST_Comment
     {
         public CommentDTO comment { get; set; }
-        public Guid parentId { get; set; }
-        public string action { get; set; }
+        public Guid? parentId { get; set; }
+        public string? action { get; set; }
     }
 
     public class CommentDTO 

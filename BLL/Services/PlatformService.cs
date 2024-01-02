@@ -15,54 +15,50 @@ namespace BLL.Services
     public class PlatformService
     {
         private IUnitOfWork uow { get; set; }
-
-        private PlatformRepository platformRepository { get; set; }
         private IMapper mapper { get; set; }
 
         public PlatformService(IUnitOfWork unitOfWork, IMapper _mapper)
         {
-            uow = unitOfWork;
-            platformRepository = unitOfWork.PlatformRepository;
+            uow = unitOfWork; 
             mapper = _mapper;
         }
 
-        public async Task<IEnumerable<GameStore_DAL.Models.Platform>> GetAllAsync()
+        public async Task<IEnumerable<Platform>> GetAllAsync()
         {
-            var allPlatforms = await platformRepository.GetAllAsync();
+            var allPlatforms = await uow.PlatformRepository.GetAllAsync();
 
             return allPlatforms;
         }
 
-        public async Task<GameStore_DAL.Models.Platform> GetByIdAsync(Guid id)
+        public async Task<Platform> GetByIdAsync(Guid id)
         {
-            var platformById = await platformRepository.GetByIdAsync(id);
+            var platformById = await uow.PlatformRepository.GetByIdAsync(id);
 
             return platformById;
         }
 
-        public async Task AddAsync(GameStore.BLL.DTO.PlatformDTO model)
+        public async Task AddAsync(PlatformDTO model)
         {
-            await platformRepository.AddAsync(mapper.Map<GameStore_DAL.Models.Platform>(model));
+            await uow.PlatformRepository.AddAsync(mapper.Map<Platform>(model));
 
             await uow.SaveAsync();
         }
-        public async Task<IEnumerable<GameStore_DAL.Models.Platform>> GetPlatformByGameGuid(Guid gameId)
+        public async Task<IEnumerable<Platform>> GetPlatformByGameGuid(Guid gameId)
         {
             var platformGuids = await uow.GamePlatformRepository.GetPlatformGuidsByGameGuidId(gameId);
             var platform = await uow.PlatformRepository.GetAllByPlatformGuids(platformGuids);
             return platform;
         }
 
-        public async Task UpdateAsync(GameStore_DAL.Models.Platform model)
+        public async Task UpdateAsync(Platform model)
         {
-            platformRepository.Update(model);
+            uow.PlatformRepository.Update(model);
             await uow.SaveAsync();
         }
 
         public async Task DeleteAsync(Guid modelId)
         {
-            platformRepository.DeleteByIdAsync(modelId);
-
+            uow.PlatformRepository.DeleteByIdAsync(modelId);
             await uow.SaveAsync();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.DAL.Repositories
 {
-    public class GameGenreRepository
+    public class GameGenreRepository : IGameGenreRepository
     {
 
         protected readonly GameStoreDbContext context;
@@ -20,15 +21,9 @@ namespace GameStore.DAL.Repositories
             dbSet = context.GameGenre;
         }
 
-        // public async Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId)
-        // {
-        //     var gamesByPlatformId= dbSet.Where(x => x.PlatformId == platformId).Include(x => x.Game);
-        //     return await gamesByPlatformId.ToListAsync();
-        // }
-
         public async Task AddGameGenre(Guid GameId, Guid GenreId)
         {
-            await dbSet.AddAsync(new GameGenre{ GameId = GameId, GenreId = GenreId });
+            await dbSet.AddAsync(new GameGenre { GameId = GameId, GenreId = GenreId });
         }
         public async Task<IEnumerable<Guid>> GetGameGuidsByGenreGuidId(Guid genreId)
         {
@@ -39,16 +34,16 @@ namespace GameStore.DAL.Repositories
             return await dbSet.Where(x => x.GameId == gameId).Select(x => x.GenreId).ToListAsync();
         }
 
-        public async Task Update(Guid gameGuid, List<Guid> genreGuids) 
+        public async Task Update(Guid gameGuid, List<Guid> genreGuids)
         {
             foreach (var item in dbSet.Where(x => x.GameId == gameGuid))
             {
-               context.Remove(item);
-               
+                context.Remove(item);
+
             }
-            foreach (var item in genreGuids) 
+            foreach (var item in genreGuids)
             {
-               dbSet.AddAsync(new GameGenre { GameId = gameGuid, GenreId = item });
+                await dbSet.AddAsync(new GameGenre { GameId = gameGuid, GenreId = item });
             }
 
         }

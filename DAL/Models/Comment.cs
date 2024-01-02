@@ -13,10 +13,10 @@ namespace GameStore.DAL.Models
         public string Body { get; set; }
 
         public Guid? ParentCommentId { get; set; } 
-        public virtual Comment ParentComment { get; set; }
+        public virtual Comment? ParentComment { get; set; }
 
         public Guid GameId { get; set; }
 
-        public virtual List<Comment> Children { get; set; } = new List<Comment>();  
+        public virtual List<Comment>? Children { get; set; } = new List<Comment>();  
     }
 }

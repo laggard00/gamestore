@@ -4,6 +4,7 @@ using DAL.Exceptions;
 using DAL.Models;
 using FluentAssertions.Execution;
 using GameStore.DAL.Filters;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
@@ -18,7 +19,7 @@ using System.Xml;
 
 namespace GameStore_DAL.Repositories
 {
-    public class GamesRepository 
+    public class GamesRepository : IGamesRepository
     {
         protected readonly GameStoreDbContext context;
         private readonly DbSet<Game> dbSet;
@@ -51,29 +52,26 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<Game>> GetAllAsync(GameFilter filters)
         {
-            var query =await BuildQuery(filters);
-            var games= await query.ToListAsync();
+            var query = await BuildQuery(filters);
+            var games = await query.ToListAsync();
             return games;
         }
-        public async Task<IEnumerable<Game>> GetAllByGameGuids(IEnumerable<Guid> GameGuids) 
+        public async Task<IEnumerable<Game>> GetAllByGameGuids(IEnumerable<Guid> GameGuids)
         {
             return await dbSet.Where(x => GameGuids.Contains(x.Id)).ToListAsync();
         }
-        
+
         public async Task<Game> GetByIdAsync(Guid id)
         {
-            var gameById = dbSet.Where(x => x.Id == id).FirstOrDefault();
+            var gameById = await dbSet.SingleOrDefaultAsync(x => x.Id == id);
             return gameById;
         }
 
         public async Task<Game> GetGameByAlias(string alias)
         {
-            var gameByAlias = dbSet.Where(x => x.Key == alias).SingleOrDefault();
-
+            var gameByAlias = await dbSet.SingleOrDefaultAsync(x => x.Key == alias);
             return gameByAlias;
         }
-
-        
 
         public async Task Update(Game entity)
         {
@@ -95,22 +93,9 @@ namespace GameStore_DAL.Repositories
 
         }
 
-      // public static object CheckUpdateObject(object originalObj, object updateObj)
-      // {
-      //     foreach (var property in updateObj.GetType().GetProperties())
-      //     {
-      //         if (property.GetValue(updateObj, null) == null)
-      //         {
-      //             property.SetValue(updateObj, originalObj.GetType().GetProperty(property.Name)
-      //             .GetValue(originalObj, null));
-      //         }
-      //     }
-      //     return updateObj;
-      // }
-
         public async Task<IEnumerable<Game>> GetAllGamesWithSamePublisher(Guid id)
         {
-            return dbSet.Where(x => x.PublisherId == id).ToList();
+            return await dbSet.Where(x => x.PublisherId == id).ToListAsync();
         }
 
         public async Task<IQueryable<Game>> BuildQuery(GameFilter filter)
@@ -119,7 +104,7 @@ namespace GameStore_DAL.Repositories
 
             if (filter.genres != null && filter.genres.Count > 0)
             {
-                var gameIds = context.GameGenre.Where(x => filter.genres.Contains(x.GenreId)).Select(x=>x.GameId).ToList();
+                var gameIds = context.GameGenre.Where(x => filter.genres.Contains(x.GenreId)).Select(x => x.GameId).ToList();
                 query = query.Where(game => gameIds.Contains(game.Id));
             }
             if (filter.platforms != null && filter.platforms.Count > 0)
@@ -129,9 +114,9 @@ namespace GameStore_DAL.Repositories
             }
             if (filter.publishers != null && filter.publishers.Count > 0)
             {
-                
+
                 query = query.Where(game => filter.publishers.Contains(game.PublisherId));
-                
+
             }
             if (!string.IsNullOrEmpty(filter.name))
             {
@@ -152,30 +137,30 @@ namespace GameStore_DAL.Repositories
             //}
             if (filter.minPrice != null && filter.minPrice >= 0)
                 query = query.Where(game => game.Price >= filter.minPrice);
-            
-            if(filter.maxPrice!=null && filter.maxPrice >= 0)
-                query=query.Where(game=> game.Price <=filter.maxPrice);
-           
-           if (filter.page != null && filter.pageCount != null && int.TryParse(filter.pageCount, out int pageCnt))
-           {
-               query = query.Skip((filter.page.Value - 1) * int.Parse(filter.pageCount)).Take(int.Parse(filter.pageCount));
-           }
+
+            if (filter.maxPrice != null && filter.maxPrice >= 0)
+                query = query.Where(game => game.Price <= filter.maxPrice);
+
+            if (filter.page != null && filter.pageCount != null && int.TryParse(filter.pageCount, out int pageCnt))
+            {
+                query = query.Skip((filter.page.Value - 1) * int.Parse(filter.pageCount)).Take(int.Parse(filter.pageCount));
+            }
+
             if (!string.IsNullOrEmpty(filter.sort))
             {
-                switch(filter.sort.ToLower())
+                switch (filter.sort.ToLower())
                 {
-                    case "most popular":break;
-                    case "most commented": query = query.OrderBy(game=> context.Comments.Where(comments=> comments.GameId==game.Id).Count()); break;
-                    case "price asc":query = query.OrderBy(game => game.Price); break;
+                    case "most popular": break;
+                    case "most commented": query = query.OrderBy(game => context.Comments.Where(comments => comments.GameId == game.Id).Count()); break;
+                    case "price asc": query = query.OrderBy(game => game.Price); break;
                     case "price desc": query = query.OrderByDescending(game => game.Price); break;
                     case "new": //query = query.Reverse();
-                                break;
-                    default:break;
+                        break;
 
                 }
             }
             return query;
-            
+
         }
     }
 }

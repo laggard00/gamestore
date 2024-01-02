@@ -45,7 +45,6 @@ namespace GameStore_v2.Controllers.AdminControllers
             ///you changed this recently carefull
         public async Task<ActionResult<IEnumerable<Game>>> Get([FromQuery] GameFilter filters)
         {
-            
             try
             {
                 var result = await _service.GetAllAsync(filters);

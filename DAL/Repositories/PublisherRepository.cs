@@ -1,6 +1,7 @@
 ﻿
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class PublisherRepository
+    public class PublisherRepository : IPublisherRepository
     {
         protected readonly GameStoreDbContext context;
         private DbSet<Publisher> dbset;
@@ -22,24 +23,23 @@ namespace DAL.Repositories
             this.context = _context;
             dbset = context.Publishers;
 
-            
+
         }
 
         public async Task AddAsync(Publisher entity)
         {
-             await context.Publishers.AddAsync(entity); 
+            await context.Publishers.AddAsync(entity);
         }
 
         public async Task<Publisher> GetPublisherByCompanyName(string companyName)
         {
-               var publisherByCompanyName = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
-            
-               return publisherByCompanyName;
+            var publisherByCompanyName = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
+            return publisherByCompanyName;
         }
 
         public bool CheckIfPublisherExists(string companyName)
         {
-            var publisher= context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
+            var publisher = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
             if (publisher == null)
             {
                 return false;
@@ -54,7 +54,7 @@ namespace DAL.Repositories
 
         public async Task<Publisher> GetPublisherById(Guid publisherId)
         {
-            return dbset.Find(publisherId); 
+            return dbset.Find(publisherId);
         }
 
         public void Update(Publisher publisher)
@@ -67,7 +67,7 @@ namespace DAL.Repositories
             var b = dbset.Find(id);
             if (b == null) { return; }
             context.Remove(b);
-            
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 
 using GameStore_DAL.Models;
@@ -12,16 +13,16 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class PlatformRepository
+    public class PlatformRepository : IPlatformRepository
     {
         protected readonly GameStoreDbContext context;
         private readonly DbSet<Platform> dbSet;
-       
+
         public PlatformRepository(GameStoreDbContext context)
         {
             this.context = context;
             dbSet = context.Platforms;
-            
+
         }
         public async Task AddAsync(Platform entity)
         {
@@ -61,7 +62,7 @@ namespace DAL.Repositories
         }
         public async Task<IEnumerable<Platform>> GetAllAsync()
         {
-            return await dbSet.ToListAsync(); 
+            return await dbSet.ToListAsync();
         }
 
         public async Task<Platform> GetByIdAsync(Guid id)

@@ -1,5 +1,6 @@
 ﻿
 using DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class GamePlatformRepository 
+    public class GamePlatformRepository : IGamePlatformRepository
     {
 
         protected readonly GameStoreDbContext context;
@@ -23,25 +24,19 @@ namespace DAL.Repositories
             dbSet = context.GamePlatforms;
         }
 
-       // public async Task<List<GamePlatform>> GetGamePlatformByPlatformId(int platformId)
-       // {
-       //     var gamesByPlatformId= dbSet.Where(x => x.PlatformId == platformId).Include(x => x.Game);
-       //     return await gamesByPlatformId.ToListAsync();
-       // }
-
         public async Task AddGamePlatform(Guid GameId, Guid PlatformId)
         {
             await dbSet.AddAsync(new GamePlatform { GameId = GameId, PlatformId = PlatformId });
         }
 
-        public async Task<IEnumerable<Guid>> GetGameGuidsByPlatformId(Guid platformId) 
+        public async Task<IEnumerable<Guid>> GetGameGuidsByPlatformId(Guid platformId)
         {
-            return  await dbSet.Where(x => x.PlatformId == platformId).Select(x => x.GameId).ToListAsync();
+            return await dbSet.Where(x => x.PlatformId == platformId).Select(x => x.GameId).ToListAsync();
         }
 
         public async Task<IEnumerable<Guid>> GetPlatformGuidsByGameGuidId(Guid gameId)
         {
-            return await dbSet.Where(x => x.GameId == gameId).Select(x => x.PlatformId).ToListAsync(); 
+            return await dbSet.Where(x => x.GameId == gameId).Select(x => x.PlatformId).ToListAsync();
         }
 
         public async Task Update(Guid gameGuid, List<Guid> platformGuids)

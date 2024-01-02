@@ -7,27 +7,28 @@ using System.Threading.Tasks;
 using GameStore_DAL.Repositories;
 using DAL.Repositories;
 using GameStore.DAL.Repositories;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 
 namespace GameStore_DAL.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly GameStoreDbContext context;
-        public GamesRepository GamesRepository { get; }
+        public IGamesRepository GamesRepository { get; }
 
-        public GenreRepository GenreRepository{ get; }
-        public PlatformRepository PlatformRepository{ get; }
+        public IGenreRepository GenreRepository{ get; }
+        public IPlatformRepository PlatformRepository{ get; }
+               
+        public IGamePlatformRepository GamePlatformRepository{ get; }
+        public IGameGenreRepository GameGenreRepository { get; }
+        public IPublisherRepository PublisherRepository{ get; }
+        public IOrderCartRepository OrderCartRepository{ get; }
+        public ICommentRepository CommentRepository{ get; }
 
-        public GamePlatformRepository GamePlatformRepository{ get; }
-        public GameGenreRepository GameGenreRepository { get; }
-        public PublisherRepository PublisherRepository{ get; }
-        public OrderCartRepository OrderCartRepository{ get; }
-        public CommentRepository CommentRepository{ get; }
 
-
-        public UnitOfWork(GameStoreDbContext context, GamesRepository gamesRepository,
-                          GenreRepository genreRepository, PlatformRepository platformRepository,
-                          GamePlatformRepository gamePlatformRepository, PublisherRepository publisherRepository,GameGenreRepository gameGenre,OrderCartRepository ocrepository,CommentRepository cmRepository)
+        public UnitOfWork(GameStoreDbContext context, IGamesRepository gamesRepository,
+                          IGenreRepository genreRepository, IPlatformRepository platformRepository,
+                          IGamePlatformRepository gamePlatformRepository, IPublisherRepository publisherRepository,IGameGenreRepository gameGenre,IOrderCartRepository ocrepository,ICommentRepository cmRepository)
         {
             this.context = context;
             GamesRepository = gamesRepository;

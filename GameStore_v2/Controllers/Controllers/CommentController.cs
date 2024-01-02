@@ -14,7 +14,7 @@ namespace GameStore.WEB.Controllers.Controllers
         }
 
         [HttpPost("games/{key}/comments")]
-        public async Task<IActionResult> AddComment([FromQuery] string key, [FromBody] POST_Comment commentRequest)
+        public async Task<IActionResult> AddComment(string key, [FromBody] POST_Comment commentRequest)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace GameStore.WEB.Controllers.Controllers
             catch (Exception ex) { return BadRequest(); }
         }
         [HttpGet("games/{key}/comments")]
-        public async Task<ActionResult<IEnumerable<GET_Comment>>> GetAllComments([FromQuery] string key)
+        public async Task<ActionResult<IEnumerable<GET_Comment>>> GetAllComments(string key)
         {
             try
             {
@@ -35,8 +35,9 @@ namespace GameStore.WEB.Controllers.Controllers
             catch (Exception ex) { return BadRequest(); }
         }
         [HttpDelete("games/{key}/comments/{id}")]
-        public async Task<IActionResult> DeleteComment([FromQuery] string key, [FromQuery] Guid id)
+        public async Task<IActionResult> DeleteComment(string key, Guid id)
         {
+            //don't know why is game key needed
             try
             {
                 await service.DeleteCommentByGameKeyAndCommentId(key, id);
@@ -44,7 +45,7 @@ namespace GameStore.WEB.Controllers.Controllers
             }
             catch (Exception ex) { return BadRequest(); }
         }
-        [HttpGet("comments/ban/duration")]
+        [HttpGet("comments/ban/durations")]
         public async Task<ActionResult<IEnumerable<string>>> GetBanDurations()
         {
             return Ok(new List<string>() { "1 hour", "1 day", "1 week", "1 month", "pernament" });

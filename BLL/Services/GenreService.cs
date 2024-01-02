@@ -14,51 +14,40 @@ namespace BLL.Services
     public class GenreService
     {
         private IUnitOfWork uow { get; set; }
-
-        private GenreRepository repository { get; set; }
-
         private IMapper mapper { get; set; }
 
         public GenreService(IUnitOfWork unitOfWork, IMapper _mapper)
         {
             uow = unitOfWork;
-
-            mapper = _mapper;
-
-            repository = unitOfWork.GenreRepository;
-
+            mapper = _mapper; 
 
         }
         public async Task<IEnumerable<GET_Genre>> GetAllAsync()
         {
-            var allGenres = await repository.GetAllAsync();
+            var allGenres = await uow.GenreRepository.GetAllAsync();
             return allGenres.Select(x=> mapper.Map<GET_Genre>(x)).ToList();
 
         }
         public async Task<GenreEntity> GetByIdAsync(Guid id)
         {
-            return await repository.GetByIdAsync(id);
-
-            
+            return await uow.GenreRepository.GetByIdAsync(id);
 
         }
         public async Task AddAsync(GenreDTO model)
         {
-            await repository.AddAsync(mapper.Map<GenreEntity>(model));
-
+            await uow.GenreRepository.AddAsync(mapper.Map<GenreEntity>(model));
             await uow.SaveAsync();
         }
 
         public async Task UpdateAsync(GenreEntity model)
         {
-           repository.Update(model);
-
+           uow.GenreRepository.Update(model);
            await uow.SaveAsync();
         }
 
         public async Task DeleteAsync(Guid modelId)
         {
-            await repository.DeleteByIdAsync(modelId);
+            await uow.GenreRepository.DeleteByIdAsync(modelId);
             await uow.SaveAsync();
         }
 

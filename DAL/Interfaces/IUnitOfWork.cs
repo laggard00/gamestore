@@ -1,6 +1,7 @@
 ﻿
 using DAL.Repositories;
 using GameStore.DAL.Repositories;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,15 @@ namespace GameStore_DAL.Interfaces
 {
     public interface IUnitOfWork 
     {
-        GamesRepository GamesRepository { get; }
-        GenreRepository GenreRepository { get; }
-        PlatformRepository PlatformRepository { get; }
-
-        GamePlatformRepository GamePlatformRepository { get; }
-        GameGenreRepository GameGenreRepository { get; }
-        PublisherRepository PublisherRepository { get; }
-        OrderCartRepository OrderCartRepository { get; }
-        CommentRepository CommentRepository { get; }
+        IGamesRepository GamesRepository { get; }
+        IGenreRepository GenreRepository { get; }
+        IPlatformRepository PlatformRepository { get; }
+        
+        IGamePlatformRepository GamePlatformRepository { get; }
+        IGameGenreRepository GameGenreRepository { get; }
+        IPublisherRepository PublisherRepository { get; }
+        IOrderCartRepository OrderCartRepository { get; }
+        ICommentRepository CommentRepository { get; }
 
         Task SaveAsync();
     }

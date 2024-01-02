@@ -1,4 +1,5 @@
 ﻿
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class GenreRepository 
+    public class GenreRepository : IGenreRepository
     {
         protected readonly GameStoreDbContext context;
         private readonly DbSet<GenreEntity> dbSet;
@@ -22,7 +23,7 @@ namespace DAL.Repositories
         public async Task AddAsync(GenreEntity entity)
         {
             dbSet.Add(entity);
-            
+
         }
 
         public void Delete(GenreEntity entity)
@@ -53,7 +54,7 @@ namespace DAL.Repositories
         {
             return await dbSet.Where(x => x.ParentGenreId == parentId).ToListAsync();
         }
-        public async Task<bool> CheckIfGenreGuidsExist(IEnumerable<Guid> Guids) 
+        public async Task<bool> CheckIfGenreGuidsExist(IEnumerable<Guid> Guids)
         {
             foreach (var id in Guids)
             {
@@ -66,7 +67,7 @@ namespace DAL.Repositories
         }
         public async Task<GenreEntity> GetByIdAsync(Guid id)
         {
-            return dbSet.Where(x => x.Id == id).FirstOrDefault();
+            return await dbSet.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public void Update(GenreEntity entity)

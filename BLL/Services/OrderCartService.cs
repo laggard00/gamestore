@@ -20,7 +20,7 @@ namespace GameStore.BLL.Services
         { 
             this.uow= uow;
             this.mapper= mapper;
-            userId = new Guid();
+            userId = new Guid("01f33a2f-2c43-4ae1-9fd7-08396921d328");
         }
 
         public async Task<IEnumerable<OrderDTO>> GetPaidAndCancelledOrders()
@@ -46,7 +46,7 @@ namespace GameStore.BLL.Services
             //GET CURRENT USER
             
             var currentUsersCartId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
-            var currentUsersCart = uow.OrderCartRepository.GetOrderDetails(currentUsersCartId);
+            var currentUsersCart = uow.OrderCartRepository.GetOrderDetails(currentUsersCartId.Value);
             return currentUsersCart.Select(x=> mapper.Map<OrderGameDTO>(x));
 
         }
@@ -58,12 +58,11 @@ namespace GameStore.BLL.Services
 
         public async Task AddGameToCart(string key)
         {
-            
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var existingCartId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             var cart = existingCartId == null ? uow.OrderCartRepository.CreateNewCartForUser(userId).Id : existingCartId;
-            uow.OrderCartRepository.AddGameToTheCartOrIncreaseQuantity(cart, game);
-            uow.SaveAsync();
+            uow.OrderCartRepository.AddGameToTheCartOrIncreaseQuantity(cart.Value, game);
+            await uow.SaveAsync();
             
         }
 
@@ -73,18 +72,19 @@ namespace GameStore.BLL.Services
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var cart = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             if (cart == null) { throw new Exception("Youre trying to delete a game from the cart but you never added the game in it"); }
-            uow.OrderCartRepository.DeleteGameFromCartOrDecreaseQuantity(cart, game);
+            uow.OrderCartRepository.DeleteGameFromCartOrDecreaseQuantity(cart.Value, game);
+            await uow.SaveAsync();
         }
 
         public async Task<BankInvoice> GetInvoiceData()
         {
             var OrderId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             var UserId = userId;
-            var Date = await GetOrderById(OrderId);
+            var Date = await GetOrderById(OrderId.Value);
             var dateTime = Date.date;
             var UserCart = await GetCurrentUsersCart();
             var Sum = UserCart.Select(x => x.price * x.quantity * ((100 - x.discount) / 100)).Sum();
-           return new BankInvoice { CreationDate = dateTime, UserId = UserId, OrderId = OrderId, Sum = Sum };
+           return new BankInvoice { CreationDate = dateTime, UserId = UserId, OrderId = OrderId.Value, Sum = Sum };
 
         }
     }
