@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Repositories;
 using GameStore.BLL.DTO;
-using GameStore_DAL.Interfaces;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -22,10 +22,10 @@ namespace BLL.Services
             mapper = _mapper; 
 
         }
-        public async Task<IEnumerable<GET_Genre>> GetAllAsync()
+        public async Task<IEnumerable<GetGenreRequest>> GetAllAsync()
         {
             var allGenres = await uow.GenreRepository.GetAllAsync();
-            return allGenres.Select(x=> mapper.Map<GET_Genre>(x)).ToList();
+            return allGenres.Select(x=> mapper.Map<GetGenreRequest>(x)).ToList();
 
         }
         public async Task<GenreEntity> GetByIdAsync(Guid id)
@@ -51,17 +51,17 @@ namespace BLL.Services
             await uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<GET_Genre>> GetGenresByGameGuid(Guid gameId) 
+        public async Task<IEnumerable<GetGenreRequest>> GetGenresByGameGuid(Guid gameId) 
         {
             var genreGuids = await uow.GameGenreRepository.GetGenreGuidsByGameGuidId(gameId);
             var genre = await uow.GenreRepository.GetAllByGenreGuids(genreGuids);
-            return genre.ToList().Select(x=> mapper.Map<GET_Genre>(x));
+            return genre.ToList().Select(x=> mapper.Map<GetGenreRequest>(x));
         }
 
-        public async Task<IEnumerable<GET_Genre>> GetGenresByParentGenre(Guid parentId)
+        public async Task<IEnumerable<GetGenreRequest>> GetGenresByParentGenre(Guid parentId)
         {
             var genres = await uow.GenreRepository.GetAllByParentGenreAsync(parentId);
-            return genres.Select(x => mapper.Map<GET_Genre>(x));
+            return genres.Select(x => mapper.Map<GetGenreRequest>(x));
         }
     }
 }

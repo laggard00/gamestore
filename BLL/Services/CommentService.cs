@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using GameStore.BLL.DTO;
 using GameStore.DAL.Models;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace GameStore.BLL.Services
             mapper = map;
         }
 
-        public async Task FormatCommentAndAdd(string key, POST_Comment commentRequest)
+        public async Task FormatCommentAndAdd(string key, AddCommentRequest commentRequest)
         {
             var parentComment =await uow.CommentRepository.GetById(commentRequest.parentId);
             string commentBody=commentRequest.comment.body;
@@ -48,12 +48,12 @@ namespace GameStore.BLL.Services
             catch(Exception ex) { var b = ex.Message; return; }
         }
 
-        public async Task<IEnumerable<GET_Comment>> GetAllComentsWithIndefiniteChildren(string key)
+        public async Task<IEnumerable<GetCommentRequest>> GetAllComentsWithIndefiniteChildren(string key)
         {
             var game = await uow.GamesRepository.GetGameByAlias(key);
-            List<GET_Comment> comments = new List<GET_Comment>();
+            List<GetCommentRequest> comments = new List<GetCommentRequest>();
             var allIndefiniteComments = await uow.CommentRepository.GetAllByGameId(game.Id);
-            return allIndefiniteComments.Select(x => mapper.Map<GET_Comment>(x));
+            return allIndefiniteComments.Select(x => mapper.Map<GetCommentRequest>(x));
         }
 
         public async Task DeleteCommentByGameKeyAndCommentId(string key, Guid commentId)

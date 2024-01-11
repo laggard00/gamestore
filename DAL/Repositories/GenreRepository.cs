@@ -30,8 +30,7 @@ namespace DAL.Repositories
         {
             if (dbSet.Contains(entity))
             {
-                dbSet.Remove(entity);
-                context.SaveChanges();
+                dbSet.Remove(entity);     
             }
         }
 
@@ -78,6 +77,19 @@ namespace DAL.Repositories
         public async Task<IEnumerable<GenreEntity>> GetAllByGenreGuids(IEnumerable<Guid> GenreGuids)
         {
             return await dbSet.Where(x => GenreGuids.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<bool> CheckIfGenreGuidExist(Guid Guid)
+        {
+            var exists = await context.Genres.AnyAsync(genre => genre.Id == Guid);
+            return exists;
+
+        }
+
+        public async Task<bool> GenreIdExistsAndNotSameAsTheParent(Guid? parentId, Guid id)
+        {
+            return parentId != id && await context.Genres.AnyAsync(x => x.Id == id);
+
         }
     }
 }

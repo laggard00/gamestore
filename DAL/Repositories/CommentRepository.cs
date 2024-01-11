@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,6 +57,11 @@ namespace GameStore.DAL.Repositories
         public async Task<Comment> GetById(Guid? Id)
         {
             return context.Comments.Find(Id);
+        }
+
+        public async Task<bool> ParentExist(Guid? parentGuid)
+        {
+            return context.Comments.Any(x => x.Id == parentGuid);
         }
     }
 }

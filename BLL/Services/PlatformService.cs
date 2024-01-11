@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Repositories;
 using GameStore.BLL.DTO;
-using GameStore_DAL.Interfaces;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;

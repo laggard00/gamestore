@@ -1,5 +1,5 @@
 ﻿using DAL.Models;
-using GameStore_DAL.Interfaces;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using System;
 using System.Collections.Generic;

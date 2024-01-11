@@ -22,8 +22,6 @@ namespace DAL.Repositories
         {
             this.context = _context;
             dbset = context.Publishers;
-
-
         }
 
         public async Task AddAsync(Publisher entity)
@@ -40,6 +38,15 @@ namespace DAL.Repositories
         public bool CheckIfPublisherExists(string companyName)
         {
             var publisher = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
+            if (publisher == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool CheckIfPublisherExists(Guid id)
+        {
+            var publisher = context.Publishers.SingleOrDefault(x => x.Id==id);
             if (publisher == null)
             {
                 return false;

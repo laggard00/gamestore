@@ -78,5 +78,20 @@ namespace GameStore.DAL.Repositories
             return context.Orders.Where(order => order.Status == Order.Statuses.Paid.ToString()
                                               || order.Status == Order.Statuses.Cancelled.ToString()).ToList();
         }
+
+        public async Task SetOrderToPaid(Guid? cartId)
+        {
+            var openOrder = context.Orders.Find(cartId);
+            openOrder.Status=Order.Statuses.Paid.ToString();
+        }
+
+        public void UpdateCartAndGameInStock(IEnumerable<OrderGame> userCartMapped)
+        {
+            foreach(var item in userCartMapped) 
+            {
+               var product = context.Games.Find(item.ProductId);
+                product.UnitInStock -= item.Quantity;    
+            }
+        }
     }
 }

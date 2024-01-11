@@ -35,7 +35,6 @@ namespace DAL.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
             }
         }
 

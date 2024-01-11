@@ -2,13 +2,16 @@ using BLL.AutoMapper;
 using BLL.Services;
 using DAL.Repositories;
 using FluentAssertions.Common;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using GameStore.BLL.DTO;
 using GameStore.BLL.Services;
 using GameStore.DAL.Repositories;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
+using GameStore.WEB.Middleware.Exstensions;
+using GameStore.WEB.ServiceCollections;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
 using GameStore_DAL.Repositories;
-using GameStore_v2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -26,27 +29,13 @@ builder.Services.AddDbContext<GameStoreDbContext>(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddScoped<IGamesRepository,GamesRepository>();
-builder.Services.AddScoped<IGenreRepository,GenreRepository>();
-builder.Services.AddScoped<IGameGenreRepository,GameGenreRepository>();
-builder.Services.AddScoped<IPlatformRepository,PlatformRepository>();
-builder.Services.AddScoped<IGamePlatformRepository,GamePlatformRepository>();
-builder.Services.AddScoped<IPublisherRepository,PublisherRepository>();
-builder.Services.AddScoped<IOrderCartRepository,OrderCartRepository>();
-builder.Services.AddScoped<ICommentRepository,CommentRepository>();
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped<GameService>();
-builder.Services.AddScoped<GenreService>();
-builder.Services.AddScoped<PlatformService>();
-builder.Services.AddScoped<PublisherService>();
-builder.Services.AddScoped<OrderCartService>();
-builder.Services.AddScoped<CommentService>();
+                                          .AddNewtonsoftJson(options =>
+                                                             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddMemoryCache();
+builder.Services.AddDataAccessLayerDependencies();
+builder.Services.AddBusinessLogicLayerDependencies();
+builder.Services.AddFluentValidationDependencies();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });

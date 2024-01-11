@@ -14,7 +14,7 @@ namespace DAL.Models
         
         public Guid PlatformId { get; set; }
 
-        
+        // add navigational properties
         
         
     }

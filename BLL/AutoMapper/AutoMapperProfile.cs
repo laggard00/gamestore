@@ -22,7 +22,7 @@ namespace BLL.AutoMapper
 
 
 
-            CreateMap<POST_GameDTO, Game>()
+            CreateMap<AddGameRequest, Game>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Game.Name))
                     .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Game.Key))
@@ -47,7 +47,7 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.companyName))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.description));
 
-            CreateMap<GenreEntity, GET_Genre>()
+            CreateMap<GenreEntity, GetGenreRequest>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
 
@@ -62,7 +62,13 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.quantity, opt => opt.MapFrom(src => src.Quantity))
                     .ForMember(dest => dest.discount, opt => opt.MapFrom(src => src.Discount));
 
-            CreateMap<Comment, GET_Comment>()
+            CreateMap<OrderGameDTO, OrderGame>()
+                    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.productId))
+                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.price))
+                    .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
+                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.discount));
+
+            CreateMap<Comment, GetCommentRequest>()
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.body, opt => opt.MapFrom(src => src.Body))
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))

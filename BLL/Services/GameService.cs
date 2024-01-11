@@ -3,8 +3,8 @@ using DAL.Exceptions;
 using DAL.Repositories;
 using GameStore.BLL.DTO;
 using GameStore.DAL.Filters;
+using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
 using GameStore_DAL.Repositories;
 using Microsoft.AspNetCore.Server.IIS.Core;
@@ -39,8 +39,9 @@ namespace BLL.Services
             
         }
 
-        public async Task AddAsync(POST_GameDTO model)
+        public async Task AddAsync(AddGameRequest model)
         {
+
              var gameId = await uow.GamesRepository.AddAsync(mapper.Map<Game>(model));
              foreach (var item in model.Platforms)
              {
@@ -53,15 +54,18 @@ namespace BLL.Services
              await uow.SaveAsync();   
         }
 
-        public async Task UpdateAsync(PUT_GameDTO model)
+        public async Task UpdateAsync(UpdateGameRequest model)
         {
-            if (!await uow.PlatformRepository.CheckIfPlatformGuidsExist(model.Platform) || !await uow.GenreRepository.CheckIfGenreGuidsExist(model.Genre))
+            //this part is useless if database is setup correctly.
+            if (!await uow.PlatformRepository.CheckIfPlatformGuidsExist(model.Platforms) || !await uow.GenreRepository.CheckIfGenreGuidsExist(model.Genres) || await uow.PublisherRepository.GetPublisherById(model.Publisher) is null)
             {
-                throw new Exception("Genres or platform currently don't exist");
+                throw new Exception("Genres, platform, or publishers currently don't exist");
             }
+            model.Game.PublisherId = model.Publisher;
             await uow.GamesRepository.Update(model.Game);
-            await uow.GameGenreRepository.Update(model.Game.Id, model.Genre);
-            await uow.GamePlatformRepository.Update(model.Game.Id, model.Platform);
+            await uow.GameGenreRepository.Update(model.Game.Id, model.Genres);
+            await uow.GamePlatformRepository.Update(model.Game.Id, model.Platforms);
+            
             await uow.SaveAsync();
         }
 

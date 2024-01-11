@@ -4,9 +4,9 @@ using DAL.Exceptions;
 using DAL.Models;
 using FluentAssertions.Execution;
 using GameStore.DAL.Filters;
+using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,19 +35,19 @@ namespace GameStore_DAL.Repositories
             return addedEntity.Entity;
         }
 
-        public void Delete(Game entity)
-        {
-            if (dbSet.Contains(entity))
-            {
-                dbSet.Remove(entity);
-                context.SaveChanges();
-            }
-        }
+       public void Delete(Game entity)
+       {
+           if (dbSet.Contains(entity))
+           {
+               dbSet.Remove(entity);  
+           }
+       }
 
-        public Task DeleteByKeyAsync(string key)
+        public async Task DeleteByKeyAsync(string key)
         {
-            context.Remove(dbSet.Where(x => x.Key == key));
-            return Task.CompletedTask;
+            var game = await dbSet.SingleOrDefaultAsync(x=> x.Key==key);
+            context.Remove(game);
+            
         }
 
         public async Task<IEnumerable<Game>> GetAllAsync(GameFilter filters)
@@ -135,6 +135,7 @@ namespace GameStore_DAL.Repositories
             //    }
             //    
             //}
+            
             if (filter.minPrice != null && filter.minPrice >= 0)
                 query = query.Where(game => game.Price >= filter.minPrice);
 
@@ -161,6 +162,29 @@ namespace GameStore_DAL.Repositories
             }
             return query;
 
+        }
+
+        public async Task UpdateUnitInStockFromCart(Guid productId, int quantity)
+        {
+            var product = await context.Games.FindAsync(productId);
+            product.UnitInStock -= quantity;
+
+        }
+
+        public bool UnitInStockIsLargerThanOrder(IEnumerable<OrderGame> userCart)
+        {
+            foreach (var game in userCart)
+            {
+                var product = context.Games.AsNoTracking().Where(x => x.Id == game.ProductId).SingleOrDefault();
+                if (product.UnitInStock <= game.Quantity) { return false; }
+                
+            }
+            return true;
+        }
+
+        public async Task<bool> IsUnique(string key)
+        {
+            return !context.Games.AsNoTracking().Any(x => x.Key == key);
         }
     }
 }
