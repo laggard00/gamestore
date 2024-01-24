@@ -5,7 +5,7 @@ namespace GameStore.DAL.Repositories.RepositoryInterfaces
 {
     public interface IOrderCartRepository
     {
-        void AddGameToTheCartOrIncreaseQuantity(Guid cartId, Game game);
+        void AddGameToTheCart(Guid cartId, Game game);
         Order CreateNewCartForUser(Guid userId);
         void DeleteGameFromCartOrDecreaseQuantity(Guid cartId, Game game);
         IEnumerable<PaymentMethods> GetAllPaymentMethods();
@@ -14,7 +14,9 @@ namespace GameStore.DAL.Repositories.RepositoryInterfaces
         IEnumerable<OrderGame> GetOrderDetails(Guid guid);
         IEnumerable<Order> GetPaidAndCancelledOrdes();
 
+        void RemoveGameFromCart(OrderGame orderGame);
           Task SetOrderToPaid(Guid? id);
         void UpdateCartAndGameInStock(IEnumerable<OrderGame> userCartMapped);
+        OrderGame? FindGameInTheCart(Guid cartId, Guid gameId);
     }
 }

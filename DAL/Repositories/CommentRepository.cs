@@ -26,9 +26,9 @@ namespace GameStore.DAL.Repositories
             await context.AddAsync(comment);
         }
 
-        public void DeleteComment(Guid id, Guid commentId)
+        public void DeleteComment(Guid gameId, Guid commentId)
         {
-            var comment = context.Comments.SingleOrDefault(x => x.GameId == id && x.Id == commentId);
+            var comment = context.Comments.SingleOrDefault(x => x.GameId == gameId && x.Id == commentId);
             context.Remove(comment);
         }
 
@@ -59,7 +59,7 @@ namespace GameStore.DAL.Repositories
             return context.Comments.Find(Id);
         }
 
-        public async Task<bool> ParentExist(Guid? parentGuid)
+        public bool ParentExist(Guid? parentGuid)
         {
             return context.Comments.Any(x => x.Id == parentGuid);
         }

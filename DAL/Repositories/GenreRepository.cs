@@ -55,18 +55,13 @@ namespace DAL.Repositories
         }
         public async Task<bool> CheckIfGenreGuidsExist(IEnumerable<Guid> Guids)
         {
-            foreach (var id in Guids)
-            {
-                var exists = await context.Genres.AnyAsync(genre => genre.Id == id);
+            var isAllExists = await context.Genres.AllAsync(genre => Guids.Contains(genre.Id));
 
-                if (!exists)
-                    return false;
-            }
-            return true;
+            return isAllExists;
         }
         public async Task<GenreEntity> GetByIdAsync(Guid id)
         {
-            return await dbSet.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await dbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public void Update(GenreEntity entity)

@@ -1,7 +1,8 @@
 ﻿
 
 using BLL.Services;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Games;
+using GameStore.BLL.Validators;
 using GameStore.DAL.Filters;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
@@ -26,6 +27,7 @@ namespace GameStore.WEB.Controllers
 
         private GameStoreDbContext context;
 
+        
 
 
 
@@ -35,6 +37,7 @@ namespace GameStore.WEB.Controllers
 
             _appCache = appCache;
             this.context = context;
+            
         }
 
 
@@ -51,7 +54,7 @@ namespace GameStore.WEB.Controllers
         {
             var result = await _service.GetAllAsync(filters);
             // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
-            return Ok(new { games = result, totalPages = 5, currentPage = 69 });
+            return Ok(new { games = result, totalPages = 1, currentPage = filters.page});
         }
 
 
@@ -79,8 +82,9 @@ namespace GameStore.WEB.Controllers
         [HttpPost("games")]
         public async Task<ActionResult> Post([FromBody] AddGameRequest value)
         {
+            
 
-
+            
             if (value == null)
             {
                 return BadRequest("The request body must not be null.");
@@ -101,8 +105,11 @@ namespace GameStore.WEB.Controllers
                 {
                     return Conflict("Game with this alias already exists!");
                 }
-
-                await _service.AddAsync(value);
+                try {
+                    await _service.AddAsync(value);
+                } 
+                catch (Exception ex) 
+                { throw ex; }
                 return Ok();
 
             }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Exceptions;
 using DAL.Repositories;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Games;
 using GameStore.DAL.Filters;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
@@ -41,8 +41,9 @@ namespace BLL.Services
 
         public async Task AddAsync(AddGameRequest model)
         {
-
+          
              var gameId = await uow.GamesRepository.AddAsync(mapper.Map<Game>(model));
+             
              foreach (var item in model.Platforms)
              {
                  await uow.GamePlatformRepository.AddGamePlatform(gameId.Id, item);
@@ -56,16 +57,15 @@ namespace BLL.Services
 
         public async Task UpdateAsync(UpdateGameRequest model)
         {
-            //this part is useless if database is setup correctly.
-            if (!await uow.PlatformRepository.CheckIfPlatformGuidsExist(model.Platforms) || !await uow.GenreRepository.CheckIfGenreGuidsExist(model.Genres) || await uow.PublisherRepository.GetPublisherById(model.Publisher) is null)
-            {
-                throw new Exception("Genres, platform, or publishers currently don't exist");
-            }
             model.Game.PublisherId = model.Publisher;
             await uow.GamesRepository.Update(model.Game);
-            await uow.GameGenreRepository.Update(model.Game.Id, model.Genres);
-            await uow.GamePlatformRepository.Update(model.Game.Id, model.Platforms);
-            
+            if (model.Genres.Count>0) {
+                await uow.GameGenreRepository.Update(model.Game.Id, model.Genres);
+                
+            }
+            if(model.Platforms.Count>0) {
+                await uow.GamePlatformRepository.Update(model.Game.Id, model.Platforms);
+            }
             await uow.SaveAsync();
         }
 
@@ -77,7 +77,7 @@ namespace BLL.Services
 
         public async Task<IEnumerable<Game>> GetGamesByGenre(Guid genreGuid)
         {
-            var allGameGuids = await uow.GameGenreRepository.GetGameGuidsByGenreGuidId(genreGuid);
+            var allGameGuids = await uow.GameGenreRepository.GetGenreGuidsByGameGuidId(genreGuid);
             var allGames = await uow.GamesRepository.GetAllByGameGuids(allGameGuids);
             return allGames;
         }

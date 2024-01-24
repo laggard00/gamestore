@@ -13,6 +13,6 @@ namespace DAL.Models
 
         public Guid GenreId { get; set; }
         
-        // add virtual properties here to so you can't put it garbage data.
+        
     }
 }

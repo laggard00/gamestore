@@ -1,4 +1,4 @@
-﻿using GameStore.BLL.DTO;
+﻿using GameStore.BLL.DTO.Comments;
 using GameStore.BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 

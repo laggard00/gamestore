@@ -9,6 +9,6 @@ namespace GameStore.DAL.Repositories.RepositoryInterfaces
         void DeleteComment(Guid id, Guid commentId);
         Task<IEnumerable<Comment>> GetAllByGameId(Guid key);
         Task<Comment> GetById(Guid? Id);
-        Task<bool> ParentExist(Guid? parentGuid);
+        bool ParentExist(Guid? parentGuid);
     }
 }

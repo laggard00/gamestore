@@ -1,8 +1,9 @@
 ﻿
 using BLL.Services;
 using DAL.Models;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Platform;
 using GameStore.BLL.Services;
+using GameStore.DAL.Models;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 

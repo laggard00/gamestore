@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,10 +47,9 @@ namespace GameStore_DAL.Models
 
         public int UnitInStock { get; set; }
 
-        public Guid PublisherId { get; set; } 
-       
+        public Guid PublisherId { get; set; }
 
-     
+
 
     }
 

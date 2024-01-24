@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Comments;
 using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
@@ -24,7 +24,7 @@ namespace GameStore.BLL.Services
         public async Task FormatCommentAndAdd(string key, AddCommentRequest commentRequest)
         {
             var parentComment =await uow.CommentRepository.GetById(commentRequest.parentId);
-            string commentBody=commentRequest.comment.body;
+            var commentBody=commentRequest.comment.body;
             var game = await uow.GamesRepository.GetGameByAlias(key);
 
 
@@ -40,12 +40,9 @@ namespace GameStore.BLL.Services
             }
             
             await uow.CommentRepository.AddAsync(new Comment { GameId = game.Id, Body = commentBody, Name = commentRequest.comment.name, ParentCommentId = commentRequest.parentId }); 
+            await uow.SaveAsync();
+            
            
-            try
-            {
-                await uow.SaveAsync();
-            }
-            catch(Exception ex) { var b = ex.Message; return; }
         }
 
         public async Task<IEnumerable<GetCommentRequest>> GetAllComentsWithIndefiniteChildren(string key)

@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Models;
 
 namespace GameStore.DAL.Repositories.RepositoryInterfaces
 {

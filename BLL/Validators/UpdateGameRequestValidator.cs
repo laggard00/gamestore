@@ -1,28 +1,9 @@
 ﻿using FluentValidation;
+using GameStore.BLL.DTO.Games;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
-using GameStore_DAL.Data;
-using GameStore_DAL.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameStore.BLL.DTO
+namespace GameStore.BLL.Validators
 {
-    public class UpdateGameRequest
-    {
-        public Game Game { get; set; }
-        public List<Guid> Genres { get; set; }
-        public List<Guid> Platforms { get; set; }
-        public Guid Publisher { get; set; }
-
-       
-    }
     public class UpdateGameRequestValidator : AbstractValidator<UpdateGameRequest>
     {
         private readonly IGenreRepository genreRepository;

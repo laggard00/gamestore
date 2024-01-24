@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using System;
@@ -22,7 +23,7 @@ namespace GameStore.BLL.Services
         }
         public async Task AddAsync(Publisher publisher)
         {
-            uow.PublisherRepository.AddAsync(publisher);
+            await uow.PublisherRepository.AddAsync(publisher);
             await uow.SaveAsync();
         }
 

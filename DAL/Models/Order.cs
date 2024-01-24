@@ -26,6 +26,7 @@ namespace GameStore.DAL.Models
                 }
             }
         }
+        
         private Statuses _status;
 
         public enum Statuses

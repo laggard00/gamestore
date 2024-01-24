@@ -3,8 +3,10 @@
 using DAL.Models;
 using DAL.Repositories;
 using FluentAssertions.Common;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Publisher;
+using GameStore.BLL.DTO.PublishersDTO;
 using GameStore.BLL.Services;
+using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
@@ -66,13 +68,13 @@ namespace GameStore.WEB.Controllers
         }
 
         [HttpPut("publishers")]
-        public async Task<ActionResult> Put([FromBody] object value)
+        public async Task<ActionResult> Put([FromBody] UpdatePublisherRequest value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            // await service.Update(value.publisher);
+             await service.Update(value.publisher);
             return Ok();
 
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Repositories;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Platform;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -58,7 +58,7 @@ namespace BLL.Services
 
         public async Task DeleteAsync(Guid modelId)
         {
-            uow.PlatformRepository.DeleteByIdAsync(modelId);
+            await uow.PlatformRepository.DeleteByIdAsync(modelId);
             await uow.SaveAsync();
         }
     }

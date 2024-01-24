@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameStore.BLL.DTO
+namespace GameStore.BLL.DTO.Comments
 {
     public class GetCommentRequest
     {

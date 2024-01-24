@@ -52,6 +52,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task<IEnumerable<Game>> GetAllAsync(GameFilter filters)
         {
+            
             var query = await BuildQuery(filters);
             var games = await query.ToListAsync();
             return games;
@@ -75,22 +76,7 @@ namespace GameStore_DAL.Repositories
 
         public async Task Update(Game entity)
         {
-
-            var gameEntity = await dbSet.FindAsync(entity.Id);
-            if (gameEntity == null)
-            {
-                throw new Exception("Game not found");
-            }
-            gameEntity.Name = entity.Name;
-            gameEntity.Description = entity.Description;
-            gameEntity.Key = entity.Key;
-            gameEntity.Price = entity.Price;
-            gameEntity.UnitInStock = entity.UnitInStock;
-            gameEntity.Discount = entity.Discount;
-            gameEntity.PublisherId = entity.PublisherId;
-
-            context.Entry(gameEntity).State = EntityState.Modified;
-
+            context.Update(entity);
         }
 
         public async Task<IEnumerable<Game>> GetAllGamesWithSamePublisher(Guid id)
@@ -120,7 +106,7 @@ namespace GameStore_DAL.Repositories
             }
             if (!string.IsNullOrEmpty(filter.name))
             {
-                query = query.Where(game => game.Name.Contains(filter.name));
+                query = query.Where(game => game.Name == filter.name);
             }
             //if (!string.IsNullOrEmpty(filter.datePublishing))
             //{
@@ -152,7 +138,7 @@ namespace GameStore_DAL.Repositories
                 switch (filter.sort.ToLower())
                 {
                     case "most popular": break;
-                    case "most commented": query = query.OrderBy(game => context.Comments.Where(comments => comments.GameId == game.Id).Count()); break;
+                    case "most commented": query = query.OrderByDescending(game => context.Comments.Where(comments => comments.GameId == game.Id).Count()); break;
                     case "price asc": query = query.OrderBy(game => game.Price); break;
                     case "price desc": query = query.OrderByDescending(game => game.Price); break;
                     case "new": //query = query.Reverse();

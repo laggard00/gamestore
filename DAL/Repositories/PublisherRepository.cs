@@ -1,6 +1,7 @@
 ﻿
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using DAL.Models;
+using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
@@ -37,21 +38,12 @@ namespace DAL.Repositories
 
         public bool CheckIfPublisherExists(string companyName)
         {
-            var publisher = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
-            if (publisher == null)
-            {
-                return false;
-            }
-            return true;
+            return context.Publishers.Any(x => x.CompanyName == companyName);
+            
         }
         public bool CheckIfPublisherExists(Guid id)
         {
-            var publisher = context.Publishers.SingleOrDefault(x => x.Id==id);
-            if (publisher == null)
-            {
-                return false;
-            }
-            return true;
+            return context.Publishers.Any(x => x.Id==id);    
         }
 
         public async Task<IEnumerable<Publisher>> GetAllPublishers()

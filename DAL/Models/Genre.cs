@@ -11,5 +11,7 @@ namespace GameStore_DAL.Models
 
         public Guid? ParentGenreId { get; set; }
 
+        
+        
     }
 }

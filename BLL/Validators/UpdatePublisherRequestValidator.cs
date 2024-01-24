@@ -1,27 +1,16 @@
-﻿using DAL.Models;
-using FluentValidation;
+﻿using FluentValidation;
+using GameStore.BLL.DTO.Publisher;
+using GameStore.BLL.DTO.PublishersDTO;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
-using GameStore_DAL.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameStore.BLL.DTO
+namespace GameStore.BLL.Validators
 {
-    public class UpdatePublisherRequest
-    {
-        public Publisher publisher { get; set; }
-    }
-
-
     public class UpdatePublisherRequestValidator : AbstractValidator<UpdatePublisherRequest>
     {
         private readonly IPublisherRepository publisherRepository;
         public UpdatePublisherRequestValidator(IPublisherRepository publisher)
         {
-            publisherRepository= publisher;
+            publisherRepository = publisher;
 
             RuleFor(x => x.publisher.Id)
                 .Must(publisherRepository.CheckIfPublisherExists)
@@ -41,7 +30,7 @@ namespace GameStore.BLL.DTO
                 .WithMessage("Description can't be empty");
 
         }
-        
-        
+
+
     }
 }

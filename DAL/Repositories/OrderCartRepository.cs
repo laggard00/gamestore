@@ -19,22 +19,21 @@ namespace GameStore.DAL.Repositories
         {
             context = _context;
         }
+        
+        public OrderGame? FindGameInTheCart(Guid cartId, Guid gameId)
+        { 
+            return context.Find<OrderGame>(cartId, gameId);
+        }
 
-        public void AddGameToTheCartOrIncreaseQuantity(Guid cartId, Game game)
+        public void AddGameToTheCart(Guid cartId, Game game)
         {
-            var gameInTheCart = context.Find<OrderGame>(cartId, game.Id);
-            if (gameInTheCart == null)
-            {
-                if (game.UnitInStock > 0)
-                {
-                    context.Add(new OrderGame { OrderId = cartId, ProductId = game.Id, Quantity = 1, Discount = game.Discount, Price = game.Price });
+          
+            context.Add(new OrderGame { OrderId = cartId, ProductId = game.Id, Quantity = 1, Discount = game.Discount, Price = game.Price });
+       
+        }
+        public void RemoveGameFromCart(OrderGame orderGame) {
 
-                }
-            }
-            else
-            {
-                if (game.UnitInStock > 0) { gameInTheCart.Quantity++; }
-            }
+            context.Remove(orderGame);
 
         }
 
@@ -60,7 +59,7 @@ namespace GameStore.DAL.Repositories
         public Guid? GetCurrentUsersOpenCartId(Guid userId)
         {
             var user = context.Orders.SingleOrDefault(x => x.CustomerId == userId && x.Status == Order.Statuses.Open.ToString());
-            return user != null ? user.Id : null;
+            return user?.Id;
         }
 
         public Order GetOrderById(Guid id)

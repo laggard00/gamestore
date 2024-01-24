@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using GameStore.BLL.DTO;
 using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using Newtonsoft.Json;
@@ -17,6 +16,9 @@ using System.Threading.Tasks;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using GameStore.BLL.DTO.BankRequest;
+using GameStore.BLL.DTO.Order;
+using GameStore.BLL.DTO.OrderGame;
+using Microsoft.Extensions.Configuration;
 
 namespace GameStore.BLL.Services
 {
@@ -24,9 +26,12 @@ namespace GameStore.BLL.Services
     {
         public IUnitOfWork uow { get; set; }
         public IMapper mapper { get; set; }
+
+        private Microsoft.Extensions.Configuration.IConfiguration configuration { get; set; }
         public Guid userId { get; set; }
-        public OrderCartService(IUnitOfWork uow, IMapper mapper)
+        public OrderCartService(IUnitOfWork uow, IMapper mapper, Microsoft.Extensions.Configuration.IConfiguration config)
         {
+            configuration = config;
             this.uow = uow;
             this.mapper = mapper;
             userId = new Guid("01f33a2f-2c43-4ae1-9fd7-08396921d328");
@@ -71,7 +76,10 @@ namespace GameStore.BLL.Services
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var existingCartId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             var cart = existingCartId == null ? uow.OrderCartRepository.CreateNewCartForUser(userId).Id : existingCartId;
-            uow.OrderCartRepository.AddGameToTheCartOrIncreaseQuantity(cart.Value, game);
+
+            var gameInCart = uow.OrderCartRepository.FindGameInTheCart(cart.Value, game.Id);
+            if(gameInCart == null) { uow.OrderCartRepository.AddGameToTheCart(cart.Value, game); }
+            else { gameInCart.Quantity++; }
             await uow.SaveAsync();
 
         }
@@ -81,21 +89,24 @@ namespace GameStore.BLL.Services
 
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var cart = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
-            if (cart == null) { throw new Exception("Youre trying to delete a game from the cart but you never added the game in it"); }
-            uow.OrderCartRepository.DeleteGameFromCartOrDecreaseQuantity(cart.Value, game);
+            var gameInCart = uow.OrderCartRepository.FindGameInTheCart(cart.Value, game.Id);
+            if (gameInCart.Quantity > 1) { gameInCart.Quantity--; }
+            else {
+                uow.OrderCartRepository.RemoveGameFromCart(gameInCart);
+            }
             await uow.SaveAsync();
         }
 
         public async Task<BankInvoice> GetInvoiceData()
         {
-            var OrderId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
-            var UserId = userId;
-            var Date = await GetOrderById(OrderId.Value);
-            var dateTime = Date.date;
-            var UserCart = await GetCurrentUsersCart();
+            var orderId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(this.userId);
+            var userId = this.userId;
+            var date = await GetOrderById(orderId.Value);
+            var dateTime = date.date;
+            var userCart = await GetCurrentUsersCart();
 
-            var Sum = Math.Round(UserCart.Select(x => x.price * x.quantity * ((double)(100 - x.discount) / 100)).Sum(), 2);
-            return new BankInvoice { CreationDate = dateTime, UserId = UserId, OrderId = OrderId.Value, Sum = Sum };
+            var Sum = Math.Round(userCart.Select(x => x.price * x.quantity * ((double)(100 - x.discount) / 100)).Sum(), 2);
+            return new BankInvoice { CreationDate = dateTime, UserId = userId, OrderId = orderId.Value, Sum = Sum };
 
         }
 
@@ -106,7 +117,8 @@ namespace GameStore.BLL.Services
             using (HttpClient httpClient = new HttpClient())
             {
                 //please remember to put links in the file
-                var uri = new Uri("http://127.0.0.1:5000/api/payments/ibox");
+                
+                var uri = new Uri(configuration["BaseApi:base"]+"ibox");
                 var content = new StringContent(jsonBoxRequest, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode) { await UpdateCartAndGameInStock(); }
@@ -127,7 +139,6 @@ namespace GameStore.BLL.Services
             var usersCart = await GetCurrentUsersCart();
             var userCartMapped = usersCart.Select(x => mapper.Map<OrderGame>(x)).ToList();
             uow.OrderCartRepository.UpdateCartAndGameInStock(userCartMapped);
-            await uow.SaveAsync();
             var usersCartid = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             await uow.OrderCartRepository.SetOrderToPaid(usersCartid);
             await uow.SaveAsync();
@@ -139,7 +150,7 @@ namespace GameStore.BLL.Services
             var jsonVisaRequest = JsonConvert.SerializeObject(visaRequest);
             using (HttpClient httpClient = new HttpClient())
             {
-                var uri = new Uri("http://127.0.0.1:5000/api/payments/visa");
+                var uri = new Uri(configuration["BaseApi:base"]+"visa");
                 var content = new StringContent(jsonVisaRequest, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode) { await UpdateCartAndGameInStock(); }

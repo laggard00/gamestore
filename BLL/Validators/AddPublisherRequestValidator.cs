@@ -1,24 +1,8 @@
 ﻿using FluentValidation;
-using GameStore_DAL.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameStore.BLL.DTO.Publisher;
 
-namespace GameStore.BLL.DTO
+namespace GameStore.BLL.Validators
 {
-    public class AddPublisherRequest
-    {
-        public PublisherDTO publisher { get; set; }
-    }
-    public class PublisherDTO
-    { 
-        public string companyName { get; set; }
-        public string homePage { get; set; }
-        public string description { get; set; }
-    }
-
     public class AddPublisherRequestValidator : AbstractValidator<AddPublisherRequest>
     {
         public AddPublisherRequestValidator()

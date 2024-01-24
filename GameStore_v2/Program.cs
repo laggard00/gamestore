@@ -5,7 +5,9 @@ using FluentAssertions.Common;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Games;
 using GameStore.BLL.Services;
+using GameStore.BLL.Validators;
 using GameStore.DAL.Repositories;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore.WEB.Middleware.Exstensions;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,10 +35,10 @@ builder.Services.AddControllersWithViews()
                                           .AddNewtonsoftJson(options =>
                                                              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddMemoryCache();
+
 builder.Services.AddDataAccessLayerDependencies();
 builder.Services.AddBusinessLogicLayerDependencies();
 builder.Services.AddFluentValidationDependencies();
-
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });

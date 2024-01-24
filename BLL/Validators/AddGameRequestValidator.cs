@@ -1,38 +1,13 @@
 ﻿using FluentValidation;
+using GameStore.BLL.DTO.Games;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
-using GameStore_DAL.Data;
-using GameStore_DAL.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameStore.BLL.DTO
+namespace GameStore.BLL.Validators
 {
-    public class AddGameRequest
-    {
-        public GameDTO Game { get; set; }
-        public List<Guid> Genres { get; set; }
-        public List<Guid> Platforms { get; set; }
-        public Guid Publisher { get; set; }
-    }
-
-    public class GameDTO
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Key { get; set; }
-        public double price { get; set; }
-        public int unitInStock { get; set; }
-        public int discount { get; set; }
-    }
-
     public class AddGameRequestValidator : AbstractValidator<AddGameRequest>
     {
-        
+
         private readonly IGenreRepository genreRepository;
         private readonly IPlatformRepository platformRepository;
         private readonly IPublisherRepository publisherRepository;
@@ -50,7 +25,7 @@ namespace GameStore.BLL.DTO
                 .WithMessage("Name of the game is required");
 
             RuleFor(x => x.Game.Key)
-                .MustAsync(async (key, token) => { return await gamesRepository.IsUnique(key);})
+                .MustAsync(async (key, token) => { return await gamesRepository.IsUnique(key); })
                 .WithMessage("Game Key must be a unique key");
 
             RuleFor(x => x.Game.Description)
@@ -73,7 +48,7 @@ namespace GameStore.BLL.DTO
                 .NotEmpty().WithMessage("Discount should be between 0 and a 100");
 
             RuleFor(x => x.Genres).NotEmpty()
-                .MustAsync(async (guids, token) => {return await genreRepository.CheckIfGenreGuidsExist(guids); })
+                .MustAsync(async (guids, token) => { return await genreRepository.CheckIfGenreGuidsExist(guids); })
                 .WithMessage("Not all genres exist in the database");
 
             RuleFor(x => x.Platforms).NotEmpty()
@@ -89,7 +64,7 @@ namespace GameStore.BLL.DTO
 
         
 
-        
+
     }
 
 }

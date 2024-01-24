@@ -10,8 +10,14 @@ using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using DAL.Models;
 using GameStore_DAL.Data;
-using GameStore.BLL.DTO;
 using GameStore.DAL.Models;
+using GameStore.BLL.DTO.Comments;
+using GameStore.BLL.DTO.Games;
+using GameStore.BLL.DTO.Genres;
+using GameStore.BLL.DTO.Order;
+using GameStore.BLL.DTO.OrderGame;
+using GameStore.BLL.DTO.Platform;
+using GameStore.BLL.DTO.Publisher;
 
 namespace BLL.AutoMapper
 {
@@ -31,6 +37,7 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Game.price))
                     .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Game.discount))
                     .ForMember(dest => dest.PublisherId, opt => opt.MapFrom(src => src.Publisher));
+                    
 
             CreateMap<GenreDTO, GenreEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -43,6 +50,7 @@ namespace BLL.AutoMapper
 
             CreateMap<PublisherDTO, Publisher>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    
                     .ForMember(dest => dest.HomePage, opt => opt.MapFrom(src => src.homePage))
                     .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.companyName))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.description));

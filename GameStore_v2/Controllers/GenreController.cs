@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Services;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Genres;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +56,7 @@ namespace GameStore.WEB.Controllers
         [HttpPost("genres")]
         public async Task<ActionResult> Post([FromBody] AddGenreRequest value)
         {
-
+            var b = ModelState.IsValid;
 
             await _service.AddAsync(value.genre);
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DAL.Repositories;
-using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Genres;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore_DAL.Models;
 using System;
