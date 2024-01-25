@@ -25,24 +25,14 @@ namespace GameStore.WEB.Controllers
 
         private readonly IAppCache _appCache;
 
-        private GameStoreDbContext context;
-
         
 
 
-
-        public GameController(GameService cs, IAppCache appCache, GameStoreDbContext context)
+        public GameController(GameService cs, IAppCache appCache)
         {
             _service = cs;
-
             _appCache = appCache;
-            this.context = context;
-            
         }
-
-
-
-
         /// <summary>
         /// Get all games, with their Details
         /// </summary>
@@ -53,8 +43,9 @@ namespace GameStore.WEB.Controllers
         public async Task<ActionResult<IEnumerable<Game>>> Get([FromQuery] GameFilter filters)
         {
             var result = await _service.GetAllAsync(filters);
+            var numOfPages = await _service.GetPageCount(filters);
             // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
-            return Ok(new { games = result, totalPages = 1, currentPage = filters.page});
+            return Ok(new { games = result, totalPages = numOfPages, currentPage = filters.page});
         }
 
 

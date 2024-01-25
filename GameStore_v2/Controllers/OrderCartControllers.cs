@@ -68,12 +68,13 @@ namespace GameStore.WEB.Controllers {
 
             var UserInfo = await service.GetInvoiceData();
             switch (paymentRequest.method.ToLower()) {
-                case "bank": {
-                        using (var memoryStreamPdf = service.GenerateInvoicePdf(UserInfo)) {
-                            await service.UpdateCartAndGameInStock();
-                            return File(memoryStreamPdf, "application/pdf", $"INVOICE -{UserInfo.OrderId}.pdf");
-                        }
+                case "bank":
+                    using (MemoryStream memoryStreamPdf = service.GenerateInvoicePdf(UserInfo)) {
+                        await service.UpdateCartAndGameInStock();
+                        return File(memoryStreamPdf.ToArray(), "application/pdf", $"INVOICE -{UserInfo.OrderId}.pdf");
                     }
+
+
 
                 case "ibox terminal":
                     var response = await service.ProcessIBoxTerminal(UserInfo);

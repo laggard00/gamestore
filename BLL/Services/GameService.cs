@@ -39,6 +39,16 @@ namespace BLL.Services
             
         }
 
+        public async Task<int> GetPageCount(GameFilter filters)
+        {
+            var pages = 1;
+            if(int.TryParse(filters.pageCount, out var pageCount)) {
+                var gameCount = await uow.GamesRepository.GetGameCount();
+                pages = (int)Math.Ceiling((double)gameCount / (double)pageCount);
+            }
+            return pages;
+        }
+
         public async Task AddAsync(AddGameRequest model)
         {
           
