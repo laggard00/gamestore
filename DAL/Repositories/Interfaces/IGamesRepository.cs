@@ -20,5 +20,7 @@ namespace GameStore.DAL.Repositories.RepositoryInterfaces
         Task Update(Game entity);
         Task UpdateUnitInStockFromCart(Guid productId, int quantity);
         Task<bool> IsUnique(string key);
+       
+        Task<int> GetGameCount();
     }
 }

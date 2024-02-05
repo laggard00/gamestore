@@ -172,5 +172,9 @@ namespace GameStore_DAL.Repositories
         {
             return !context.Games.AsNoTracking().Any(x => x.Key == key);
         }
+
+        public async Task<int> GetGameCount() {
+            return await context.Games.CountAsync();
+        }
     }
 }
