@@ -8,6 +8,7 @@ using GameStore.BLL.DTO;
 using GameStore.BLL.DTO.Games;
 using GameStore.BLL.Services;
 using GameStore.BLL.Validators;
+using GameStore.DAL.MongoRepositories;
 using GameStore.DAL.Repositories;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore.WEB.Middleware.Exstensions;
@@ -17,7 +18,9 @@ using GameStore_DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Serilog;
+using System.Configuration;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +42,11 @@ builder.Services.AddMemoryCache();
 builder.Services.AddDataAccessLayerDependencies();
 builder.Services.AddBusinessLogicLayerDependencies();
 builder.Services.AddFluentValidationDependencies();
+
+builder.Services.AddScoped<IMongoDatabase>(_ =>
+new
+MongoClient("mongodb://localhost:27017").GetDatabase("Northwind"));
+builder.Services.AddScoped<ShippersService>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -47,6 +55,7 @@ builder.Services.AddLazyCache();
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", (build) =>
 {
     build.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
+    build.WithOrigins("http://127.0.0.1:8080/games").AllowAnyMethod().AllowAnyHeader();
 }));
 
 

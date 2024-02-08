@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameStore.DAL.Filters
-{
-    public class GameFilter
-    {
+namespace GameStore.DAL.Filters {
+    public class GameFilter {
         public List<Guid>? genres { get; set; }
         public List<Guid>? platforms { get; set; }
         public List<Guid>? publishers { get; set; }

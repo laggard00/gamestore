@@ -10,6 +10,7 @@ using AutoMapper;
 using GameStore.BLL.DTO.BankRequest;
 using GameStore.BLL.DTO.Order;
 using GameStore.BLL.DTO.OrderGame;
+using GameStore.DAL.Filters;
 
 namespace GameStore.WEB.Controllers {
 
@@ -34,6 +35,12 @@ namespace GameStore.WEB.Controllers {
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetPaidAndCancelledOrders() {
             var allPaidAndCancelledOrders = await service.GetPaidAndCancelledOrders();
             return allPaidAndCancelledOrders == null ? Ok("there are current paid or cancelled orders") : Ok(allPaidAndCancelledOrders);
+        }
+        [HttpGet("orders/history")]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrderHistory([FromQuery] OrderFilter orderFilter ) {
+           
+            var allPaidOrders = await service.GetAllPaidOrders(orderFilter);
+            return allPaidOrders!=null ? Ok(allPaidOrders) : Ok("there are not orders matching the filter");
         }
         [HttpGet("orders/{id}")]
         public async Task<ActionResult<OrderDTO>> GetOrderById(Guid id) {
@@ -73,9 +80,6 @@ namespace GameStore.WEB.Controllers {
                         await service.UpdateCartAndGameInStock();
                         return File(memoryStreamPdf.ToArray(), "application/pdf", $"INVOICE -{UserInfo.OrderId}.pdf");
                     }
-
-
-
                 case "ibox terminal":
                     var response = await service.ProcessIBoxTerminal(UserInfo);
                     return response.IsSuccessStatusCode ? Ok(new { userId = UserInfo.UserId, orderId = UserInfo.OrderId, paymentDate = DateTime.Now, sum = UserInfo.Sum }) : StatusCode((int)response.StatusCode, response.Content);

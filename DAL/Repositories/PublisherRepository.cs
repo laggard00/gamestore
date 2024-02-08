@@ -13,60 +13,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Repositories
-{
-    public class PublisherRepository : IPublisherRepository
-    {
+namespace DAL.Repositories {
+    public class PublisherRepository : IPublisherRepository {
         protected readonly GameStoreDbContext context;
         private DbSet<Publisher> dbset;
-        public PublisherRepository(GameStoreDbContext _context)
-        {
+        public PublisherRepository(GameStoreDbContext _context) {
             this.context = _context;
             dbset = context.Publishers;
         }
 
-        public async Task AddAsync(Publisher entity)
-        {
+        public async Task AddAsync(Publisher entity) {
             await context.Publishers.AddAsync(entity);
         }
 
-        public async Task<Publisher> GetPublisherByCompanyName(string companyName)
-        {
+        public async Task<Publisher> GetPublisherByCompanyName(string companyName) {
             var publisherByCompanyName = context.Publishers.SingleOrDefault(x => x.CompanyName == companyName);
             return publisherByCompanyName;
         }
 
-        public bool CheckIfPublisherExists(string companyName)
-        {
+        public bool CheckIfPublisherExists(string companyName) {
             return context.Publishers.Any(x => x.CompanyName == companyName);
-            
+
         }
-        public bool CheckIfPublisherExists(Guid id)
-        {
-            return context.Publishers.Any(x => x.Id==id);    
+        public bool CheckIfPublisherExists(Guid id) {
+            return context.Publishers.Any(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Publisher>> GetAllPublishers()
-        {
+        public async Task<IEnumerable<Publisher>> GetAllPublishers() {
             return dbset.ToList();
         }
 
-        public async Task<Publisher> GetPublisherById(Guid publisherId)
-        {
+        public async Task<Publisher> GetPublisherById(Guid publisherId) {
             return dbset.Find(publisherId);
         }
 
-        public void Update(Publisher publisher)
-        {
+        public void Update(Publisher publisher) {
             context.Update(publisher);
         }
 
-        public void DeletePublisher(Guid id)
-        {
+        public void DeletePublisher(Guid id) {
             var b = dbset.Find(id);
             if (b == null) { return; }
             context.Remove(b);
-
         }
     }
 }

@@ -3,13 +3,9 @@ using GameStore.DAL.Repositories.RepositoryInterfaces;
 using GameStore.DAL.Repositories;
 using GameStore_DAL.Repositories;
 
-namespace GameStore.WEB.ServiceCollections
-{
-    public static class DataAccessLayerExtensions
-    {
-       public static IServiceCollection AddDataAccessLayerDependencies(this IServiceCollection services)
-
-        {
+namespace GameStore.WEB.ServiceCollections {
+    public static class DataAccessLayerExtensions {
+        public static IServiceCollection AddDataAccessLayerDependencies(this IServiceCollection services) {
             services.AddScoped<IGamesRepository, GamesRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<IGameGenreRepository, GameGenreRepository>();

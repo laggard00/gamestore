@@ -1,5 +1,8 @@
-﻿using GameStore.DAL.Models;
+﻿using FluentAssertions.Specialized;
+using GameStore.DAL.Filters;
+using GameStore.DAL.Models;
 using GameStore_DAL.Models;
+using System.Linq.Expressions;
 
 namespace GameStore.DAL.Repositories.RepositoryInterfaces
 {
@@ -18,5 +21,6 @@ namespace GameStore.DAL.Repositories.RepositoryInterfaces
           Task SetOrderToPaid(Guid? id);
         void UpdateCartAndGameInStock(IEnumerable<OrderGame> userCartMapped);
         OrderGame? FindGameInTheCart(Guid cartId, Guid gameId);
+        Task<IEnumerable<Order>> GetAllOrders(Expression<Func<Order,bool>>predicate);
     }
 }

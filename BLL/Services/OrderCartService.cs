@@ -19,45 +19,39 @@ using GameStore.BLL.DTO.BankRequest;
 using GameStore.BLL.DTO.Order;
 using GameStore.BLL.DTO.OrderGame;
 using Microsoft.Extensions.Configuration;
+using GameStore.DAL.Filters;
 
-namespace GameStore.BLL.Services
-{
-    public class OrderCartService
-    {
+namespace GameStore.BLL.Services {
+    public class OrderCartService {
         public IUnitOfWork uow { get; set; }
         public IMapper mapper { get; set; }
-
-        private Microsoft.Extensions.Configuration.IConfiguration configuration { get; set; }
+        private IConfiguration configuration { get; set; }
         public Guid userId { get; set; }
-        public OrderCartService(IUnitOfWork uow, IMapper mapper, Microsoft.Extensions.Configuration.IConfiguration config)
-        {
+
+        public OrderCartService(IUnitOfWork uow, IMapper mapper, IConfiguration config) {
             configuration = config;
             this.uow = uow;
             this.mapper = mapper;
             userId = new Guid("01f33a2f-2c43-4ae1-9fd7-08396921d328");
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetPaidAndCancelledOrders()
-        {
+        public async Task<IEnumerable<OrderDTO>> GetPaidAndCancelledOrders() {
             var orders = uow.OrderCartRepository.GetPaidAndCancelledOrdes();
             return orders.Select(x => mapper.Map<OrderDTO>(x));
         }
 
-        public async Task<OrderDTO> GetOrderById(Guid id)
-        {
+        public async Task<OrderDTO> GetOrderById(Guid id) {
             var order = uow.OrderCartRepository.GetOrderById(id);
             return mapper.Map<OrderDTO>(order);
         }
 
-        public async Task<IEnumerable<OrderGameDTO>> GetOrderDetails(Guid orderId)
-        {
+        public async Task<IEnumerable<OrderGameDTO>> GetOrderDetails(Guid orderId) {
             var orderDetails = uow.OrderCartRepository.GetOrderDetails(orderId);
             var orderDetailsMapped = orderDetails.Select(x => mapper.Map<OrderGameDTO>(x));
             return orderDetailsMapped;
         }
 
-        public async Task<IEnumerable<OrderGameDTO>> GetCurrentUsersCart()
-        {
+        public async Task<IEnumerable<OrderGameDTO>> GetCurrentUsersCart() {
             //GET CURRENT USER
 
             var currentUsersCartId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
@@ -66,39 +60,33 @@ namespace GameStore.BLL.Services
 
         }
 
-        public async Task<IEnumerable<PaymentMethods>> GetAllPaymentMethods()
-        {
+        public async Task<IEnumerable<PaymentMethods>> GetAllPaymentMethods() {
             return uow.OrderCartRepository.GetAllPaymentMethods();
         }
 
-        public async Task AddGameToCart(string key)
-        {
+        public async Task AddGameToCart(string key) {
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var existingCartId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             var cart = existingCartId == null ? uow.OrderCartRepository.CreateNewCartForUser(userId).Id : existingCartId;
 
             var gameInCart = uow.OrderCartRepository.FindGameInTheCart(cart.Value, game.Id);
-            if(gameInCart == null) { uow.OrderCartRepository.AddGameToTheCart(cart.Value, game); }
-            else { gameInCart.Quantity++; }
+            if (gameInCart == null) { uow.OrderCartRepository.AddGameToTheCart(cart.Value, game); } else { gameInCart.Quantity++; }
             await uow.SaveAsync();
 
         }
 
-        public async Task DeleteGameFromCart(string key)
-        {
+        public async Task DeleteGameFromCart(string key) {
 
             var game = await uow.GamesRepository.GetGameByAlias(key);
             var cart = uow.OrderCartRepository.GetCurrentUsersOpenCartId(userId);
             var gameInCart = uow.OrderCartRepository.FindGameInTheCart(cart.Value, game.Id);
-            if (gameInCart.Quantity > 1) { gameInCart.Quantity--; }
-            else {
+            if (gameInCart.Quantity > 1) { gameInCart.Quantity--; } else {
                 uow.OrderCartRepository.RemoveGameFromCart(gameInCart);
             }
             await uow.SaveAsync();
         }
 
-        public async Task<BankInvoice> GetInvoiceData()
-        {
+        public async Task<BankInvoice> GetInvoiceData() {
             var orderId = uow.OrderCartRepository.GetCurrentUsersOpenCartId(this.userId);
             var userId = this.userId;
             var date = await GetOrderById(orderId.Value);
@@ -110,15 +98,13 @@ namespace GameStore.BLL.Services
 
         }
 
-        public async Task<HttpResponseMessage> ProcessIBoxTerminal(BankInvoice userInfo)
-        {
+        public async Task<HttpResponseMessage> ProcessIBoxTerminal(BankInvoice userInfo) {
             var boxRequest = new AnIBoxRequest() { accountNumber = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"), transactionAmount = userInfo.Sum, invoiceNumber = userInfo.OrderId };
             var jsonBoxRequest = JsonConvert.SerializeObject(boxRequest);
-            using (HttpClient httpClient = new HttpClient())
-            {
+            using (HttpClient httpClient = new HttpClient()) {
                 //please remember to put links in the file
-                
-                var uri = new Uri(configuration["BaseApi:base"]+"ibox");
+
+                var uri = new Uri(configuration["BaseApi:base"] + "ibox");
                 var content = new StringContent(jsonBoxRequest, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode) { await UpdateCartAndGameInStock(); }
@@ -126,16 +112,14 @@ namespace GameStore.BLL.Services
             }
 
         }
-        public async Task<bool> IsItPossibleToPurchase()
-        {
+        public async Task<bool> IsItPossibleToPurchase() {
 
             var usersCart = await GetCurrentUsersCart();
             var usersCartMapped = usersCart.Select(x => mapper.Map<OrderGame>(x)).ToList();
             var isItLarger = uow.GamesRepository.UnitInStockIsLargerThanOrder(usersCartMapped);
             return isItLarger;
         }
-        public async Task UpdateCartAndGameInStock()
-        {
+        public async Task UpdateCartAndGameInStock() {
             var usersCart = await GetCurrentUsersCart();
             var userCartMapped = usersCart.Select(x => mapper.Map<OrderGame>(x)).ToList();
             uow.OrderCartRepository.UpdateCartAndGameInStock(userCartMapped);
@@ -144,13 +128,11 @@ namespace GameStore.BLL.Services
             await uow.SaveAsync();
         }
 
-        public async Task<HttpResponseMessage> ProcessVisaPayment(Model? model, double sum)
-        {
+        public async Task<HttpResponseMessage> ProcessVisaPayment(Model? model, double sum) {
             var visaRequest = new VisaRequest() { cardHolderName = model.holder, cardNumber = model.cardNumber, cvv = model.cvv2, expirationMonth = model.monthExpire, expirationYear = model.yearExpire, transactionAmount = 56 };
             var jsonVisaRequest = JsonConvert.SerializeObject(visaRequest);
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var uri = new Uri(configuration["BaseApi:base"]+"visa");
+            using (HttpClient httpClient = new HttpClient()) {
+                var uri = new Uri(configuration["BaseApi:base"] + "visa");
                 var content = new StringContent(jsonVisaRequest, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
                 if (response.IsSuccessStatusCode) { await UpdateCartAndGameInStock(); }
@@ -158,13 +140,11 @@ namespace GameStore.BLL.Services
             }
 
         }
-        public MemoryStream GenerateInvoicePdf(BankInvoice UserInfo)
-        {
+        public MemoryStream GenerateInvoicePdf(BankInvoice UserInfo) {
             QuestPDF.Settings.License = LicenseType.Community;
             var UserData = new BankInvoice { UserId = UserInfo.UserId, OrderId = UserInfo.OrderId, CreationDate = DateTime.Now, Sum = UserInfo.Sum };
             MemoryStream ms = new MemoryStream();
-            QuestPDF.Fluent.Document.Create(x => x.Page(page =>
-            {
+            QuestPDF.Fluent.Document.Create(x => x.Page(page => {
                 page.Margin(50);
                 page.Size(PageSizes.A4);
                 page.PageColor(Colors.White);
@@ -173,8 +153,7 @@ namespace GameStore.BLL.Services
                        .AlignCenter()
                        .Text($"Invoice #: {UserData.OrderId}")
                        .SemiBold().FontSize(24).FontColor(Colors.Grey.Darken4);
-                page.Content().Text(text =>
-                {
+                page.Content().Text(text => {
                     text.Line($"UserId= {UserData.UserId}");
                     text.Line($"Sum={UserData.Sum}");
                     text.Line($"CreationDate = {UserData.CreationDate}");
@@ -182,6 +161,11 @@ namespace GameStore.BLL.Services
             })).GeneratePdf(ms);
             ms.Position = 0;
             return ms;
+        }
+
+        public async Task<IEnumerable<OrderDTO>> GetAllPaidOrders(OrderFilter orderFilter) {
+            var allPaidOrders = await uow.OrderCartRepository.GetAllOrders(x => DateTime.Parse(orderFilter.start) <= x.Date && DateTime.Parse(orderFilter.end) >= x.Date && x.Status == Order.Statuses.Paid.ToString());
+            return allPaidOrders.Select(x => mapper.Map<OrderDTO>(x));
         }
     }
 }

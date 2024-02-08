@@ -6,12 +6,9 @@ using BLL.AutoMapper;
 using BLL.Services;
 using GameStore.BLL.Services;
 
-namespace GameStore.WEB.ServiceCollections
-{
-    public static class BusinessLogicLayerExtensions
-    {
-        public static IServiceCollection AddBusinessLogicLayerDependencies(this IServiceCollection services)
-        {
+namespace GameStore.WEB.ServiceCollections {
+    public static class BusinessLogicLayerExtensions {
+        public static IServiceCollection AddBusinessLogicLayerDependencies(this IServiceCollection services) {
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddScoped<GameService>();
             services.AddScoped<GenreService>();

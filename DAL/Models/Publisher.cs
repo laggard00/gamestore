@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace GameStore.DAL.Models {
     public class Publisher : BaseEntity {
-
         public string CompanyName { get; set; }
         public string? Description { get; set; }
         public string? HomePage { get; set; }
