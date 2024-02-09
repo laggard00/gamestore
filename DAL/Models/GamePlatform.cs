@@ -6,16 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Models
-{
-    public class GamePlatform
-    {
+namespace DAL.Models {
+    public class GamePlatform {
         public Guid GameId { get; set; }
-        
         public Guid PlatformId { get; set; }
-
-        
-        
-        
     }
 }

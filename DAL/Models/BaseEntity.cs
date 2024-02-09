@@ -5,10 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Models
-{
-    public abstract class BaseEntity
-    {
+namespace DAL.Models {
+    public abstract class BaseEntity {
         [Key]
         public Guid Id { get; set; }
     }

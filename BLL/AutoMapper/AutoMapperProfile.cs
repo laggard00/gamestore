@@ -10,8 +10,14 @@ using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Routing.Constraints;
 using DAL.Models;
 using GameStore_DAL.Data;
-using GameStore.BLL.DTO;
 using GameStore.DAL.Models;
+using GameStore.BLL.DTO.Comments;
+using GameStore.BLL.DTO.Games;
+using GameStore.BLL.DTO.Genres;
+using GameStore.BLL.DTO.Order;
+using GameStore.BLL.DTO.OrderGame;
+using GameStore.BLL.DTO.Platform;
+using GameStore.BLL.DTO.Publisher;
 
 namespace BLL.AutoMapper
 {
@@ -22,7 +28,7 @@ namespace BLL.AutoMapper
 
 
 
-            CreateMap<POST_GameDTO, Game>()
+            CreateMap<AddGameRequest, Game>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Game.Name))
                     .ForMember(dest => dest.Key, opt => opt.MapFrom(src => src.Game.Key))
@@ -31,6 +37,7 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Game.price))
                     .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Game.discount))
                     .ForMember(dest => dest.PublisherId, opt => opt.MapFrom(src => src.Publisher));
+                    
 
             CreateMap<GenreDTO, GenreEntity>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -43,11 +50,12 @@ namespace BLL.AutoMapper
 
             CreateMap<PublisherDTO, Publisher>()
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    
                     .ForMember(dest => dest.HomePage, opt => opt.MapFrom(src => src.homePage))
                     .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.companyName))
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.description));
 
-            CreateMap<GenreEntity, GET_Genre>()
+            CreateMap<GenreEntity, GetGenreRequest>()
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name));
 
@@ -62,7 +70,13 @@ namespace BLL.AutoMapper
                     .ForMember(dest => dest.quantity, opt => opt.MapFrom(src => src.Quantity))
                     .ForMember(dest => dest.discount, opt => opt.MapFrom(src => src.Discount));
 
-            CreateMap<Comment, GET_Comment>()
+            CreateMap<OrderGameDTO, OrderGame>()
+                    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.productId))
+                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.price))
+                    .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
+                    .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.discount));
+
+            CreateMap<Comment, GetCommentRequest>()
                     .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.body, opt => opt.MapFrom(src => src.Body))
                     .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))

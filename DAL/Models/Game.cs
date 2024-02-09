@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using GameStore.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,36 +10,31 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace GameStore_DAL.Models
-{
-    public class Game:BaseEntity
-    {
-        
-         [Required]
-         [MaxLength(250)]
-         public string Name { get; set; }
+namespace GameStore_DAL.Models {
+    public class Game : BaseEntity {
 
-         [MaxLength(500)]
-         public string? Description { get; set; }
+        [Required]
+        [MaxLength(250)]
+        public string Name { get; set; }
 
-         private string _gameAlias;
+        [MaxLength(500)]
+        public string? Description { get; set; }
 
-         [Required]
-         [MaxLength(100)]
-         public string Key
-         {
-             get
-             {
-                 if (string.IsNullOrEmpty(_gameAlias))
-                 {
-                     _gameAlias = Name.Replace(" ", "-").ToLower();
-                 }
-        
-                 return _gameAlias;
-             }
-             set => _gameAlias = value;
-         }
-        
+        private string _gameAlias;
+
+        [Required]
+        [MaxLength(100)]
+        public string Key {
+            get {
+                if (string.IsNullOrEmpty(_gameAlias)) {
+                    _gameAlias = Name.Replace(" ", "-").ToLower();
+                }
+
+                return _gameAlias;
+            }
+            set => _gameAlias = value;
+        }
+
         [Column(TypeName = "decimal(18,4)")]
         public double Price { get; set; }
 
@@ -46,12 +42,8 @@ namespace GameStore_DAL.Models
 
         public int UnitInStock { get; set; }
 
-        public Guid PublisherId { get; set; } 
-       
-
-     
-
+        public Guid PublisherId { get; set; }
     }
 
-       
+
 }

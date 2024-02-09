@@ -21,52 +21,32 @@ namespace GameStore.DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.GameGenre", b =>
                 {
-                    b.Property<Guid>("GenreId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("GameId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("GenreId", "GameId");
+                    b.Property<Guid>("GenreId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("GameId", "GenreId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("GameGenre");
                 });
 
             modelBuilder.Entity("DAL.Models.GamePlatform", b =>
                 {
-                    b.Property<Guid>("PlatformId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("GameId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("PlatformId", "GameId");
-
-                    b.ToTable("GamePlatforms");
-                });
-
-            modelBuilder.Entity("DAL.Models.Publisher", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("PlatformId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.HasKey("GameId", "PlatformId");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                    b.HasIndex("PlatformId");
 
-                    b.Property<string>("HomePage")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyName")
-                        .IsUnique();
-
-                    b.ToTable("Publishers");
+                    b.ToTable("GamePlatforms");
                 });
 
             modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>
@@ -136,6 +116,8 @@ namespace GameStore.DAL.Migrations
 
                     b.HasKey("OrderId", "ProductId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("OrderGames");
                 });
 
@@ -154,6 +136,30 @@ namespace GameStore.DAL.Migrations
                         .HasColumnType("longtext");
 
                     b.ToTable("PaymentMethods");
+                });
+
+            modelBuilder.Entity("GameStore.DAL.Models.Publisher", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("HomePage")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyName")
+                        .IsUnique();
+
+                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("GameStore_DAL.Models.Game", b =>
@@ -192,6 +198,8 @@ namespace GameStore.DAL.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Games");
                 });
@@ -235,13 +243,68 @@ namespace GameStore.DAL.Migrations
                     b.ToTable("Platforms");
                 });
 
+            modelBuilder.Entity("DAL.Models.GameGenre", b =>
+                {
+                    b.HasOne("GameStore_DAL.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameStore_DAL.Models.GenreEntity", null)
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Models.GamePlatform", b =>
+                {
+                    b.HasOne("GameStore_DAL.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameStore_DAL.Models.Platform", null)
+                        .WithMany()
+                        .HasForeignKey("PlatformId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>
                 {
                     b.HasOne("GameStore.DAL.Models.Comment", "ParentComment")
                         .WithMany("Children")
-                        .HasForeignKey("ParentCommentId");
+                        .HasForeignKey("ParentCommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ParentComment");
+                });
+
+            modelBuilder.Entity("GameStore.DAL.Models.OrderGame", b =>
+                {
+                    b.HasOne("GameStore.DAL.Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameStore_DAL.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GameStore_DAL.Models.Game", b =>
+                {
+                    b.HasOne("GameStore.DAL.Models.Publisher", null)
+                        .WithMany()
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GameStore.DAL.Models.Comment", b =>

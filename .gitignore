@@ -1,0 +1,10 @@
+*.dll
+*.pdb
+
+/BLL/bin/Debug/net6.0/GameStore.BLL.deps.json
+/BLL/bin/Debug/net6.0/GameStore.BLL.dll
+/BLL/bin/Debug/net6.0/GameStore.BLL.pdb
+/BLL/bin/Debug/net6.0/GameStore.DAL.dll
+/BLL/bin/Debug/net6.0/GameStore.DAL.pdb
+/BLL/obj
+/BLL/bin

@@ -2,17 +2,26 @@ using BLL.AutoMapper;
 using BLL.Services;
 using DAL.Repositories;
 using FluentAssertions.Common;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using GameStore.BLL.DTO;
+using GameStore.BLL.DTO.Games;
 using GameStore.BLL.Services;
+using GameStore.BLL.Validators;
+using GameStore.DAL.MongoRepositories;
 using GameStore.DAL.Repositories;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
+using GameStore.WEB.Middleware.Exstensions;
+using GameStore.WEB.ServiceCollections;
 using GameStore_DAL.Data;
-using GameStore_DAL.Interfaces;
 using GameStore_DAL.Repositories;
-using GameStore_v2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Serilog;
+using System.Configuration;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,27 +35,18 @@ builder.Services.AddDbContext<GameStoreDbContext>(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddScoped<IGamesRepository,GamesRepository>();
-builder.Services.AddScoped<IGenreRepository,GenreRepository>();
-builder.Services.AddScoped<IGameGenreRepository,GameGenreRepository>();
-builder.Services.AddScoped<IPlatformRepository,PlatformRepository>();
-builder.Services.AddScoped<IGamePlatformRepository,GamePlatformRepository>();
-builder.Services.AddScoped<IPublisherRepository,PublisherRepository>();
-builder.Services.AddScoped<IOrderCartRepository,OrderCartRepository>();
-builder.Services.AddScoped<ICommentRepository,CommentRepository>();
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped<GameService>();
-builder.Services.AddScoped<GenreService>();
-builder.Services.AddScoped<PlatformService>();
-builder.Services.AddScoped<PublisherService>();
-builder.Services.AddScoped<OrderCartService>();
-builder.Services.AddScoped<CommentService>();
+                                          .AddNewtonsoftJson(options =>
+                                                             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddMemoryCache();
+
+builder.Services.AddDataAccessLayerDependencies();
+builder.Services.AddBusinessLogicLayerDependencies();
+builder.Services.AddFluentValidationDependencies();
+
+builder.Services.AddScoped<IMongoDatabase>(_ =>
+new
+MongoClient("mongodb://localhost:27017").GetDatabase("Northwind"));
+builder.Services.AddScoped<ShippersService>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -55,6 +55,7 @@ builder.Services.AddLazyCache();
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", (build) =>
 {
     build.WithOrigins("http://127.0.0.1:8080").AllowAnyMethod().AllowAnyHeader();
+    build.WithOrigins("http://127.0.0.1:8080/games").AllowAnyMethod().AllowAnyHeader();
 }));
 
 
