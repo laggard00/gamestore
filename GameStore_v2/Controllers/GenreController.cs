@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using BLL.Services;
 using GameStore.BLL.DTO.Genres;
+using GameStore.WEB.AuthUtilities;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GameStore.WEB.Controllers {
 
     [ApiController]
+    
     public class GenreController : Controller {
 
         private readonly GenreService _service;
@@ -19,6 +23,9 @@ namespace GameStore.WEB.Controllers {
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+        /// 
+
+        
         [HttpGet("genres")]
         public async Task<ActionResult<IEnumerable<GetGenreRequest>>> Get() {
             var genres = await _service.GetAllAsync();
@@ -38,17 +45,20 @@ namespace GameStore.WEB.Controllers {
             }
         }
 
+        [HasPremission(PermissionEnum.AddGenre)]
         [HttpPost("genres")]
         public async Task<ActionResult> Post([FromBody] AddGenreRequest value) {
             var b = ModelState.IsValid;
             await _service.AddAsync(value.genre);
             return Ok();
         }
+        [HasPremission(PermissionEnum.DeleteGenre)]
         [HttpDelete("genres/{Id}")]
         public async Task<ActionResult> Delete(Guid Id) {
             await _service.DeleteAsync(Id);
             return Ok();
         }
+        [HasPremission(PermissionEnum.UpdateGenre)]
         [HttpPut("genres")]
         public async Task<ActionResult> Update([FromBody] UpdateGenreRequest value) {
             if (!ModelState.IsValid) {

@@ -11,6 +11,7 @@ using GameStore.BLL.DTO.BankRequest;
 using GameStore.BLL.DTO.Order;
 using GameStore.BLL.DTO.OrderGame;
 using GameStore.DAL.Filters;
+using GameStore.WEB.AuthUtilities;
 
 namespace GameStore.WEB.Controllers {
 
@@ -36,6 +37,7 @@ namespace GameStore.WEB.Controllers {
             var allPaidAndCancelledOrders = await service.GetPaidAndCancelledOrders();
             return allPaidAndCancelledOrders == null ? Ok("there are current paid or cancelled orders") : Ok(allPaidAndCancelledOrders);
         }
+        [HasPremission(PermissionEnum.ViewOrderHistory)]
         [HttpGet("orders/history")]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrderHistory([FromQuery] OrderFilter orderFilter ) {
            
@@ -66,7 +68,17 @@ namespace GameStore.WEB.Controllers {
             var allPaymentMethods = await service.GetAllPaymentMethods();
             return new { paymentMethods = allPaymentMethods };
         }
-
+        [HasPremission(PermissionEnum.ChangeOrderStatus)]
+        [HttpPost("orders/{id}/ship")]
+        public async Task<ActionResult> ShipOrder(string orderId) {
+            await service.ShipOrderAsync(orderId);
+            return Ok();
+        }
+        [HttpPost("orders/{id}/details/{key}")]
+        public async Task<ActionResult> AddGameToOrder(string orderId, string gameKey) { 
+            await service.AddGameToOrder(orderId, gameKey);
+            return Ok();
+        }
         [HttpPost("orders/payment")]
         public async Task<ActionResult<IResult>> ProcessPayment([FromBody] PaymentRequest paymentRequest) {
 

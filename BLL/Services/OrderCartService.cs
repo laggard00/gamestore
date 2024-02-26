@@ -102,8 +102,6 @@ namespace GameStore.BLL.Services {
             var boxRequest = new AnIBoxRequest() { accountNumber = new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"), transactionAmount = userInfo.Sum, invoiceNumber = userInfo.OrderId };
             var jsonBoxRequest = JsonConvert.SerializeObject(boxRequest);
             using (HttpClient httpClient = new HttpClient()) {
-                //please remember to put links in the file
-
                 var uri = new Uri(configuration["BaseApi:base"] + "ibox");
                 var content = new StringContent(jsonBoxRequest, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(uri, content);
@@ -166,6 +164,31 @@ namespace GameStore.BLL.Services {
         public async Task<IEnumerable<OrderDTO>> GetAllPaidOrders(OrderFilter orderFilter) {
             var allPaidOrders = await uow.OrderCartRepository.GetAllOrders(x => DateTime.Parse(orderFilter.start) <= x.Date && DateTime.Parse(orderFilter.end) >= x.Date && x.Status == Order.Statuses.Paid.ToString());
             return allPaidOrders.Select(x => mapper.Map<OrderDTO>(x));
+        }
+
+        public async Task ShipOrderAsync(string id) {
+            var idIsGuid = Guid.TryParse(id, out var orderId);
+            if (idIsGuid) {
+                var orderById = uow.OrderCartRepository.GetOrderById(orderId);
+                orderById.Status = Order.Statuses.Shipped.ToString();
+                await uow.SaveAsync();
+            }
+            
+        }
+
+        public async Task AddGameToOrder(string orderId, string gameKey) {
+            var idIsGuid = Guid.TryParse(orderId, out var orderIdGuid);
+            if(idIsGuid) {
+                var game = await uow.GamesRepository.GetGameByAlias(gameKey);
+                if (game != null) {
+                    var allOrderDetails = uow.OrderCartRepository.GetOrderDetails(orderIdGuid);
+                    var isGameInOrder = allOrderDetails.SingleOrDefault(x => x.ProductId == game.Id);
+                    if (isGameInOrder is not null) { isGameInOrder.Quantity++; } 
+                    else { uow.OrderCartRepository.AddGameToTheCart(orderIdGuid, game); }
+                    await uow.SaveAsync();
+                    
+                }
+            }
         }
     }
 }
