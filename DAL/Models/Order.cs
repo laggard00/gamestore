@@ -24,7 +24,8 @@ namespace GameStore.DAL.Models {
             Open,
             Checkout,
             Paid,
-            Cancelled
+            Cancelled,
+            Shipped
         }
     }
 
