@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore.DAL", "..\DAL\Gam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore.BLL", "..\BLL\GameStore.BLL.csproj", "{89535D08-0D6D-4600-BCDC-15355637384E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nosqlconverter", "..\Utility\nosqlconverter\nosqlconverter.csproj", "{492B33D7-257A-4757-B3F9-82E74769E42E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{89535D08-0D6D-4600-BCDC-15355637384E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89535D08-0D6D-4600-BCDC-15355637384E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89535D08-0D6D-4600-BCDC-15355637384E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{492B33D7-257A-4757-B3F9-82E74769E42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{492B33D7-257A-4757-B3F9-82E74769E42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{492B33D7-257A-4757-B3F9-82E74769E42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{492B33D7-257A-4757-B3F9-82E74769E42E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
