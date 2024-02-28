@@ -4,6 +4,7 @@ using GameStore.DAL.Data;
 using GameStore.DAL.Models.AuthModels;
 using GameStore.DAL.Repositories.AuthRepositories;
 using GameStore.WEB;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -75,7 +77,7 @@ namespace GameStore.BLL.Services {
 
         public async Task<IEnumerable<GetUsersModel>> GetAllUsersAsync() {
             var allUsers = await _userManager.Users.ToListAsync();
-            return allUsers.Select(x => new GetUsersModel() { id = x.Id, name = x.FirstName });
+            return allUsers.Select(x => new GetUsersModel() { id = x.Id, name = x.UserName });
         }
 
         public async Task<IEnumerable<GetRolesModel>> GetAllUsersRolesAsync(string id) {
@@ -141,6 +143,8 @@ namespace GameStore.BLL.Services {
             }
 
             var secret = _configuration["JWT:Secret"];
+            var secret2 = _configuration["JWT:Issuer"];
+            var secret3 = _configuration["JWT:Audience"];
             var authSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secret));
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:Issuer"],
@@ -149,7 +153,6 @@ namespace GameStore.BLL.Services {
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-
             return jwtToken;
         }
     }

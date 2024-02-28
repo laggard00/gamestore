@@ -26,6 +26,9 @@ namespace GameStore.WEB.Controllers.AuthControllers {
 
         [HttpPost("access")]
         public async Task<IActionResult> GetUserAccess([FromBody] UserAccessRequest userAccessRequest) {
+            if (HttpContext.User.Claims.Any(x => x.Type == "permission" && x.Value == userAccessRequest.targetPage)) {
+                return Ok(true);
+            }
             return Ok(true);
         }
 

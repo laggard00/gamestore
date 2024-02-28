@@ -69,12 +69,12 @@ namespace GameStore.WEB.Controllers {
             return new { paymentMethods = allPaymentMethods };
         }
         [HasPremission(PermissionEnum.ChangeOrderStatus)]
-        [HttpPost("orders/{id}/ship")]
+        [HttpPost("orders/{orderId}/ship")]
         public async Task<ActionResult> ShipOrder(string orderId) {
             await service.ShipOrderAsync(orderId);
             return Ok();
         }
-        [HttpPost("orders/{id}/details/{key}")]
+        [HttpPost("orders/{orderId}/details/{gameKey}")]
         public async Task<ActionResult> AddGameToOrder(string orderId, string gameKey) { 
             await service.AddGameToOrder(orderId, gameKey);
             return Ok();

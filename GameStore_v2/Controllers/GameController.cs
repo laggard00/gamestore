@@ -38,9 +38,17 @@ namespace GameStore.WEB.Controllers {
         /// 
        // [HasPremission(PermissionEnum.ViewGames)]
         [HttpGet("games")]
+        
         ///you changed this recently carefull
         public async Task<ActionResult<GetAllGames>> Get([FromQuery] GameFilter filters) {
             var result = await _service.GetAllAsync(filters);
+
+            // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
+            return Ok(result);
+        }
+        [HttpGet("games/all")]
+        public async Task<ActionResult<GetAllGames>> GetAll() {
+            var result = await _service.GetAllWithoutFilterAsync();
 
             // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
             return Ok(result);

@@ -30,7 +30,15 @@
          Comment = 19,
          ViewGames = 20,
 
-         ReadOnlyAccess = 21
+         ReadOnlyAccess = 21,
+         Games = 22,
+         Genres = 23,
+         Platforms = 24,
+         Publishers = 25,
+         History = 26,
+         Users = 27,
+         Roles = 28,
+         Orders = 29
 
     }
 }
