@@ -4,6 +4,7 @@ using DAL.Models;
 using GameStore.BLL.DTO.Platform;
 using GameStore.BLL.Services;
 using GameStore.DAL.Models;
+using GameStore.WEB.AuthUtilities;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +43,7 @@ namespace GameStore.WEB.Controllers {
             var platformById = await _service.GetByIdAsync(id);
             if (platformById != null) { return Ok(platformById); } else { return StatusCode(404); }
         }
-
+        [HasPremission(PermissionEnum.AddPlatform)]
         [HttpPost("platforms")]
         public async Task<ActionResult> Post([FromBody] AddPlatformRequest value) {
             if (!ModelState.IsValid) {
@@ -56,6 +57,7 @@ namespace GameStore.WEB.Controllers {
             var gamesByGenre = await _service.GetPlatformByGameGuid(GameId);
             return Ok(gamesByGenre);
         }
+        [HasPremission(PermissionEnum.DeletePlatform)]
         [HttpDelete("platforms/{id}")]
         public async Task<ActionResult> Delete(Guid id) {
             if (!ModelState.IsValid) {
@@ -64,6 +66,7 @@ namespace GameStore.WEB.Controllers {
             await _service.DeleteAsync(id);
             return NoContent();
         }
+        [HasPremission(PermissionEnum.UpdatePlatform)]
         [HttpPut("platforms")]
         public async Task<ActionResult> Put([FromBody] UpdatePlatformRequest value) {
             if (!ModelState.IsValid) {

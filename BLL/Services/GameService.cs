@@ -28,8 +28,12 @@ namespace BLL.Services {
             var getById = await uow.GamesRepository.GetByIdAsync(id);
             return getById;
         }
+        public async Task<IEnumerable<Game>> GetAllWithoutFilterAsync() {
+            var allGames = await uow.GamesRepository.GetAllAsync(new GameFilter());
+            return allGames;
+        }
 
-        public async Task<GetAllGames> GetAllAsync(GameFilter filters) {
+            public async Task<GetAllGames> GetAllAsync(GameFilter filters) {
             var allGames = await uow.GamesRepository.GetAllAsync(filters);
             var pageCount = await GetPageCount(filters);
             var currentPage = filters.page == null ? 1 : filters.page;

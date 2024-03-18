@@ -5,6 +5,7 @@ using GameStore.BLL.DTO;
 using GameStore.BLL.DTO.Games;
 using GameStore.BLL.Validators;
 using GameStore.DAL.Filters;
+using GameStore.WEB.AuthUtilities;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using LazyCache;
@@ -19,6 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace GameStore.WEB.Controllers {
 
     [ApiController]
+    
     public class GameController : Controller {
         private readonly GameService _service;
 
@@ -33,10 +35,20 @@ namespace GameStore.WEB.Controllers {
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+        /// 
+       // [HasPremission(PermissionEnum.ViewGames)]
         [HttpGet("games")]
+        
         ///you changed this recently carefull
         public async Task<ActionResult<GetAllGames>> Get([FromQuery] GameFilter filters) {
             var result = await _service.GetAllAsync(filters);
+
+            // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
+            return Ok(result);
+        }
+        [HttpGet("games/all")]
+        public async Task<ActionResult<GetAllGames>> GetAll() {
+            var result = await _service.GetAllWithoutFilterAsync();
 
             // var result = await _appCache.GetOrAddAsync("gamesGet", async () => await _service.GetAllAsync(filters), DateTime.Now.AddMinutes(1));
             return Ok(result);
@@ -59,6 +71,7 @@ namespace GameStore.WEB.Controllers {
         /// <param name="value"></param>
         /// <returns></returns>
         [HttpPost("games")]
+        [HasPremission(PermissionEnum.AddGame)]
         public async Task<ActionResult> Post([FromBody] AddGameRequest value) {
             if (value == null) {
                 return BadRequest("The request body must not be null.");
@@ -89,7 +102,7 @@ namespace GameStore.WEB.Controllers {
             var ret = await _service.GetGameByAlias(key);
             if (ret != null) { return Ok(ret); } else { return StatusCode(404); }
         }
-
+        [HasPremission(PermissionEnum.UpdateGame)]
         [HttpPut("games")]
         public async Task<ActionResult> Update([FromBody] UpdateGameRequest value) {
             if (!ModelState.IsValid) {
@@ -104,6 +117,7 @@ namespace GameStore.WEB.Controllers {
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HasPremission(PermissionEnum.DeleteGame)]
         [HttpDelete("games/{key}")]
         public async Task<ActionResult> Remove(string key) {
             await _service.DeleteAsync(key);

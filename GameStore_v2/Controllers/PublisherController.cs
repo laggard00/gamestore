@@ -8,6 +8,7 @@ using GameStore.BLL.DTO.PublishersDTO;
 using GameStore.BLL.Services;
 using GameStore.DAL.Models;
 using GameStore.DAL.Repositories.RepositoryInterfaces;
+using GameStore.WEB.AuthUtilities;
 using GameStore_DAL.Data;
 using GameStore_DAL.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace GameStore.WEB.Controllers {
             this.mapper = mapper;
         }
 
+        [HasPremission(PermissionEnum.AddPublisher)]
         [HttpPost("publishers")]
         public async Task<ActionResult> Post([FromBody] AddPublisherRequest value) {
             // if (!ModelState.IsValid)
@@ -58,7 +60,7 @@ namespace GameStore.WEB.Controllers {
             var publisherByGameGuid = await service.GetPublisherByGameKey(key);
             return Ok(publisherByGameGuid);
         }
-
+        [HasPremission(PermissionEnum.UpdatePublisher)]
         [HttpPut("publishers")]
         public async Task<ActionResult> Put([FromBody] UpdatePublisherRequest value) {
             if (!ModelState.IsValid) {
@@ -68,6 +70,7 @@ namespace GameStore.WEB.Controllers {
             return Ok();
 
         }
+        [HasPremission(PermissionEnum.DeletePublisher)]
         [HttpDelete("publishers/{id}")]
         public async Task<ActionResult> RemovePublisher(Guid id) {
             service.DeletePublisher(id);
