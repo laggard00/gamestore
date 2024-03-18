@@ -1,0 +1,114 @@
+article {
+    width: 100%;
+    display: flex;
+  
+    .filters-container {
+      float: left;
+      width: 365px;
+  
+      .filter-button {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+    }
+  
+    .content-container {
+      float: left;
+      width: calc(100% - 300px);
+      margin: 0 20px 0 0;
+    }
+  }
+  
+  .filter__wrapper {
+    padding: 0 85px;
+    margin: 0 auto;
+  }
+  
+  .games__panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 150px;
+  }
+  
+  .panel__title {
+    font-family: "Montserrat", sans-serif;
+    font-size: 28px;
+    line-height: 34px;
+    color: #3e4554;
+    font-weight: 700;
+    padding: 40px 0 0 0;
+  }
+  
+  .panel__input {
+    margin: 10px 0 0 0;
+    width: 245px;
+    height: 40px;
+  }
+  
+  .line {
+    padding: 12px 0 0 0;
+    border-bottom: 2px solid #d8d8d8;
+    width: 98%;
+    margin: 0 auto;
+  }
+  
+  .filter__title {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+    color: #3e4554;
+    margin: 77px 0 0 0;
+    padding: 0 0 35px 0;
+  }
+  
+  .filter-label {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #4a4a4a;
+  }
+  
+  .filter__row {
+    background-color: #f7f7f7;
+    padding: 25px 20px 0 20px;
+  }
+  
+  .price__form {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .filter__price-box {
+    padding: 40px 0 0 0;
+  }
+  
+  .sorting__form {
+    padding: 18px 0 0 0;
+  }
+  
+  .minPrice__label,
+  .maxPrice__label {
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: #3e4554;
+    line-height: 19px;
+    padding: 14px 0 0 0;
+  }
+  
+  .filter__publishers,
+  .filter__releaseDate,
+  .filter__genres,
+  .filter__platforms {
+    padding: 35px 0 0 0;
+  }
+  
+  .publishers__form,
+  .releaseDate__form,
+  .genres__form,
+  .platforms__form {
+    padding: 10px 0 0 0;
+  }
+  

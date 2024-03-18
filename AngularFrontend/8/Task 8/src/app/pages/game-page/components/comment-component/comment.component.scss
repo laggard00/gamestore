@@ -1,0 +1,13 @@
+.comment-container{
+    margin-bottom: 7px;
+
+    .comment-name {
+        font-weight: 500;
+        margin-bottom: 3px;
+    }
+
+    .child-comments {
+        padding-left: 15px;
+        box-sizing: border-box;
+    }
+}

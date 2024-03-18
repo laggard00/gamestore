@@ -1,0 +1,31 @@
+.basket-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .basket-item {
+    flex: 3;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .basket-summar {
+    flex: 1;
+    background-color: #D3D3D3; /* Change this to the desired gray color */
+  }
+  
+  .cart-title {
+    width: 100%;
+  }
+  
+  .basket-item__img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  .basket-item__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
