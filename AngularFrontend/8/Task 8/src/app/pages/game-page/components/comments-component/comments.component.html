@@ -1,0 +1,16 @@
+<div *ngIf="!!comments" class="comments-container">
+  <gamestore-add-comment
+    *ngIf="canAdd"
+    [currentComment]="selectedComment"
+    [clearForm]="clearCommentInput"
+    (selectCancel)="onSelectCancel()"
+    (saveComment)="onSave($event)"
+  ></gamestore-add-comment>
+  <gamestore-comment
+    *ngFor="let comment of comments"
+    [comment]="comment"
+    (select)="onSelect($event)"
+    (deleteComment)="onDeleteComment($event)"
+    (banComment)="onBanComment($event)"
+  ></gamestore-comment>
+</div>

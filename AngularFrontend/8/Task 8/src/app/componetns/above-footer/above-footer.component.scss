@@ -1,0 +1,83 @@
+body {
+    background-color: white;
+}
+
+.card-container {
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    margin: 20px 20px;
+    padding: 20px;
+    width: 35%;
+    height: 90%;
+    background-color: #e8e8e8; 
+    min-height: 375px;
+    display: flex;
+    flex-direction: column; 
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+}
+
+h1 {
+    font-weight: bold;
+    
+    flex: 0; 
+}
+
+input, textarea, button {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+input {
+    background-color: #e8e8e8;
+    flex: 1;
+}
+
+textarea {
+    background-color: #e8e8e8;
+    flex: 2; 
+}
+
+button {
+    font-size: 18px;
+    width: 140px;
+    height: 50px;
+    border: none;
+    color:white;
+    
+    padding-left: 30px;
+    padding-right: 30px;
+    align-self: flex-end; 
+    background-color: orange; 
+}
+
+.border-bottom {
+    flex:1.33;
+    border-bottom: 1px solid rgb(194, 192, 192);
+    padding-bottom: 5px;
+    margin-bottom: 10px
+}
+.border-bottom > p{
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+}
+.border-bottom > .small{
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+}
+.orangeLink{
+    color: orange;
+}
+.small{
+    font-size: 16px;
+    color: ghostwhite;
+}

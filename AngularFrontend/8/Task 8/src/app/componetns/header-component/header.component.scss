@@ -1,0 +1,55 @@
+header {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(18, 18, 18, 0.6)), url("/assets/img/florian-olivo-1167169-unsplash.png");
+    
+    ;
+    background-size: auto;
+    background-position: center center;
+    padding: 50px 100px;   /* adjust as needed */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 650px;
+    position: relative;
+    
+    flex-direction: column;
+    
+}
+.top{
+    margin-left: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    
+}
+
+.logo a {
+    font-size: 30px;
+    color: white;
+    text-decoration: none;
+}
+
+.links a {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 20px;
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+}
+.title-text {
+    margin-bottom: 50px;
+    color: white;
+    margin-left: 50px;
+}
+.title-text h1{
+    padding: 7px;
+    font-size: 45px;
+    font-weight: bold;
+}
+.title-text p{
+    padding: 7px;
+    font-size: 22px;
+    
+}

@@ -1,0 +1,13 @@
+<div>
+  
+  <gamestore-filter-wrapper
+    [pagesSubject]="pagesSubject"
+    [gamesLoadSubject]="gamesLoadSubject"
+    (apply)="loadGames($event)"
+  >
+   <app-game-list
+      [gameList]="gamesList"
+      [addLink]="links.get(this.pageRoutes.AddGame)"
+    ></app-game-list>
+  </gamestore-filter-wrapper>
+</div>

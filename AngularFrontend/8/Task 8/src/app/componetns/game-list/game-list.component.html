@@ -1,0 +1,23 @@
+<div class="wrapper__gamelisting">
+    <div  class="game-adder">
+        <a routerLink="{{ addLink }}" mat-stroked-button color="accent"
+        >{{ labels.addNewButtonLabel }}
+      </a>
+    </div>
+  
+    <div class="row__game">
+      <div *ngFor="let game of gameList" class="item__game">
+        <div class="image__gameitem">
+          <img [src]="1!=1 || 'https://placehold.co/160x160'" [alt]="game.title" class="img-fluid"/>
+        </div>
+        <div class="name__gameitem">
+            <a *ngIf="!!game.pageLink?.length" routerLink="{{ game.pageLink }}">
+                {{ game.title }}
+              </a>
+        </div>
+        <div class="game__tag">Complete Game PS4</div>
+        <div class="gameitem__cost">{{ game.price | currency }}</div>
+        
+      </div>
+    </div>
+  </div>
